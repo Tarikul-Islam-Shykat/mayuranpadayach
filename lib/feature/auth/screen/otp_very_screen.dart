@@ -55,7 +55,7 @@ class _OtpVeryScreenState extends State<OtpVeryScreen> {
   Widget build(BuildContext context) {
 
     return Scaffold(
-        backgroundColor: AppColors.whiteColor,
+        backgroundColor: AppColors.bgColor,
         body: SingleChildScrollView(
           padding: EdgeInsets.all(15),
           child: Column(

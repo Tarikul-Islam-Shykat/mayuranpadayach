@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:prettyrini/core/const/widget.dart';
 import 'package:prettyrini/core/controller/theme_controller.dart';
 import 'package:prettyrini/feature/auth/widget/custom_booton_widget.dart';
 import 'package:prettyrini/feature/auth/widget/text_field_widget.dart';
@@ -31,7 +30,7 @@ class LoginScreen extends StatelessWidget {
     var loginPasswordController = TextEditingController();
 
     return Scaffold(
-      backgroundColor: AppColors.whiteColor,
+      backgroundColor: AppColors.bgColor,
       body: SingleChildScrollView(
         padding: EdgeInsets.all(15),
         child: Column(
@@ -84,7 +83,7 @@ class LoginScreen extends StatelessWidget {
                 Center(child: AuthTerms()),
                 SizedBox(height: 15.h,),
                 CustomButton(
-                  onTap: (){},
+                  onTap: ()=>Get.toNamed(AppRoute.profileScreen),
                   title: Text("Log In",
                     style: GoogleFonts.manrope(fontSize: 16,fontWeight: FontWeight.w800,color: Colors.white),),
                   color: Colors.deepPurple,

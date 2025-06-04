@@ -59,7 +59,7 @@ class CustomAuthField extends StatelessWidget {
             fontWeight: FontWeight.w300,
             fontSize: 14.sp,
           ),
-          fillColor: AppColors.fillColor.withValues(alpha: .1), // Make background transparent
+          fillColor: AppColors.fillColor.withValues(alpha:.1), // Make background transparent
           filled: true,
           enabledBorder: OutlineInputBorder(
             borderSide: BorderSide.none,
