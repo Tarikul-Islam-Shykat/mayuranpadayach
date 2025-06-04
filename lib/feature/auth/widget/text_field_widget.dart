@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../../../core/const/app_colors.dart';
 import '../../../core/style/global_text_style.dart';
@@ -53,19 +54,19 @@ class CustomAuthField extends StatelessWidget {
           prefixIcon: prefixIcon,
           hintText: hintText,
           suffixIcon: suffixIcon,
-          hintStyle: globalTextStyle(
-            color: Colors.grey,
-            fontWeight: FontWeight.w400,
+          hintStyle: GoogleFonts.poppins(
+            color: AppColors.hintTextColor.withValues(alpha: 0.5),
+            fontWeight: FontWeight.w300,
             fontSize: 14.sp,
           ),
-          fillColor: Colors.transparent, // Make background transparent
+          fillColor: AppColors.fillColor.withValues(alpha: .1), // Make background transparent
           filled: true,
           enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.grey, width: 2),
+            borderSide: BorderSide.none,
             borderRadius: BorderRadius.circular(radiusValue),
           ),
           focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.grey, width: 2),
+            borderSide: BorderSide.none,
             borderRadius: BorderRadius.circular(radiusValue2),
           ),
           contentPadding: EdgeInsets.symmetric(

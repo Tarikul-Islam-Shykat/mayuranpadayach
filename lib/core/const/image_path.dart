@@ -10,8 +10,8 @@ class ImagePath {
   static const String noDataFound = "assets/images/noDataFound.png";
   // static const String commentsIcon = "assets/images/comment.png";
 
-  static const String splash_d = "assets/images/splash_d.png";
-  static const String splash_l = "assets/images/splash_l.png";
+  static const String splashLogo = "assets/images/splash_logo.png";
+  static const String loginLogo = "assets/images/login_logo.png";
 
   static const String logoHand = "assets/images/hand_logo.png";
   static const String loginDark = "assets/images/login_image_d.png";

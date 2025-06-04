@@ -21,4 +21,15 @@ class AppColors {
   static Color boderColor = const Color(0xffD0D5DD);
   static Color greenColor = Colors.green;
   static Color fieldColor = Colors.grey.shade200;
+  static Color authHeaderSubtitleColor =  Color(0xFF1E1E2466);
+  static Color fillColor = Color(0xFF1E1E240A);
+  static const LinearGradient gradientColor = LinearGradient(
+    begin: Alignment.topCenter,
+    end: Alignment.bottomCenter,
+    colors: [
+      Color(0xFF7B4BF5),
+      Color(0xFFBD5FF3),
+    ],
+  );
+  static Color hintTextColor = Color(0xFF1E1E2457);
 }
