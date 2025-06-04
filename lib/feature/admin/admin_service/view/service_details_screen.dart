@@ -23,7 +23,9 @@ class ServiceDetailsScreen extends StatelessWidget {
         backgroundColor: AppColors.bgColor,
         leading: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: RoundBackButton(onTap: (){}),
+          child: RoundBackButton(onTap: ()=>Get.back(
+
+          )),
         ),
         title:Text("Zero Hair Studio",style: GoogleFonts.poppins(fontWeight: FontWeight.w600,fontSize: 20.sp,color: AppColors.textBlackColor),) ,
         centerTitle: true,
