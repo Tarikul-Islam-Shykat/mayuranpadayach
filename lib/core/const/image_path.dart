@@ -21,6 +21,8 @@ class ImagePath {
   static const String passwordHidden = "assets/icons/hidden.png";
   static const String subscriptionLogo =
       "assets/images/subscription_screen.png";
+
+
   static const String aboutIcon = "$pathImage/about_icon.png";
   static const String callIcon = "$pathImage/call_icon.png";
   static const String editIcon = "$pathImage/edit_icon.png";
@@ -28,5 +30,16 @@ class ImagePath {
   static const String messageIcon = "$pathImage/message_icon.png";
   static const String privacyIcon = "$pathImage/privacy_icon.png";
   static const String termsIcon = "$pathImage/terms_icon.png";
+  static const String increseIcon = "$pathImage/increse_icon.png";
+  static const String lossIcon = "$pathImage/loss_icon.png";
+  static const String notifyIcon = "$pathImage/notify_icon.png";
+  static const String pandingIcon = "$pathImage/panding_icon.png";
+  static const String starIcon = "$pathImage/star.png";
+  static const String arrowUp = "$pathImage/arrow_up.png";
+  static const String about = "$pathImage/about.png";
+  static const String portfolio = "$pathImage/portfolio.png";
+  static const String rating = "$pathImage/rating.png";
+  static const String service = "$pathImage/service.png";
+  static const String specialist = "$pathImage/specialist.png";
 
 }

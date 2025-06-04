@@ -68,7 +68,7 @@ class SplashScreenController extends GetxController {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
    await  Future.delayed(Duration(seconds: 5),(){
-      Get.toNamed(AppRoute.loginScreen);
+      Get.toNamed(AppRoute.adminServiceScreen);
     });
   }
 }
