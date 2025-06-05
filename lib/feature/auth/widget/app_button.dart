@@ -11,11 +11,13 @@ class AppButton extends StatelessWidget {
     this.bgColor =Colors.grey,
     this.textColor = Colors.white,
     this.isLoading = false,
+    this.boarderColor=Colors.transparent,
   });
   final VoidCallback onTap;
   final String name;
   final Color? bgColor;
   final Color? textColor;
+  final Color boarderColor;
   final bool isLoading;
 
 
@@ -28,6 +30,7 @@ class AppButton extends StatelessWidget {
         padding: EdgeInsets.symmetric(vertical: 12.h),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15),
+          border: Border.all(color: boarderColor),
           color:bgColor,
         ),
         child: Center(child:isLoading?CircularProgressIndicator.adaptive(): Text(name,style: GoogleFonts.manrope(

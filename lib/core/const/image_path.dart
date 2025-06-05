@@ -41,5 +41,6 @@ class ImagePath {
   static const String rating = "$pathImage/rating.png";
   static const String service = "$pathImage/service.png";
   static const String specialist = "$pathImage/specialist.png";
+  static const String fileIcon = "$pathImage/file.png";
 
 }
