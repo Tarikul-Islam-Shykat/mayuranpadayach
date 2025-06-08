@@ -7,12 +7,14 @@ class CustomButton extends StatelessWidget {
   final VoidCallback? onTap;
   final Widget title; // Accepts both text and loader
   final Color? color;
+  final bool isDoubleInfinity;
 
   const CustomButton({
     super.key,
     required this.onTap,
     required this.title,
     this.color,
+    this.isDoubleInfinity = true,
   });
 
   @override
@@ -21,15 +23,17 @@ class CustomButton extends StatelessWidget {
       onTap: onTap, // Handles button click
       child: Center(
         child: SizedBox(
-          width: double.infinity,
+          width: isDoubleInfinity ? double.infinity : null,
           child: Container(
             padding: EdgeInsets.symmetric(vertical: 12.h),
             decoration: BoxDecoration(
+              gradient: AppColors.gradientColor,
+              //border: Border.all(color: AppColors.primaryBlue, width: 2),
               color: onTap == null
                   ? Colors.grey
                   : (color ??
-                      AppColors.primaryColor), // Disabled state handling
-              borderRadius: BorderRadius.circular(300.r),
+                  AppColors.primaryColor), // Disabled state handling
+              borderRadius: BorderRadius.circular(15.r),
             ),
             alignment: Alignment.center,
             child: title, // Shows text or loader

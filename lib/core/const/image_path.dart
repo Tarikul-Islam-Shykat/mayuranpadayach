@@ -1,4 +1,5 @@
 class ImagePath {
+  static const String pathImage ="assets/images";
   static const String logo = "assets/logo.png";
 
   static const String alert = "assets/images/alert.png";
@@ -10,8 +11,8 @@ class ImagePath {
   static const String noDataFound = "assets/images/noDataFound.png";
   // static const String commentsIcon = "assets/images/comment.png";
 
-  static const String splash_d = "assets/images/splash_d.png";
-  static const String splash_l = "assets/images/splash_l.png";
+  static const String splashLogo = "assets/images/splash_logo.png";
+  static const String loginLogo = "assets/images/login_logo.png";
 
   static const String logoHand = "assets/images/hand_logo.png";
   static const String loginDark = "assets/images/login_image_d.png";
@@ -21,7 +22,25 @@ class ImagePath {
   static const String subscriptionLogo =
       "assets/images/subscription_screen.png";
 
-  static const String product_img_1 = "assets/images/product_img_1.png";
 
-  static const String product_img_2 = "assets/images/product_img_2.png";
+  static const String aboutIcon = "$pathImage/about_icon.png";
+  static const String callIcon = "$pathImage/call_icon.png";
+  static const String editIcon = "$pathImage/edit_icon.png";
+  static const String changePassIcon = "$pathImage/change_password_icon.png";
+  static const String messageIcon = "$pathImage/message_icon.png";
+  static const String privacyIcon = "$pathImage/privacy_icon.png";
+  static const String termsIcon = "$pathImage/terms_icon.png";
+  static const String increseIcon = "$pathImage/increse_icon.png";
+  static const String lossIcon = "$pathImage/loss_icon.png";
+  static const String notifyIcon = "$pathImage/notify_icon.png";
+  static const String pandingIcon = "$pathImage/panding_icon.png";
+  static const String starIcon = "$pathImage/star.png";
+  static const String arrowUp = "$pathImage/arrow_up.png";
+  static const String about = "$pathImage/about.png";
+  static const String portfolio = "$pathImage/portfolio.png";
+  static const String rating = "$pathImage/rating.png";
+  static const String service = "$pathImage/service.png";
+  static const String specialist = "$pathImage/specialist.png";
+  static const String fileIcon = "$pathImage/file.png";
+
 }

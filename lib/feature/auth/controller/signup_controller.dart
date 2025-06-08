@@ -10,12 +10,20 @@ import '../../../core/network_caller/endpoints.dart';
 import '../screen/profile_setup_screen.dart';
 
 class SignInController extends GetxController {
+  final TextEditingController nameTEController = TextEditingController();
   final TextEditingController emailTEController = TextEditingController();
   final TextEditingController passwordTEController = TextEditingController();
   final TextEditingController conPasswordTEController = TextEditingController();
   final isPasswordVisible = false.obs;
   final isConPasswordVisible = false.obs;
   final isLoading = false.obs;
+
+  var selectedRoleItem = ''.obs;
+
+  void selectedRole(String value) {
+    selectedRoleItem.value = value;
+  }
+  List<String> role = ["Customer","Business"];
 
   void toggleConPasswordVisibility() {
     isConPasswordVisible.value = !isConPasswordVisible.value;
