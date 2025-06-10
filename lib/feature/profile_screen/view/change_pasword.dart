@@ -25,7 +25,7 @@ class ChangePasword extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                RoundBackButton(onTap: ()=>Get.back(),),
+                roundBackButton(()=>Get.back(),),
                 //SizedBox(width: 50.w,),
                 Expanded(
                   child: Text(
@@ -47,7 +47,7 @@ class ChangePasword extends StatelessWidget {
                 spacing: 10,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  TextFieldTitle(text: "Old Password"),
+                  textFieldTitle(text: "Old Password"),
                   CustomAuthField(
                     radiusValue2: 15,
                     radiusValue: 15,
@@ -57,7 +57,7 @@ class ChangePasword extends StatelessWidget {
                   SizedBox(
                     height: 5.h,
                   ),
-                  TextFieldTitle(text: "New Password"),
+                  textFieldTitle(text: "New Password"),
                   CustomAuthField(
                     radiusValue2: 15,
                     radiusValue: 15,
@@ -67,7 +67,7 @@ class ChangePasword extends StatelessWidget {
                   SizedBox(
                     height: 5.h,
                   ),
-                  TextFieldTitle(text: "Confirm Password"),
+                  textFieldTitle(text: "Confirm Password"),
                   CustomAuthField(
                     radiusValue2: 15,
                     radiusValue: 15,

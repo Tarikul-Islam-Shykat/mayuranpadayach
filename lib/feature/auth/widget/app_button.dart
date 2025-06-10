@@ -34,7 +34,7 @@ class AppButton extends StatelessWidget {
           color:bgColor,
         ),
         child: Center(child:isLoading?CircularProgressIndicator.adaptive(): Text(name,style: GoogleFonts.manrope(
-          fontSize: 16,
+          fontSize: 16.sp,
           fontWeight: FontWeight.w800,
           color: textColor,
         ),),),

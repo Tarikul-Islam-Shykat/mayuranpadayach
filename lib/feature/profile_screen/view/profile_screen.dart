@@ -74,8 +74,8 @@ class ProfileScreen extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: 4.h,),
-                      ProfileEmailText(image:ImagePath.messageIcon, name: 'darrellsteward@example.com',),
-                      ProfileEmailText(image:ImagePath.callIcon, name: '+1 761 234 5678',),
+                      profileEmailText(ImagePath.messageIcon,  'darrellsteward@example.com',),
+                      profileEmailText(ImagePath.callIcon,  '+1 761 234 5678',),
 
 
 
@@ -98,13 +98,13 @@ class ProfileScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  ProfileListTile(image: ImagePath.aboutIcon, name: 'About Us', onTap: () {  },),
+                  profileListTile(ImagePath.aboutIcon,'About Us',() {  },),
                   Divider(color: Colors.grey.shade300),
-                  ProfileListTile(image: ImagePath.changePassIcon, name: 'Change Password', onTap: ()=>Get.toNamed(AppRoute.changePasswordScreen),),
+                  profileListTile(ImagePath.changePassIcon, 'Change Password',  ()=>Get.toNamed(AppRoute.changePasswordScreen),),
                   Divider(color: Colors.grey.shade300),
-                  ProfileListTile(image: ImagePath.termsIcon, name: 'Terms & Conditions', onTap: () {  },),
+                  profileListTile( ImagePath.termsIcon,  'Terms & Conditions',  () {  },),
                   Divider(color: Colors.grey.shade300),
-                  ProfileListTile(image: ImagePath.privacyIcon, name: 'Privacy Policy', onTap: () {  },),
+                  profileListTile( ImagePath.privacyIcon,  'Privacy Policy',  () {  },),
 
                 ],
               ),

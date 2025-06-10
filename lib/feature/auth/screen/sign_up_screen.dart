@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:prettyrini/core/global_widegts/custom_text.dart';
 import '../../../core/const/app_colors.dart';
 import '../../../core/const/image_path.dart';
 import '../../../route/route.dart';
@@ -22,19 +23,20 @@ class SignUpScreen extends StatelessWidget {
     return  Scaffold(
       backgroundColor: AppColors.bgColor,
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(15),
+        padding: EdgeInsets.all(15.w),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(height: 50.h),
-            Center(child: Image.asset(ImagePath.loginLogo,width: 71,height: 48,)),
-            SizedBox(height: 10,),
-            Center(child: AuthHeaderText(text: "Create An Account",)),
-            SizedBox(height: 4,),
-            Center(child: AuthHeaderSubtitle(text: "Start your journey in playmate with fun, interactive lessons now",)),
-            SizedBox(height: 19,),
-            TextFieldTitle(text: 'Full Name',),
+            Center(child: Image.asset(ImagePath.loginLogo,width: 71.w,height: 48.h,fit: BoxFit.fill,)),
+            SizedBox(height: 10.h,),
+            Center(child: headingText(text: "Create An Account"),),
+            SizedBox(height: 4.h,),
+            Center(child: smallText(text: "Start your journey in playmate with fun, interactive lessons now",maxLines: 2,textAlign: TextAlign.center,color: AppColors.grayColor),),
+
+            SizedBox(height: 20.h,),
+            textFieldTitle(text: 'Full Name',),
             CustomAuthField(
               radiusValue2: 15,
               radiusValue: 15,
@@ -45,7 +47,7 @@ class SignUpScreen extends StatelessWidget {
 
             SizedBox(height: 15.h,),
 
-            TextFieldTitle(text: 'Email',),
+            textFieldTitle(text: 'Email',),
             CustomAuthField(
               radiusValue2: 15,
               radiusValue: 15,
@@ -56,7 +58,7 @@ class SignUpScreen extends StatelessWidget {
 
             SizedBox(height: 15.h,),
 
-            TextFieldTitle(text: 'Password',),
+            textFieldTitle(text: 'Password',),
             CustomAuthField(
               radiusValue2: 15,
               radiusValue: 15,
@@ -67,29 +69,31 @@ class SignUpScreen extends StatelessWidget {
 
             SizedBox(height: 15.h,),
 
-            TextFieldTitle(text: 'Role',),
+            textFieldTitle(text: 'Role',),
 
             CustomDropdown(
               items: controller.role,
               selectedItem: controller.selectedRoleItem,
               label: "Select Your Role",
             ),
-            SizedBox(height: 40.h,),
+            SizedBox(height:Get.height*0.05.h,),
 
-            Center(child: AuthTerms()),
-            SizedBox(height: 15.h,),
+
             CustomButton(
               onTap: (){},
               title: Text("Sign Up",
-                style: GoogleFonts.manrope(fontSize: 16,fontWeight: FontWeight.w800,color: Colors.white),),
+                style: GoogleFonts.manrope(fontSize: 16.sp,fontWeight: FontWeight.w800,color: Colors.white),),
               color: Colors.deepPurple,
             ),
-            SizedBox(height: 15,),
-            LoginOrSignupText(
+            SizedBox(height: 15.h,),
+            loginOrSignupText(
               title: 'Already have an account? ',
               pageName: 'Log in',
               onTap: ()=>Get.toNamed(AppRoute.loginScreen),
             ),
+            SizedBox(height: 5.h,),
+            Center(child: authTerms(context)),
+            SizedBox(height: 10.h,),
 
           ],
         ),

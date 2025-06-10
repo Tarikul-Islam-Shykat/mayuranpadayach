@@ -28,7 +28,7 @@ class ServiceDetailsScreen extends StatelessWidget {
         backgroundColor: AppColors.bgColor,
         leading: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: RoundBackButton(onTap: () => Get.back()),
+          child: roundBackButton(() => Get.back()),
         ),
         title: Text(
           "Zero Hair Studio",
@@ -135,31 +135,11 @@ class ServiceDetailsScreen extends StatelessWidget {
             SizedBox(
               height: 15.h,
             ),
-            ServiceTile(
-              onTap: () {},
-              name: 'Services',
-              image: ImagePath.service,
-            ),
-            ServiceTile(
-              onTap: () => Get.toNamed(AppRoute.serviceSpecialistScreen),
-              name: 'Specialist',
-              image: ImagePath.specialist,
-            ),
-            ServiceTile(
-              onTap: () => Get.toNamed(AppRoute.servicePortfolioScreen),
-              name: 'Portfolio',
-              image: ImagePath.portfolio,
-            ),
-            ServiceTile(
-              onTap: () {},
-              name: 'Review',
-              image: ImagePath.rating,
-            ),
-            ServiceTile(
-              onTap: () => Get.toNamed(AppRoute.serviceAboutScreen),
-              name: 'About',
-              image: ImagePath.about,
-            ),
+            serviceTile((){}, 'Services', ImagePath.service),
+            serviceTile(()=> Get.toNamed(AppRoute.serviceSpecialistScreen), 'Specialist', ImagePath.specialist),
+            serviceTile(()=> Get.toNamed(AppRoute.servicePortfolioScreen), "Portfolio", ImagePath.portfolio),
+            serviceTile((){}, "Review", ImagePath.rating),
+            serviceTile(()=> Get.toNamed(AppRoute.serviceAboutScreen), "About", ImagePath.about),
           ],
         ),
       ),

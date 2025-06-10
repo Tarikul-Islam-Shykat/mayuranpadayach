@@ -5,12 +5,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:prettyrini/core/global_widegts/custom_text_field.dart';
 import 'package:prettyrini/feature/admin/admin_booking/controller/booking_controller.dart';
-
 import '../../../../core/const/app_colors.dart';
 import '../../../../core/global_widegts/app_network_image.dart';
-import '../../../../route/route.dart';
 import '../../../profile_screen/widget/round_back_button.dart';
-import '../../admin_home/widget/custom_circular_button.dart';
+
 
 class BookingDetailsScreen extends StatelessWidget {
    BookingDetailsScreen({super.key});
@@ -25,7 +23,7 @@ class BookingDetailsScreen extends StatelessWidget {
         backgroundColor: AppColors.bgColor,
         leading: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: RoundBackButton(onTap: ()=>Get.back()),
+          child: roundBackButton(()=>Get.back()),
         ),
         title:Text("Booking Details",style: GoogleFonts.poppins(fontWeight: FontWeight.w600,fontSize: 20.sp,color: AppColors.textBlackColor),) ,
         centerTitle: true,

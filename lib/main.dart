@@ -1,3 +1,4 @@
+import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -12,7 +13,10 @@ void main() async {
   configEasyLoading();
   await SharedPreferences.getInstance();
   Get.put(ThemeController());
-  runApp(const MyApp());
+  runApp(DevicePreview(
+      enabled: true,
+      builder: (context)=>MyApp()),
+  );
 }
 
 void configEasyLoading() {
@@ -39,6 +43,7 @@ class MyApp extends StatelessWidget {
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (context, child) => GetMaterialApp(
+        useInheritedMediaQuery: true,
         debugShowCheckedModeBanner: false,
         title: 'Foot Fitness',
         getPages: AppRoute.routes,
