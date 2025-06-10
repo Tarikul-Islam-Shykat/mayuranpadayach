@@ -23,12 +23,6 @@ class SignInController extends GetxController {
 
   List<String> role = ["ADMIN", "PROFESSIONAL", "USER"];
 
-  var selectedRoleItem = ''.obs;
-
-  void selectedRole(String value) {
-    selectedRoleItem.value = value;
-  }
-  List<String> role = ["Customer","Business"];
 
   void toggleConPasswordVisibility() {
     isConPasswordVisible.value = !isConPasswordVisible.value;

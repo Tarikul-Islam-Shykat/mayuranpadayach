@@ -166,7 +166,7 @@ class _OtpVeryScreenState extends State<OtpVeryScreen> {
         inputFormatters: [FilteringTextInputFormatter.digitsOnly],
         onChanged: (value) {
           // Auto focus to next field when this field is filled
-          if (value.isNotEmpty && index < 5) {
+          if (value.isNotEmpty && index < 4) {
             FocusScope.of(context).requestFocus(_focusNodes[index + 1]);
           }
           setState(() {});

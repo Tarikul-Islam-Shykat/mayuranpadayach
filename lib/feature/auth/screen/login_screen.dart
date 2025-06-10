@@ -2,16 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:prettyrini/core/controller/theme_controller.dart';
 import 'package:prettyrini/core/global_widegts/custom_text.dart';
 import 'package:prettyrini/feature/auth/widget/custom_booton_widget.dart';
 import 'package:prettyrini/feature/auth/widget/text_field_widget.dart';
 import '../../../core/const/app_colors.dart';
 import '../../../core/const/image_path.dart';
+import '../../../core/global_widegts/loading_screen.dart';
 import '../../../route/route.dart';
 import '../controller/login_controller.dart';
-import '../widget/auth_header_subtitle.dart';
-import '../widget/auth_header_text.dart';
 import '../widget/auth_terms.dart';
 import '../widget/login_or_signup_text.dart';
 import '../widget/text_field_title.dart';
@@ -101,8 +99,8 @@ class LoginScreen extends StatelessWidget {
             Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                CustomButton(
-                  onTap: () => Get.toNamed(AppRoute.profileScreen),
+                Obx(()=>controller.isLoginLoading.value?btnLoading():CustomButton(
+                  onTap: () =>controller.loginUser(),
                   title: Text(
                     "Log In",
                     style: GoogleFonts.manrope(
@@ -111,6 +109,7 @@ class LoginScreen extends StatelessWidget {
                         color: Colors.white),
                   ),
                   color: Colors.deepPurple,
+                ),
                 ),
                 SizedBox(
                   height: 15.h,
