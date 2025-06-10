@@ -114,7 +114,6 @@ class _OtpVeryScreenState extends State<OtpVeryScreen> {
                             onTap: () {
                               otpVerficationController.sendOTP(
                                   widget.email, int.parse(_otp));
-                              //  log("message ${widget.email} == ${_otp}");
                             },
                             title: Text(
                               "Apply Code",
