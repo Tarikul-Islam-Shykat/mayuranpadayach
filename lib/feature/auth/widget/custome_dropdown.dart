@@ -37,7 +37,7 @@ class CustomDropdown extends StatelessWidget {
         hintStyle: GoogleFonts.poppins(
           color: AppColors.hintTextColor,
           fontWeight: FontWeight.w300,
-          fontSize: 16.sp,
+          fontSize: 14.sp,
         ),
         border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(15),

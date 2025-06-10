@@ -20,7 +20,7 @@ class AboutScreen extends StatelessWidget {
         backgroundColor: AppColors.bgColor,
         leading: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: RoundBackButton(onTap: () => Get.back()),
+          child: roundBackButton( () => Get.back()),
         ),
         title: Text(
           "About",
@@ -35,7 +35,7 @@ class AboutScreen extends StatelessWidget {
         padding: EdgeInsets.all(15),
         child: Column(
           children: [
-            TitleAndEditButton(title: 'Basic Info', buttonName: 'Edit', onTab: ()=>Get.toNamed(AppRoute.serviceAboutDetailsScreen),),
+            titleAndEditButton('Basic Info', 'Edit', ()=>Get.toNamed(AppRoute.serviceAboutDetailsScreen)),
             SizedBox(height: 5,),
             Container(
               padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
@@ -57,7 +57,7 @@ class AboutScreen extends StatelessWidget {
             SizedBox(
               height: 15.h,
             ),
-            TitleAndEditButton(title: 'Contract Info', buttonName: 'Edit', onTab: ()=>Get.toNamed(AppRoute.serviceAboutDetailsScreen),),
+            titleAndEditButton('Contract Info', 'Edit', ()=>Get.toNamed(AppRoute.serviceAboutDetailsScreen)),
             SizedBox(height: 5,),
             Container(
               alignment: Alignment.centerLeft,

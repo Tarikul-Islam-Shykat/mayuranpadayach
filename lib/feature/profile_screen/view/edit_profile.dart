@@ -27,7 +27,7 @@ class EditProfile extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                RoundBackButton(onTap: ()=>Get.back(),),
+                roundBackButton(()=>Get.back(),),
                 //SizedBox(width: 50.w,),
                 Expanded(
                   child: Text(

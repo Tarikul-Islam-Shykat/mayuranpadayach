@@ -26,7 +26,7 @@ class ServiceScreen extends StatelessWidget {
         backgroundColor: AppColors.bgColor,
         leading: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: RoundBackButton(onTap: () {}),
+          child: roundBackButton(() {}),
         ),
         title: Text(
           "All Services",

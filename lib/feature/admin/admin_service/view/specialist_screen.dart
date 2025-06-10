@@ -26,7 +26,7 @@ class SpecialistScreen extends StatelessWidget {
         backgroundColor: AppColors.bgColor,
         leading: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: RoundBackButton(onTap: () => Get.back()),
+          child: roundBackButton(() => Get.back()),
         ),
         title: Text(
           "All Specialist",
