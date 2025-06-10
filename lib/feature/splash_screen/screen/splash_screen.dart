@@ -1,17 +1,14 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:prettyrini/core/const/widget.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:prettyrini/core/const/image_path.dart';
 import 'package:prettyrini/core/controller/theme_controller.dart';
-import 'package:prettyrini/feature/auth/widget/custom_booton_widget.dart';
-
 import '../../../core/const/app_colors.dart';
-import '../../../core/const/image_path.dart';
 import '../controller/splash_screen_controller.dart';
 
 class SplashScreen extends StatelessWidget {
-  const SplashScreen({super.key});
+   SplashScreen({super.key});
+  final SplashScreenController controller = Get.put(SplashScreenController());
 
   @override
   Widget build(BuildContext context) {
@@ -22,38 +19,30 @@ class SplashScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: AppColors.bgColor,
-      body: Stack(
-        children: [
-          SizedBox(
-            width: screenWidth,
-            height: screenHeight,
-            child: Image.asset(
-              themeController.isDarkMode
-                  ? ImagePath.splash_d
-                  : ImagePath.splash_d,
-              fit: BoxFit.fill,
-            ),
-          ),
-          Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SizedBox(
-                  width: 150.w,
-                  height: 150.h,
-                  child: Image.asset(
-                    ImagePath.logoHand,
-                  ),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                tilte_text_heading("HandToHand"),
-              ],
-            ),
-          )
-        ],
+      body: Container(
+        height: screenHeight,
+        width: screenWidth,
+        decoration: BoxDecoration(
+            gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Color(0xff7B4BF5),
+                  Color(0xffBD5FF3),
+                ]),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Image.asset(ImagePath.splashLogo,height: 104,width: 153,),
+            Text("TimeLify",style: GoogleFonts.manrope(
+              fontWeight: FontWeight.w800,
+              fontSize: 64,
+              color: AppColors.whiteColor,
+            ),)
+          ],
+        ),
       ),
     );
   }

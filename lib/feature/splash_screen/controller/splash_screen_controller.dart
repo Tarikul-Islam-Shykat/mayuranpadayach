@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
 import 'package:get/get.dart';
+import 'package:prettyrini/route/route.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -59,12 +60,15 @@ class SplashScreenController extends GetxController {
       }
     }
   }
+  
 
   @override
-  void onInit() {
+  void onInit() async {
     super.onInit();
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-    checkIsLogin();
+   await  Future.delayed(Duration(seconds: 5),(){
+      Get.toNamed(AppRoute.loginScreen);
+    });
   }
 }

@@ -1,9 +1,9 @@
+import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:prettyrini/core/controller/theme_controller.dart';
-import 'package:prettyrini/feature/post/ui/post_ui.dart';
 import 'package:prettyrini/route/route.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'core/const/app_colors.dart';
@@ -13,7 +13,10 @@ void main() async {
   configEasyLoading();
   await SharedPreferences.getInstance();
   Get.put(ThemeController());
-  runApp(const MyApp());
+  runApp(DevicePreview(
+      enabled: true,
+      builder: (context)=>MyApp()),
+  );
 }
 
 void configEasyLoading() {
@@ -40,6 +43,7 @@ class MyApp extends StatelessWidget {
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (context, child) => GetMaterialApp(
+        useInheritedMediaQuery: true,
         debugShowCheckedModeBanner: false,
         title: 'Foot Fitness',
         getPages: AppRoute.routes,

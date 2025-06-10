@@ -88,7 +88,7 @@ class ForgetPasswordController extends GetxController {
           var data = jsonDecode(response.body);
           if (data['success'] == true) {
             Get.snackbar("Success", "OTP verified successfully");
-            Get.to(() => ResetPassword());
+            Get.to(() => ResetPasswordScreen());
           } else {
             Get.snackbar("Error", data['message'] ?? "Invalid OTP");
           }
