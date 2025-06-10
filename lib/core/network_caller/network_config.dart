@@ -1,7 +1,6 @@
 // ignore_for_file: file_names, constant_identifier_names, non_constant_identifier_names, avoid_print
 
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
@@ -36,9 +35,8 @@ class NetworkConfig {
         }
       } else if (method.name == RequestMethod.POST.name) {
         try {
-          var req = await http.post(Uri.parse(url),
-              // headers: header,
-              body: json_body);
+          var req =
+              await http.post(Uri.parse(url), headers: header, body: json_body);
 
           print(req.body);
           if (req.statusCode == 200) {

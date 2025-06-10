@@ -20,7 +20,6 @@ import '../feature/auth/screen/reset_password.dart';
 import '../feature/splash_screen/screen/splash_screen.dart';
 
 class AppRoute {
-
   //common route name
   static String splashScreen = '/splashScreen';
   static String loginScreen = "/loginScreen";
@@ -38,14 +37,15 @@ class AppRoute {
   static const String adminHomeScreen = "/admin_home_screen";
   static const String adminBusinessScreen = "/admin_business_screen";
   static const String adminServiceScreen = "/admin_service_screen";
-  static const String adminServiceDetailsScreen = "/admin_service_Details_screen";
+  static const String adminServiceDetailsScreen =
+      "/admin_service_Details_screen";
   static const String servicePortfolioScreen = "/service_portfolio_screen";
   static const String serviceSpecialistScreen = "/service_specialist_screen";
   static const String serviceAboutScreen = "/service_about_screen";
-  static const String serviceAboutDetailsScreen = "/service_about_details_screen";
+  static const String serviceAboutDetailsScreen =
+      "/service_about_details_screen";
   static const String bookingScreen = "/booking_screen";
   static const String bookingDetailsScreen = "/booking_details_screen";
-
 
   //common getter
   static String getSplashScreen() => splashScreen;
@@ -56,29 +56,38 @@ class AppRoute {
   static String getResetPassScreen() => resetPassScreen;
   static String getProfileScreen() => profileScreen;
   static String getEditProfileScreen() => editProfileScreen;
-  static String getChangeScreen() =>changePasswordScreen ;
+  static String getChangeScreen() => changePasswordScreen;
   //user getter
 
   //admin getter
-  static String getAdminHomeScreen()=>adminHomeScreen;
-  static String getAdminBusinessScreen()=>adminBusinessScreen;
-  static String getAdminServiceScreen()=>adminServiceScreen;
-  static String getAdminServiceDetailsScreen()=>adminServiceDetailsScreen;
-  static String getServicePortfolioScreen()=>servicePortfolioScreen;
-  static String getServiceSpecialistScreen()=>serviceSpecialistScreen;
-  static String getServiceAboutScreen()=>serviceAboutScreen;
-  static String getServiceAboutDetailsScreen()=>serviceAboutDetailsScreen;
-  static String getBookingScreen()=>bookingScreen;
-  static String getBookingDetailsScreen()=>bookingDetailsScreen;
+  static String getAdminHomeScreen() => adminHomeScreen;
+  static String getAdminBusinessScreen() => adminBusinessScreen;
+  static String getAdminServiceScreen() => adminServiceScreen;
+  static String getAdminServiceDetailsScreen() => adminServiceDetailsScreen;
+  static String getServicePortfolioScreen() => servicePortfolioScreen;
+  static String getServiceSpecialistScreen() => serviceSpecialistScreen;
+  static String getServiceAboutScreen() => serviceAboutScreen;
+  static String getServiceAboutDetailsScreen() => serviceAboutDetailsScreen;
+  static String getBookingScreen() => bookingScreen;
+  static String getBookingDetailsScreen() => bookingDetailsScreen;
 
   static List<GetPage> routes = [
-
     //common route page
-    GetPage(name: splashScreen, page: () =>  SplashScreen()),
+    GetPage(name: splashScreen, page: () => SplashScreen()),
     GetPage(name: loginScreen, page: () => LoginScreen()),
     GetPage(name: signUpScreen, page: () => SignUpScreen()),
-    GetPage(name: forgetScreen, page: () =>  ForgetPasswordScreen()),
-    GetPage(name: otpVerificationScreen, page: () =>  OtpVeryScreen()),
+    GetPage(name: forgetScreen, page: () => ForgetPasswordScreen()),
+    GetPage(
+        name: otpVerificationScreen,
+        page: () {
+          final String email = Get.arguments?['email'] ?? '';
+          return OtpVeryScreen(email: email);
+        }),
+    // GetPage(
+    //     name: otpVerificationScreen,
+    //     page: () => OtpVeryScreen(
+    //           email: "",
+    //         )),
     GetPage(name: resetPassScreen, page: () => ResetPasswordScreen()),
     GetPage(name: profileScreen, page: () => ProfileScreen()),
     GetPage(name: editProfileScreen, page: () => EditProfile()),
@@ -87,16 +96,16 @@ class AppRoute {
     //user route page
 
     //admin route page
-    GetPage(name: adminHomeScreen, page: ()=>AdminHomeScreen()),
-    GetPage(name: adminBusinessScreen, page: ()=>BusinessScreen()),
-    GetPage(name: adminServiceScreen, page: ()=>ServiceScreen()),
-    GetPage(name: adminServiceDetailsScreen, page: ()=>ServiceDetailsScreen()),
-    GetPage(name: servicePortfolioScreen, page: ()=>PortfolioScreen()),
-    GetPage(name: serviceSpecialistScreen, page: ()=>SpecialistScreen()),
-    GetPage(name: serviceAboutScreen, page: ()=>AboutScreen()),
-    GetPage(name: serviceAboutDetailsScreen, page: ()=>AboutDetailsScreen()),
-    GetPage(name: bookingScreen, page: ()=>BookingScreen()),
-    GetPage(name: bookingDetailsScreen, page: ()=>BookingDetailsScreen()),
-
+    GetPage(name: adminHomeScreen, page: () => AdminHomeScreen()),
+    GetPage(name: adminBusinessScreen, page: () => BusinessScreen()),
+    GetPage(name: adminServiceScreen, page: () => ServiceScreen()),
+    GetPage(
+        name: adminServiceDetailsScreen, page: () => ServiceDetailsScreen()),
+    GetPage(name: servicePortfolioScreen, page: () => PortfolioScreen()),
+    GetPage(name: serviceSpecialistScreen, page: () => SpecialistScreen()),
+    GetPage(name: serviceAboutScreen, page: () => AboutScreen()),
+    GetPage(name: serviceAboutDetailsScreen, page: () => AboutDetailsScreen()),
+    GetPage(name: bookingScreen, page: () => BookingScreen()),
+    GetPage(name: bookingDetailsScreen, page: () => BookingDetailsScreen()),
   ];
 }

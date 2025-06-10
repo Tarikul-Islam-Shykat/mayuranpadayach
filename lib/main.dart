@@ -13,9 +13,8 @@ void main() async {
   configEasyLoading();
   await SharedPreferences.getInstance();
   Get.put(ThemeController());
-  runApp(DevicePreview(
-      enabled: true,
-      builder: (context)=>MyApp()),
+  runApp(
+    MyApp(),
   );
 }
 

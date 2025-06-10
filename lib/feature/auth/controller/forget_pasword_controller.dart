@@ -32,7 +32,9 @@ class ForgetPasswordController extends GetxController {
           var data = jsonDecode(response.body);
           if (data['success'] == true) {
             Get.snackbar("Success", "Email sent successfully");
-            Get.to(() => OtpVeryScreen());
+            Get.to(() => OtpVeryScreen(
+                  email: emailController.text.trim(),
+                ));
           } else {
             Get.snackbar("Error", "Something went wrong");
           }
@@ -64,7 +66,10 @@ class ForgetPasswordController extends GetxController {
         }
         if (kDebugMode) {
           print(
-            "Request Body: ${jsonEncode({'email': emailController.text.trim(), 'otp': int.parse(otpController.text.trim())})}",
+            "Request Body: ${jsonEncode({
+                  'email': emailController.text.trim(),
+                  'otp': int.parse(otpController.text.trim())
+                })}",
           );
         }
 
