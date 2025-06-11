@@ -8,9 +8,9 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geocoding/geocoding.dart';
 
-import '../const/app_colors.dart';
-import '../global_widegts/loading_screen.dart';
-import '../style/global_text_style.dart';
+import '../../const/app_colors.dart';
+import '../../global_widegts/loading_screen.dart';
+import '../../style/global_text_style.dart';
 
 class LocationResult {
   final double latitude;

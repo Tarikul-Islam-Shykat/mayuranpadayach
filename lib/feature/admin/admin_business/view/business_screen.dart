@@ -9,7 +9,9 @@ import '../../../../core/const/app_colors.dart';
 import '../../../../core/const/image_path.dart';
 import '../../../../core/global_widegts/app_network_image.dart';
 import '../../../../core/global_widegts/select_image_option.dart';
-import '../../../../core/services_class/map.dart';
+import '../../../../core/services_class/network_service/image_adding_controller.dart';
+import '../../../../core/services_class/network_service/map.dart';
+import '../../../../core/services_class/network_service/pop_up_adding_image.dart';
 import '../../../auth/widget/custom_booton_widget.dart';
 import '../../../auth/widget/custome_dropdown.dart';
 import '../../../auth/widget/text_field_widget.dart';
@@ -19,6 +21,7 @@ import '../../admin_service/controller/service_controller.dart';
 class BusinessScreen extends StatelessWidget {
    BusinessScreen({super.key});
   final AddBusinessController controller = Get.put(AddBusinessController());
+  final GalleryController imageController = Get.put(GalleryController());
 
   @override
   Widget build(BuildContext context) {
@@ -260,7 +263,25 @@ class BusinessScreen extends StatelessWidget {
               height: 5,
             ),
             InkWell(
-              onTap: () {},
+              onTap: () async {
+                final result = await Get.to<LocationResult>(() => MapPage(),);
+                if (result != null) {
+                  controller.long = result.longitude.toString();
+                  controller.lat = result.latitude.toString();
+                  controller.locationName = result.locationName.toString();
+
+                  log('Location Picked: 1');
+                  log('Latitude: ${result.latitude}');
+                  log('Longitude: ${result.longitude}');
+                  log(
+                    'Location Name: ${result.locationName ?? "Unknown"}',
+                  );
+                } else {
+                  log(
+                    'User canceled location selection.',
+                  );
+                }
+              },
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 10),
                 height: 55,
@@ -273,13 +294,14 @@ class BusinessScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text(
-                      "Enter Location",
-                      style: GoogleFonts.poppins(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 14.sp,
-                          color: AppColors.grayColor),
-                    ),
+                     controller.locationName != null?Text(controller.locationName): Text(
+                          "Enter Location",
+                          style: GoogleFonts.poppins(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 14.sp,
+                              color: AppColors.grayColor),
+                        ),
+
                 GestureDetector(
                   onTap: () async {
                     final result = await Get.to<LocationResult>(() => MapPage(),);
@@ -300,6 +322,7 @@ class BusinessScreen extends StatelessWidget {
                       );
                     }
                   },
+                  child: Icon(Icons.location_searching, color: AppColors.grayColor),
                 ),
 
                   ],
@@ -323,8 +346,7 @@ class BusinessScreen extends StatelessWidget {
               height: 5,
             ),
             InkWell(
-              onTap: () => SelectPicker.showImageDialog(
-                  context: context, onCamera: () {}, onGallery: () {}),
+              onTap: () => showGalleryPopup(),
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 10),
                 height: 55,
@@ -339,13 +361,29 @@ class BusinessScreen extends StatelessWidget {
                     SizedBox(
                       width: 5,
                     ),
-                    Text(
-                      "Upload image",
-                      style: GoogleFonts.poppins(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 14.sp,
-                          color: AppColors.grayColor),
-                    ),
+                    Obx(() {
+                      if (imageController.galleryImages.isEmpty) {
+                        return Center(child: Text("No images selected"));
+                      }
+                      return GridView.builder(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        scrollDirection: Axis.horizontal,
+                        padding: EdgeInsets.all(10),
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 3, // প্রতি row-তে ৩টা করে ছবি
+                          crossAxisSpacing: 10,
+                          mainAxisSpacing: 10,
+                        ),
+                        itemCount: imageController.galleryImages.length,
+                        itemBuilder: (context, index) {
+                          return Image.file(
+                            imageController.galleryImages[index],
+                            fit: BoxFit.cover,
+                          );
+                        },
+                      );
+                    }),
                   ],
                 ),
               ),

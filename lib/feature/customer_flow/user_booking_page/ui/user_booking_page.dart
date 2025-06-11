@@ -2,8 +2,11 @@
 // booking_screen.dart
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:prettyrini/feature/customer_flow/serivce_details/model/studio_model.dart';
 
-import '../../../admin/admin_booking/controller/booking_controller.dart';
+import '../controller/user_booking_controller.dart';
+
+
 
 class UserBookingScreen extends StatelessWidget {
   const UserBookingScreen({Key? key}) : super(key: key);
