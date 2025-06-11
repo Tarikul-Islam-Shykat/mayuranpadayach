@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:prettyrini/core/services_class/local_service/local_data.dart';
+import 'package:prettyrini/route/route.dart';
 import '../../../core/global_widegts/app_snackbar.dart';
 import '../../../core/network_caller/endpoints.dart';
 import '../../../core/network_caller/network_config.dart';
@@ -44,12 +45,17 @@ class LoginController extends GetxController {
       }
 
       if (response != null && response['success'] == true) {
-
         var  localService = await LocalService();
       await   localService.setToken( response["data"]["token"]);
       await   localService.setRole( response["data"]["role"]);
       var token = await localService.getToken();
-      debugPrint("user token --- $token");
+        String role = await localService.getRole();
+      if(role == RoleType.PROFESSIONAL.name){
+         Get.offAllNamed(AppRoute.adminBusinessScreen);
+      }else if(role == RoleType.USER.name){
+         Get.offNamed(AppRoute.profileScreen);
+      }
+
         AppSnackbar.show(message: "Login Successful", isSuccess: true);
         return true;
       } else {
@@ -64,10 +70,13 @@ class LoginController extends GetxController {
       isLoginLoading.value= false;
     }
   }
-
-
-
-
-
+  @override
+  void dispose() {
+    super.dispose();
+    emailTEController.dispose();
+    passwordTEController.dispose();
+  }
 
 }
+
+enum RoleType {ADMIN, PROFESSIONAL, USER}

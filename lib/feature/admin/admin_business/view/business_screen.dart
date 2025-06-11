@@ -1,11 +1,15 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:prettyrini/feature/admin/admin_business/controller/add_business_controller.dart';
 import '../../../../core/const/app_colors.dart';
 import '../../../../core/const/image_path.dart';
 import '../../../../core/global_widegts/app_network_image.dart';
 import '../../../../core/global_widegts/select_image_option.dart';
+import '../../../../core/services_class/map.dart';
 import '../../../auth/widget/custom_booton_widget.dart';
 import '../../../auth/widget/custome_dropdown.dart';
 import '../../../auth/widget/text_field_widget.dart';
@@ -14,7 +18,7 @@ import '../../admin_service/controller/service_controller.dart';
 
 class BusinessScreen extends StatelessWidget {
    BusinessScreen({super.key});
-  final ServiceController controller = Get.put(ServiceController());
+  final AddBusinessController controller = Get.put(AddBusinessController());
 
   @override
   Widget build(BuildContext context) {
@@ -179,7 +183,7 @@ class BusinessScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  "Edit Business",
+                  "Add Business",
                   style: GoogleFonts.poppins(
                     fontWeight: FontWeight.w500,
                     fontSize: 20.sp,
@@ -195,7 +199,7 @@ class BusinessScreen extends StatelessWidget {
             SizedBox(
               height: 10.h,
             ),
-            Text("Edit Business Name",
+            Text("Business Name",
               style: GoogleFonts.poppins(
                   fontSize: 14.sp,
                   fontWeight: FontWeight.w500,
@@ -203,12 +207,13 @@ class BusinessScreen extends StatelessWidget {
             CustomAuthField(
                 radiusValue: 10,
                 radiusValue2: 10,
-                controller: controller.businessNameTEC.value, hintText: "Zero Hair Studio"),
+                controller: controller.businessNameTEC,
+                hintText: "Zero Hair Studio"),
             SizedBox(
               height: 10.h,
             ),
             Text(
-              "Edit Category",
+              "Category",
               style: GoogleFonts.poppins(
                   fontSize: 14.sp,
                   fontWeight: FontWeight.w500,
@@ -226,7 +231,7 @@ class BusinessScreen extends StatelessWidget {
               height: 10.h,
             ),
             Text(
-              "Edit Sub Category",
+              "Sub Category",
               style: GoogleFonts.poppins(
                   fontSize: 14.sp,
                   fontWeight: FontWeight.w500,
@@ -245,7 +250,7 @@ class BusinessScreen extends StatelessWidget {
             ),
 
             Text(
-              "Edit Location",
+              "Location",
               style: GoogleFonts.poppins(
                   fontSize: 14.sp,
                   fontWeight: FontWeight.w500,
@@ -275,7 +280,27 @@ class BusinessScreen extends StatelessWidget {
                           fontSize: 14.sp,
                           color: AppColors.grayColor),
                     ),
-                    Icon(Icons.my_location_sharp),
+                GestureDetector(
+                  onTap: () async {
+                    final result = await Get.to<LocationResult>(() => MapPage(),);
+                    if (result != null) {
+                      controller.long = result.longitude.toString();
+                      controller.lat = result.latitude.toString();
+                      controller.locationName = result.locationName.toString();
+
+                      log('Location Picked: 1');
+                      log('Latitude: ${result.latitude}');
+                      log('Longitude: ${result.longitude}');
+                      log(
+                        'Location Name: ${result.locationName ?? "Unknown"}',
+                      );
+                    } else {
+                      log(
+                        'User canceled location selection.',
+                      );
+                    }
+                  },
+                ),
 
                   ],
                 ),
