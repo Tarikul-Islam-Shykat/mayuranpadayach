@@ -1,7 +1,7 @@
 // lib/data/dummy_data.dart
 
 import 'package:prettyrini/core/const/image_path.dart';
-import 'package:prettyrini/feature/user/serivce_details/model/studio_model.dart';
+import 'package:prettyrini/feature/customer_flow/serivce_details/model/studio_model.dart';
 
 class DummyData {
   static List<StudioModel> getStudioList() {
@@ -15,7 +15,8 @@ class DummyData {
         totalReviews: 120,
         rating: 4.9,
         discountPercentage: 20,
-        basicInfo: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.",
+        basicInfo:
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.",
         portfolioImages: [
           ImagePath.splashLogo,
           ImagePath.splashLogo,
@@ -71,7 +72,8 @@ class DummyData {
         writtenReviews: [
           WrittenReview(
             id: "r1",
-            comment: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.",
+            comment:
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.",
             rating: 5.0,
             userName: "Dianne Russell",
             reviewTime: DateTime(2024, 3, 26),
@@ -79,7 +81,8 @@ class DummyData {
           ),
           WrittenReview(
             id: "r2",
-            comment: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.",
+            comment:
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.",
             rating: 4.0,
             userName: "Annette Black",
             reviewTime: DateTime(2024, 3, 26),
@@ -87,7 +90,8 @@ class DummyData {
           ),
           WrittenReview(
             id: "r3",
-            comment: "Great service and professional staff. Highly recommend this place for anyone looking for quality hair styling.",
+            comment:
+                "Great service and professional staff. Highly recommend this place for anyone looking for quality hair styling.",
             rating: 5.0,
             userName: "Robert Fox",
             reviewTime: DateTime(2024, 3, 25),
@@ -95,7 +99,8 @@ class DummyData {
           ),
           WrittenReview(
             id: "r4",
-            comment: "Amazing experience! The staff was very friendly and the results exceeded my expectations.",
+            comment:
+                "Amazing experience! The staff was very friendly and the results exceeded my expectations.",
             rating: 4.5,
             userName: "Jenny Wilson",
             reviewTime: DateTime(2024, 3, 24),
@@ -143,7 +148,8 @@ class DummyData {
         totalReviews: 85,
         rating: 4.7,
         discountPercentage: 15,
-        basicInfo: "Professional electrical services for residential and commercial properties. Licensed and insured electricians with over 10 years of experience.",
+        basicInfo:
+            "Professional electrical services for residential and commercial properties. Licensed and insured electricians with over 10 years of experience.",
         portfolioImages: [
           ImagePath.splashLogo,
           ImagePath.splashLogo,
@@ -182,7 +188,8 @@ class DummyData {
         writtenReviews: [
           WrittenReview(
             id: "r5",
-            comment: "Excellent electrical work! Professional and reliable service. Fixed my electrical issues quickly.",
+            comment:
+                "Excellent electrical work! Professional and reliable service. Fixed my electrical issues quickly.",
             rating: 5.0,
             userName: "Tom Anderson",
             reviewTime: DateTime(2024, 3, 20),

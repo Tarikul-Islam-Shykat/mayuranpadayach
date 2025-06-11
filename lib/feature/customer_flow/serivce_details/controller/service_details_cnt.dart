@@ -1,9 +1,8 @@
 // lib/controllers/studio_controller.dart
 
 import 'package:get/get.dart';
-import 'package:prettyrini/feature/user/serivce_details/model/dummy_data.dart';
-import 'package:prettyrini/feature/user/serivce_details/model/studio_model.dart';
-
+import 'package:prettyrini/feature/customer_flow/serivce_details/model/dummy_data.dart';
+import 'package:prettyrini/feature/customer_flow/serivce_details/model/studio_model.dart';
 
 class StudioController extends GetxController {
   // Observable variables
@@ -82,7 +81,8 @@ class StudioController extends GetxController {
   // Calculate average rating from written reviews
   double get averageRating {
     if (currentReviews.isEmpty) return 0.0;
-    double total = currentReviews.fold(0.0, (sum, review) => sum + review.rating);
+    double total =
+        currentReviews.fold(0.0, (sum, review) => sum + review.rating);
     return total / currentReviews.length;
   }
 
@@ -90,7 +90,8 @@ class StudioController extends GetxController {
   String get formattedAddress => currentStudio?.contactInfo.address ?? '';
 
   // Get formatted rating
-  String get formattedRating => currentStudio?.rating.toStringAsFixed(1) ?? '0.0';
+  String get formattedRating =>
+      currentStudio?.rating.toStringAsFixed(1) ?? '0.0';
 
   // Get formatted review count
   String get formattedReviewCount => '${currentStudio?.totalReviews ?? 0}+';
@@ -98,18 +99,20 @@ class StudioController extends GetxController {
   // Search studios by name or category
   List<StudioModel> searchStudios(String query) {
     if (query.isEmpty) return studioList;
-    
-    return studioList.where((studio) =>
-      studio.name.toLowerCase().contains(query.toLowerCase()) ||
-      studio.category.toLowerCase().contains(query.toLowerCase())
-    ).toList();
+
+    return studioList
+        .where((studio) =>
+            studio.name.toLowerCase().contains(query.toLowerCase()) ||
+            studio.category.toLowerCase().contains(query.toLowerCase()))
+        .toList();
   }
 
   // Filter studios by category
   List<StudioModel> filterByCategory(String category) {
-    return studioList.where((studio) =>
-      studio.category.toLowerCase() == category.toLowerCase()
-    ).toList();
+    return studioList
+        .where(
+            (studio) => studio.category.toLowerCase() == category.toLowerCase())
+        .toList();
   }
 
   // Get studios within a certain rating range

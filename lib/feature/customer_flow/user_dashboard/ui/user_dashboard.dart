@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:prettyrini/feature/user/serivce_details/model/studio_model.dart';
-import 'package:prettyrini/feature/user/user_dashboard/controller/user_dashboard_contrller.dart';
+import 'package:prettyrini/feature/customer_flow/serivce_details/model/studio_model.dart';
+import 'package:prettyrini/feature/customer_flow/user_dashboard/controller/user_dashboard_contrller.dart';
 
 class UserDashboard extends StatelessWidget {
   const UserDashboard({Key? key}) : super(key: key);
@@ -13,20 +13,20 @@ class UserDashboard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final UserDashboardContrller controller = Get.put(UserDashboardContrller());
-    
+
     return Scaffold(
       backgroundColor: Colors.grey[50],
       body: SafeArea(
         child: Obx(() => IndexedStack(
-          index: controller.currentNavIndex.value,
-          children: [
-            _buildHomeContent(controller),
-            _buildDummyPage("Search", Icons.search),
-            _buildDummyPage("Bookings", Icons.calendar_today),
-            _buildDummyPage("Messages", Icons.message),
-            _buildDummyPage("Profile", Icons.person),
-          ],
-        )),
+              index: controller.currentNavIndex.value,
+              children: [
+                _buildHomeContent(controller),
+                _buildDummyPage("Search", Icons.search),
+                _buildDummyPage("Bookings", Icons.calendar_today),
+                _buildDummyPage("Messages", Icons.message),
+                _buildDummyPage("Profile", Icons.person),
+              ],
+            )),
       ),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
@@ -42,30 +42,31 @@ class UserDashboard extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8),
             child: Obx(() => GNav(
-              rippleColor: const Color(0xFF8B5CF6).withOpacity(0.1),
-              hoverColor: const Color(0xFF8B5CF6).withOpacity(0.1),
-              gap: 8,
-              activeColor: Colors.white,
-              iconSize: 24,
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-              duration: const Duration(milliseconds: 400),
-              tabBackgroundColor: const Color(0xFF8B5CF6),
-              color: Colors.grey[600],
-              selectedIndex: controller.currentNavIndex.value,
-              onTabChange: controller.onBottomNavTapped,
-              textStyle: GoogleFonts.poppins(
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-                color: Colors.white,
-              ),
-              tabs: const [
-                GButton(icon: Icons.home, text: 'Home'),
-                GButton(icon: Icons.search, text: 'Search'),
-                GButton(icon: Icons.calendar_today, text: 'Bookings'),
-                GButton(icon: Icons.message, text: 'Messages'),
-                GButton(icon: Icons.person, text: 'Profile'),
-              ],
-            )),
+                  rippleColor: const Color(0xFF8B5CF6).withOpacity(0.1),
+                  hoverColor: const Color(0xFF8B5CF6).withOpacity(0.1),
+                  gap: 8,
+                  activeColor: Colors.white,
+                  iconSize: 24,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                  duration: const Duration(milliseconds: 400),
+                  tabBackgroundColor: const Color(0xFF8B5CF6),
+                  color: Colors.grey[600],
+                  selectedIndex: controller.currentNavIndex.value,
+                  onTabChange: controller.onBottomNavTapped,
+                  textStyle: GoogleFonts.poppins(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.white,
+                  ),
+                  tabs: const [
+                    GButton(icon: Icons.home, text: 'Home'),
+                    GButton(icon: Icons.search, text: 'Search'),
+                    GButton(icon: Icons.calendar_today, text: 'Bookings'),
+                    GButton(icon: Icons.message, text: 'Messages'),
+                    GButton(icon: Icons.person, text: 'Profile'),
+                  ],
+                )),
           ),
         ),
       ),
@@ -154,7 +155,8 @@ class UserDashboard extends StatelessWidget {
             ),
             prefixIcon: const Icon(Icons.search, color: Colors.grey),
             border: InputBorder.none,
-            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
           ),
           style: GoogleFonts.poppins(fontSize: 14),
         ),
@@ -178,49 +180,51 @@ class UserDashboard extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           Obx(() => Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: List.generate(controller.categories.length, (index) {
-              final category = controller.categories[index];
-              final isSelected = controller.selectedCategoryIndex.value == index;
-              
-              return GestureDetector(
-                onTap: () => controller.onCategorySelected(index),
-                child: Container(
-                  width: 50,
-                  height: 70,
-                  decoration: BoxDecoration(
-                    color: isSelected ? const Color(0xFF8B5CF6) : Colors.white,
-                    borderRadius: BorderRadius.circular(12),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.05),
-                        blurRadius: 10,
-                        offset: const Offset(0, 2),
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: List.generate(controller.categories.length, (index) {
+                  final category = controller.categories[index];
+                  final isSelected =
+                      controller.selectedCategoryIndex.value == index;
+
+                  return GestureDetector(
+                    onTap: () => controller.onCategorySelected(index),
+                    child: Container(
+                      width: 50,
+                      height: 70,
+                      decoration: BoxDecoration(
+                        color:
+                            isSelected ? const Color(0xFF8B5CF6) : Colors.white,
+                        borderRadius: BorderRadius.circular(12),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.05),
+                            blurRadius: 10,
+                            offset: const Offset(0, 2),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        category['icon']!,
-                        style: const TextStyle(fontSize: 20),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            category['icon']!,
+                            style: const TextStyle(fontSize: 20),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            category['name']!,
+                            style: GoogleFonts.poppins(
+                              fontSize: 10,
+                              fontWeight: FontWeight.w500,
+                              color: isSelected ? Colors.white : Colors.black87,
+                            ),
+                          ),
+                        ],
                       ),
-                      const SizedBox(height: 4),
-                      Text(
-                        category['name']!,
-                        style: GoogleFonts.poppins(
-                          fontSize: 10,
-                          fontWeight: FontWeight.w500,
-                          color: isSelected ? Colors.white : Colors.black87,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              );
-            }),
-          )),
+                    ),
+                  );
+                }),
+              )),
         ],
       ),
     );
@@ -274,52 +278,55 @@ class UserDashboard extends StatelessWidget {
     return SizedBox(
       height: 180,
       child: Obx(() => AnimatedSwitcher(
-        duration: const Duration(milliseconds: 500),
-        transitionBuilder: (Widget child, Animation<double> animation) {
-          return SlideTransition(
-            position: Tween<Offset>(
-              begin: const Offset(1.0, 0.0),
-              end: Offset.zero,
-            ).animate(animation),
-            child: child,
-          );
-        },
-        child: Container(
-          key: ValueKey(controller.currentCarouselIndex.value),
-          margin: const EdgeInsets.symmetric(horizontal: 16),
-          child: _buildSpecialOfferCard(
-            controller.filteredStudios[controller.currentCarouselIndex.value],
-            controller,
-          ),
-        ),
-      )),
+            duration: const Duration(milliseconds: 500),
+            transitionBuilder: (Widget child, Animation<double> animation) {
+              return SlideTransition(
+                position: Tween<Offset>(
+                  begin: const Offset(1.0, 0.0),
+                  end: Offset.zero,
+                ).animate(animation),
+                child: child,
+              );
+            },
+            child: Container(
+              key: ValueKey(controller.currentCarouselIndex.value),
+              margin: const EdgeInsets.symmetric(horizontal: 16),
+              child: _buildSpecialOfferCard(
+                controller
+                    .filteredStudios[controller.currentCarouselIndex.value],
+                controller,
+              ),
+            ),
+          )),
     );
   }
 
   Widget _buildCarouselIndicators(UserDashboardContrller controller) {
     return Obx(() => Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: controller.filteredStudios.asMap().entries.map((entry) {
-        return GestureDetector(
-          onTap: () => controller.onCarouselPageChanged(entry.key),
-          child: AnimatedContainer(
-            duration: const Duration(milliseconds: 300),
-            width: controller.currentCarouselIndex.value == entry.key ? 24 : 8,
-            height: 8,
-            margin: const EdgeInsets.symmetric(horizontal: 4),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(4),
-              color: controller.currentCarouselIndex.value == entry.key
-                  ? const Color(0xFF8B5CF6)
-                  : Colors.grey[300],
-            ),
-          ),
-        );
-      }).toList(),
-    ));
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: controller.filteredStudios.asMap().entries.map((entry) {
+            return GestureDetector(
+              onTap: () => controller.onCarouselPageChanged(entry.key),
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 300),
+                width:
+                    controller.currentCarouselIndex.value == entry.key ? 24 : 8,
+                height: 8,
+                margin: const EdgeInsets.symmetric(horizontal: 4),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(4),
+                  color: controller.currentCarouselIndex.value == entry.key
+                      ? const Color(0xFF8B5CF6)
+                      : Colors.grey[300],
+                ),
+              ),
+            );
+          }).toList(),
+        ));
   }
 
-  Widget _buildSpecialOfferCard(StudioModel studio, UserDashboardContrller controller) {
+  Widget _buildSpecialOfferCard(
+      StudioModel studio, UserDashboardContrller controller) {
     return GestureDetector(
       onTap: () => controller.onStudioTapped(studio),
       child: Container(
@@ -458,20 +465,21 @@ class UserDashboard extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           Obx(() => ListView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: controller.filteredStudios.length,
-            itemBuilder: (context, index) {
-              final studio = controller.filteredStudios[index];
-              return _buildProfessionalCard(studio, controller);
-            },
-          )),
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: controller.filteredStudios.length,
+                itemBuilder: (context, index) {
+                  final studio = controller.filteredStudios[index];
+                  return _buildProfessionalCard(studio, controller);
+                },
+              )),
         ],
       ),
     );
   }
 
-  Widget _buildProfessionalCard(StudioModel studio, UserDashboardContrller controller) {
+  Widget _buildProfessionalCard(
+      StudioModel studio, UserDashboardContrller controller) {
     return GestureDetector(
       onTap: () => controller.onStudioTapped(studio),
       child: Container(

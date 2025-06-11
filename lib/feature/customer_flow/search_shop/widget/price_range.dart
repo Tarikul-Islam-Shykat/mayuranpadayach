@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:prettyrini/feature/user/search_shop/controller/filter_controller.dart';
+import 'package:prettyrini/feature/customer_flow/search_shop/controller/filter_controller.dart';
 
 class PriceRangeWidget extends StatelessWidget {
   final FilterController controller;
 
-  const PriceRangeWidget({Key? key, required this.controller}) : super(key: key);
+  const PriceRangeWidget({Key? key, required this.controller})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -35,17 +36,18 @@ class PriceRangeWidget extends StatelessWidget {
         SizedBox(height: 20),
         // Range Slider
         Obx(() => RangeSlider(
-          values: RangeValues(controller.minPrice.value, controller.maxPrice.value),
-          min: 0,
-          max: 1000,
-          divisions: 100,
-          activeColor: Colors.purple,
-          inactiveColor: Colors.grey.shade300,
-          onChanged: (values) {
-            controller.updateMinPrice(values.start);
-            controller.updateMaxPrice(values.end);
-          },
-        )),
+              values: RangeValues(
+                  controller.minPrice.value, controller.maxPrice.value),
+              min: 0,
+              max: 1000,
+              divisions: 100,
+              activeColor: Colors.purple,
+              inactiveColor: Colors.grey.shade300,
+              onChanged: (values) {
+                controller.updateMinPrice(values.start);
+                controller.updateMaxPrice(values.end);
+              },
+            )),
       ],
     );
   }
@@ -56,7 +58,7 @@ class PriceRangeWidget extends StatelessWidget {
     required Function(double) onChanged,
   }) {
     final TextEditingController textController = TextEditingController();
-    
+
     return Obx(() {
       textController.text = '\$${value.value.toInt()}';
       return Container(

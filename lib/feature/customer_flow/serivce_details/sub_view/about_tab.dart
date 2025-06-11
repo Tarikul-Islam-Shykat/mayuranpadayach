@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:prettyrini/feature/user/serivce_details/controller/service_details_cnt.dart';
+import 'package:prettyrini/feature/customer_flow/serivce_details/controller/service_details_cnt.dart';
 
 class AboutTab extends StatelessWidget {
   const AboutTab({Key? key}) : super(key: key);
@@ -12,52 +12,53 @@ class AboutTab extends StatelessWidget {
     final StudioController controller = Get.find<StudioController>();
 
     return Obx(() => Container(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Basic Info Section
-          _buildSectionHeader('Basic Info'),
-          const SizedBox(height: 12),
-          Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Colors.grey.shade50,
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: Colors.grey.shade200),
-            ),
-            child: Text(
-              controller.currentStudio?.basicInfo ?? 'No information available',
-              style: TextStyle(
-                fontSize: 14,
-                color: Colors.grey.shade700,
-                height: 1.5,
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Basic Info Section
+              _buildSectionHeader('Basic Info'),
+              const SizedBox(height: 12),
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade50,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: Colors.grey.shade200),
+                ),
+                child: Text(
+                  controller.currentStudio?.basicInfo ??
+                      'No information available',
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Colors.grey.shade700,
+                    height: 1.5,
+                  ),
+                ),
               ),
-            ),
+              const SizedBox(height: 24),
+
+              // Specialist Section
+              _buildExpandableSection(
+                'Specialist',
+                Icons.keyboard_arrow_down,
+                _buildSpecialistContent(),
+              ),
+              const SizedBox(height: 16),
+
+              // Contact Section
+              _buildExpandableSection(
+                'Contact',
+                Icons.keyboard_arrow_down,
+                _buildContactContent(),
+              ),
+              const SizedBox(height: 24),
+
+              // Additional Info
+              _buildAdditionalInfo(),
+            ],
           ),
-          const SizedBox(height: 24),
-          
-          // Specialist Section
-          _buildExpandableSection(
-            'Specialist',
-            Icons.keyboard_arrow_down,
-            _buildSpecialistContent(),
-          ),
-          const SizedBox(height: 16),
-          
-          // Contact Section
-          _buildExpandableSection(
-            'Contact',
-            Icons.keyboard_arrow_down,
-            _buildContactContent(),
-          ),
-          const SizedBox(height: 24),
-          
-          // Additional Info
-          _buildAdditionalInfo(),
-        ],
-      ),
-    ));
+        ));
   }
 
   Widget _buildSectionHeader(String title) {
@@ -97,7 +98,7 @@ class AboutTab extends StatelessWidget {
 
   Widget _buildSpecialistContent() {
     final StudioController controller = Get.find<StudioController>();
-    
+
     return Column(
       children: controller.currentSpecialists.map((specialist) {
         return Container(
@@ -123,7 +124,7 @@ class AboutTab extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 12),
-              
+
               // Specialist info
               Expanded(
                 child: Column(
@@ -147,7 +148,7 @@ class AboutTab extends StatelessWidget {
                   ],
                 ),
               ),
-              
+
               // Rating
               Row(
                 children: [
@@ -172,11 +173,11 @@ class AboutTab extends StatelessWidget {
   Widget _buildContactContent() {
     final StudioController controller = Get.find<StudioController>();
     final contactInfo = controller.currentContactInfo;
-    
+
     if (contactInfo == null) {
       return const Text('No contact information available');
     }
-    
+
     return Column(
       children: [
         _buildContactItem(Icons.phone, 'Phone', contactInfo.phone),
@@ -227,7 +228,7 @@ class AboutTab extends StatelessWidget {
 
   Widget _buildAdditionalInfo() {
     final StudioController controller = Get.find<StudioController>();
-    
+
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -240,7 +241,8 @@ class AboutTab extends StatelessWidget {
         children: [
           Row(
             children: [
-              const Icon(Icons.info_outline, color: Color(0xFF6B46C1), size: 20),
+              const Icon(Icons.info_outline,
+                  color: Color(0xFF6B46C1), size: 20),
               const SizedBox(width: 8),
               const Text(
                 'Quick Info',
@@ -255,8 +257,10 @@ class AboutTab extends StatelessWidget {
           const SizedBox(height: 12),
           _buildQuickInfoRow('Total Reviews', controller.formattedReviewCount),
           _buildQuickInfoRow('Average Rating', controller.formattedRating),
-          _buildQuickInfoRow('Category', controller.currentStudio?.category ?? 'N/A'),
-          _buildQuickInfoRow('Discount Available', '${controller.currentStudio?.discountPercentage ?? 0}%'),
+          _buildQuickInfoRow(
+              'Category', controller.currentStudio?.category ?? 'N/A'),
+          _buildQuickInfoRow('Discount Available',
+              '${controller.currentStudio?.discountPercentage ?? 0}%'),
         ],
       ),
     );

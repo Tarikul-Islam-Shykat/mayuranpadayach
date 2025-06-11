@@ -2,8 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:prettyrini/feature/user/serivce_details/model/studio_model.dart';
-import 'package:prettyrini/feature/user/user_fav/controller/user_fav_controller.dart';
+import 'package:prettyrini/feature/customer_flow/serivce_details/model/studio_model.dart';
+import 'package:prettyrini/feature/customer_flow/user_fav/controller/user_fav_controller.dart';
 
 class FavoritesPage extends StatelessWidget {
   const FavoritesPage({Key? key}) : super(key: key);
@@ -196,7 +196,7 @@ class FavoriteStudioCard extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 16),
-              
+
               // Studio Info
               Expanded(
                 child: Column(
@@ -241,7 +241,7 @@ class FavoriteStudioCard extends StatelessWidget {
                   ],
                 ),
               ),
-              
+
               // Rating and Favorite Button
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,

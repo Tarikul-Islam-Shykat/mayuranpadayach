@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:prettyrini/feature/user/search_shop/ui/user_filter_page.dart';
+import 'package:prettyrini/feature/customer_flow/search_shop/ui/user_filter_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserSearchController extends GetxController {
   final TextEditingController searchTextController = TextEditingController();
   final RxList<String> recentSearches = <String>[].obs;
-  
+
   @override
   void onInit() {
     super.onInit();
@@ -21,20 +21,20 @@ class UserSearchController extends GetxController {
 
   Future<void> addToRecentSearches(String searchText) async {
     if (searchText.trim().isEmpty) return;
-    
+
     final prefs = await SharedPreferences.getInstance();
-    
+
     // Remove if already exists
     recentSearches.remove(searchText);
-    
+
     // Add to beginning
     recentSearches.insert(0, searchText);
-    
+
     // Keep only last 6 items
     if (recentSearches.length > 6) {
       recentSearches.removeRange(6, recentSearches.length);
     }
-    
+
     await prefs.setStringList('recent_searches', recentSearches);
     update();
   }

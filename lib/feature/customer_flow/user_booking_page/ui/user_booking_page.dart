@@ -1,9 +1,8 @@
-
 // booking_screen.dart
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:prettyrini/feature/user/serivce_details/model/studio_model.dart';
-import 'package:prettyrini/feature/user/user_booking_page/controller/user_booking_controller.dart';
+import 'package:prettyrini/feature/customer_flow/serivce_details/model/studio_model.dart';
+import 'package:prettyrini/feature/customer_flow/user_booking_page/controller/user_booking_controller.dart';
 
 class UserBookingScreen extends StatelessWidget {
   const UserBookingScreen({Key? key}) : super(key: key);
@@ -11,7 +10,7 @@ class UserBookingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final BookingController controller = Get.put(BookingController());
-    
+
     return Scaffold(
       backgroundColor: Colors.grey[50],
       appBar: AppBar(
@@ -59,18 +58,18 @@ class UserBookingScreen extends StatelessWidget {
         children: [
           // Pending Tab
           Obx(() => _buildBookingList(
-            controller.pendingBookings,
-            controller.isLoadingPending.value,
-            controller.refreshPendingBookings,
-            controller.navigateToBookingDetails,
-          )),
+                controller.pendingBookings,
+                controller.isLoadingPending.value,
+                controller.refreshPendingBookings,
+                controller.navigateToBookingDetails,
+              )),
           // Complete Tab
           Obx(() => _buildBookingList(
-            controller.completedBookings,
-            controller.isLoadingCompleted.value,
-            controller.refreshCompletedBookings,
-            controller.navigateToBookingDetails,
-          )),
+                controller.completedBookings,
+                controller.isLoadingCompleted.value,
+                controller.refreshCompletedBookings,
+                controller.navigateToBookingDetails,
+              )),
         ],
       ),
     );
@@ -170,8 +169,8 @@ class UserBookingScreen extends StatelessWidget {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(8),
                     child: Image.asset(
-                      studio.portfolioImages.isNotEmpty 
-                          ? studio.portfolioImages.first 
+                      studio.portfolioImages.isNotEmpty
+                          ? studio.portfolioImages.first
                           : 'assets/images/placeholder.png',
                       fit: BoxFit.cover,
                       errorBuilder: (context, error, stackTrace) {
@@ -188,7 +187,7 @@ class UserBookingScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: 16),
-                
+
                 // Studio Info
                 Expanded(
                   child: Column(
@@ -221,7 +220,7 @@ class UserBookingScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-                
+
                 // Rating and Arrow
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
@@ -261,5 +260,3 @@ class UserBookingScreen extends StatelessWidget {
     );
   }
 }
-
-

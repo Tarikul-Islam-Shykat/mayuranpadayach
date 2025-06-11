@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:developer';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:prettyrini/core/global_widegts/app_snackbar.dart';
 import 'package:prettyrini/core/network_caller/network_config.dart';

@@ -2,12 +2,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:prettyrini/feature/user/serivce_details/controller/service_details_cnt.dart';
-import 'package:prettyrini/feature/user/serivce_details/sub_view/about_tab.dart';
-import 'package:prettyrini/feature/user/serivce_details/sub_view/portfolio_tab.dart';
-import 'package:prettyrini/feature/user/serivce_details/sub_view/review_tab.dart';
-import 'package:prettyrini/feature/user/serivce_details/sub_view/service_tab.dart';
-
+import 'package:prettyrini/feature/customer_flow/serivce_details/controller/service_details_cnt.dart';
+import 'package:prettyrini/feature/customer_flow/serivce_details/sub_view/about_tab.dart'
+    show AboutTab;
+import 'package:prettyrini/feature/customer_flow/serivce_details/sub_view/portfolio_tab.dart';
+import 'package:prettyrini/feature/customer_flow/serivce_details/sub_view/review_tab.dart';
+import 'package:prettyrini/feature/customer_flow/serivce_details/sub_view/service_tab.dart';
 
 class StudioDetailPage extends StatelessWidget {
   final StudioController controller = Get.put(StudioController());
@@ -71,7 +71,8 @@ class StudioDetailPage extends StatelessWidget {
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            const Icon(Icons.location_on, color: Colors.red, size: 16),
+                            const Icon(Icons.location_on,
+                                color: Colors.red, size: 16),
                             const SizedBox(width: 4),
                             Text(
                               controller.formattedAddress,
@@ -121,22 +122,26 @@ class StudioDetailPage extends StatelessWidget {
                           const SizedBox(height: 4),
                           Row(
                             children: [
-                              const Icon(Icons.access_time, color: Colors.white, size: 16),
+                              const Icon(Icons.access_time,
+                                  color: Colors.white, size: 16),
                               const SizedBox(width: 4),
                               const Text(
                                 'Appointment is available 24 July in 12:00',
-                                style: TextStyle(color: Colors.white, fontSize: 12),
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 12),
                               ),
                               const Spacer(),
                               Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 12, vertical: 6),
                                 decoration: BoxDecoration(
                                   color: Colors.green,
                                   borderRadius: BorderRadius.circular(20),
                                 ),
                                 child: const Text(
                                   'Open',
-                                  style: TextStyle(color: Colors.white, fontSize: 12),
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 12),
                                 ),
                               ),
                             ],
@@ -160,7 +165,7 @@ class StudioDetailPage extends StatelessWidget {
                 ),
               ],
             ),
-            
+
             // Tab buttons
             SliverToBoxAdapter(
               child: Container(
@@ -203,7 +208,7 @@ class StudioDetailPage extends StatelessWidget {
                 ),
               ),
             ),
-            
+
             // Tab content
             SliverToBoxAdapter(
               child: AnimatedSwitcher(

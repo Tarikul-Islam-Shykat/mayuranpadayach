@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:prettyrini/feature/user/serivce_details/model/studio_model.dart';
+import 'package:prettyrini/feature/customer_flow/serivce_details/model/studio_model.dart';
 
 class UserBookingDetailsScreen extends StatelessWidget {
   final StudioModel studio;
-  
-  const UserBookingDetailsScreen({Key? key, required this.studio}) : super(key: key);
+
+  const UserBookingDetailsScreen({Key? key, required this.studio})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -84,9 +85,9 @@ class UserBookingDetailsScreen extends StatelessWidget {
                 ),
               ),
             ),
-            
+
             const SizedBox(height: 16),
-            
+
             // Add Specialist
             _buildSectionCard(
               title: 'Add Specialist',
@@ -108,8 +109,8 @@ class UserBookingDetailsScreen extends StatelessWidget {
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(25),
                         child: Image.asset(
-                          studio.specialists.isNotEmpty 
-                              ? studio.specialists.first.imagePath 
+                          studio.specialists.isNotEmpty
+                              ? studio.specialists.first.imagePath
                               : 'assets/images/placeholder.png',
                           fit: BoxFit.cover,
                           errorBuilder: (context, error, stackTrace) {
@@ -131,8 +132,8 @@ class UserBookingDetailsScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            studio.specialists.isNotEmpty 
-                                ? studio.specialists.first.name 
+                            studio.specialists.isNotEmpty
+                                ? studio.specialists.first.name
                                 : 'Ariane McCoy',
                             style: const TextStyle(
                               fontSize: 16,
@@ -142,8 +143,8 @@ class UserBookingDetailsScreen extends StatelessWidget {
                           ),
                           const SizedBox(height: 4),
                           Text(
-                            studio.specialists.isNotEmpty 
-                                ? studio.specialists.first.category 
+                            studio.specialists.isNotEmpty
+                                ? studio.specialists.first.category
                                 : 'Hair Stylist',
                             style: const TextStyle(
                               fontSize: 14,
@@ -157,9 +158,9 @@ class UserBookingDetailsScreen extends StatelessWidget {
                 ),
               ),
             ),
-            
+
             const SizedBox(height: 16),
-            
+
             // Date
             _buildSectionCard(
               title: 'Date',
@@ -190,25 +191,29 @@ class UserBookingDetailsScreen extends StatelessWidget {
                 ),
               ),
             ),
-            
+
             const SizedBox(height: 16),
-            
+
             // Choose Timeslot
             _buildSectionCard(
               title: 'Choose Timeslot',
               child: Column(
                 children: [
-                  _buildTimeSlotRow(['09:00 - 10:00', '10:00 - 11:00', '11:00 - 12:00']),
+                  _buildTimeSlotRow(
+                      ['09:00 - 10:00', '10:00 - 11:00', '11:00 - 12:00']),
                   const SizedBox(height: 12),
-                  _buildTimeSlotRow(['03:00 - 04:00', '04:00 - 05:00', '05:00 - 06:00']),
+                  _buildTimeSlotRow(
+                      ['03:00 - 04:00', '04:00 - 05:00', '05:00 - 06:00']),
                   const SizedBox(height: 12),
-                  _buildTimeSlotRow(['07:00 - 08:00', '08:00 - 09:00', '09:00 - 10:00'], selectedIndex: 1),
+                  _buildTimeSlotRow(
+                      ['07:00 - 08:00', '08:00 - 09:00', '09:00 - 10:00'],
+                      selectedIndex: 1),
                 ],
               ),
             ),
-            
+
             const SizedBox(height: 32),
-            
+
             // Mark As Complete Button
             SizedBox(
               width: double.infinity,
@@ -246,7 +251,7 @@ class UserBookingDetailsScreen extends StatelessWidget {
       ),
     );
   }
-  
+
   Widget _buildSectionCard({required String title, required Widget child}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -264,14 +269,14 @@ class UserBookingDetailsScreen extends StatelessWidget {
       ],
     );
   }
-  
+
   Widget _buildTimeSlotRow(List<String> times, {int selectedIndex = -1}) {
     return Row(
       children: times.asMap().entries.map((entry) {
         int index = entry.key;
         String time = entry.value;
         bool isSelected = index == selectedIndex;
-        
+
         return Expanded(
           child: Container(
             margin: EdgeInsets.only(
@@ -300,4 +305,3 @@ class UserBookingDetailsScreen extends StatelessWidget {
     );
   }
 }
-
