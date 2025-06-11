@@ -17,4 +17,5 @@ class Urls {
 
   //---------------------------Admin---------------------------------------
   static const String addBusiness = "$baseUrl/businesses/create";
+  static const String addBusinessCategory = "$baseUrl/categories";
 }
