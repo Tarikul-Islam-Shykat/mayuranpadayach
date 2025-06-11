@@ -2,9 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-
-import '../controller/service_details_cnt.dart';
+import 'package:prettyrini/feature/customer_flow/serivce_details/controller/service_details_cnt.dart';
 
 class ReviewTab extends StatelessWidget {
   const ReviewTab({Key? key}) : super(key: key);
@@ -14,72 +12,78 @@ class ReviewTab extends StatelessWidget {
     final StudioController controller = Get.find<StudioController>();
 
     return Obx(() => Container(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Review summary header
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'All Review (${controller.formattedReviewCount})',
-                style: const TextStyle(
+              // Review summary header
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'All Review (${controller.formattedReviewCount})',
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      const Icon(Icons.star, color: Colors.amber, size: 20),
+                      const SizedBox(width: 4),
+                      Text(
+                        controller.formattedRating,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20),
+
+              // Rating breakdown
+              if (controller.currentReviewSummary != null) ...[
+                _buildRatingBar(
+                    5, controller.currentReviewSummary!.fiveStarPercentage),
+                _buildRatingBar(
+                    4, controller.currentReviewSummary!.fourStarPercentage),
+                _buildRatingBar(
+                    3, controller.currentReviewSummary!.threeStarPercentage),
+                _buildRatingBar(
+                    2, controller.currentReviewSummary!.twoStarPercentage),
+                _buildRatingBar(
+                    1, controller.currentReviewSummary!.oneStarPercentage),
+                const SizedBox(height: 20),
+              ],
+
+              // What People Say section
+              const Text(
+                'What People Say\'s',
+                style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              Row(
-                children: [
-                  const Icon(Icons.star, color: Colors.amber, size: 20),
-                  const SizedBox(width: 4),
-                  Text(
-                    controller.formattedRating,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ],
+              const SizedBox(height: 16),
+
+              // Written reviews
+              ListView.separated(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: controller.currentReviews.length,
+                separatorBuilder: (context, index) =>
+                    const SizedBox(height: 16),
+                itemBuilder: (context, index) {
+                  final review = controller.currentReviews[index];
+                  return _buildReviewCard(review);
+                },
               ),
             ],
           ),
-          const SizedBox(height: 20),
-          
-          // Rating breakdown
-          if (controller.currentReviewSummary != null) ...[
-            _buildRatingBar(5, controller.currentReviewSummary!.fiveStarPercentage),
-            _buildRatingBar(4, controller.currentReviewSummary!.fourStarPercentage),
-            _buildRatingBar(3, controller.currentReviewSummary!.threeStarPercentage),
-            _buildRatingBar(2, controller.currentReviewSummary!.twoStarPercentage),
-            _buildRatingBar(1, controller.currentReviewSummary!.oneStarPercentage),
-            const SizedBox(height: 20),
-          ],
-          
-          // What People Say section
-          const Text(
-            'What People Say\'s',
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(height: 16),
-          
-          // Written reviews
-          ListView.separated(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: controller.currentReviews.length,
-            separatorBuilder: (context, index) => const SizedBox(height: 16),
-            itemBuilder: (context, index) {
-              final review = controller.currentReviews[index];
-              return _buildReviewCard(review);
-            },
-          ),
-        ],
-      ),
-    ));
+        ));
   }
 
   Widget _buildRatingBar(int stars, double percentage) {
@@ -152,7 +156,7 @@ class ReviewTab extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 12),
-              
+
               // User info
               Expanded(
                 child: Column(
@@ -175,7 +179,7 @@ class ReviewTab extends StatelessWidget {
                   ],
                 ),
               ),
-              
+
               // Rating
               Row(
                 children: [
@@ -193,7 +197,7 @@ class ReviewTab extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 12),
-          
+
           // Review comment
           Text(
             review.comment,
@@ -210,8 +214,18 @@ class ReviewTab extends StatelessWidget {
 
   String _getMonthName(int month) {
     const months = [
-      'January', 'February', 'March', 'April', 'May', 'June',
-      'July', 'August', 'September', 'October', 'November', 'December'
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December'
     ];
     return months[month - 1];
   }

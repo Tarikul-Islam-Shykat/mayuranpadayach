@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-
-
-import '../controller/filter_controller.dart';
-import '../widget/price_range.dart';
-
+import 'package:prettyrini/feature/customer_flow/search_shop/controller/filter_controller.dart';
+import 'package:prettyrini/feature/customer_flow/search_shop/widget/price_range.dart';
 
 class FilterPage extends StatelessWidget {
   final FilterController controller = Get.put(FilterController());
@@ -143,27 +139,27 @@ class FilterPage extends StatelessWidget {
     return Container(
       height: 40,
       child: Obx(() => ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: controller.categories.length,
-        itemBuilder: (context, index) {
-          final category = controller.categories[index];
-          final isSelected = controller.selectedCategory.value == category;
-          
-          return Padding(
-            padding: EdgeInsets.only(right: 10),
-            child: ChoiceChip(
-              label: Text(category),
-              selected: isSelected,
-              onSelected: (_) => controller.selectCategory(category),
-              selectedColor: Colors.purple,
-              backgroundColor: Colors.white,
-              labelStyle: TextStyle(
-                color: isSelected ? Colors.white : Colors.black87,
-              ),
-            ),
-          );
-        },
-      )),
+            scrollDirection: Axis.horizontal,
+            itemCount: controller.categories.length,
+            itemBuilder: (context, index) {
+              final category = controller.categories[index];
+              final isSelected = controller.selectedCategory.value == category;
+
+              return Padding(
+                padding: EdgeInsets.only(right: 10),
+                child: ChoiceChip(
+                  label: Text(category),
+                  selected: isSelected,
+                  onSelected: (_) => controller.selectCategory(category),
+                  selectedColor: Colors.purple,
+                  backgroundColor: Colors.white,
+                  labelStyle: TextStyle(
+                    color: isSelected ? Colors.white : Colors.black87,
+                  ),
+                ),
+              );
+            },
+          )),
     );
   }
 
@@ -171,38 +167,40 @@ class FilterPage extends StatelessWidget {
     return Container(
       height: 40,
       child: Obx(() => ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: 6, // 0 (any) + 1-5 stars
-        itemBuilder: (context, index) {
-          final rating = index.toDouble();
-          final isSelected = controller.selectedRating.value == rating;
-          
-          return Padding(
-            padding: EdgeInsets.only(right: 10),
-            child: ChoiceChip(
-              label: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  if (rating == 0)
-                    Text('Any')
-                  else ...[
-                    Icon(Icons.star, size: 16, color: isSelected ? Colors.white : Colors.amber),
-                    SizedBox(width: 4),
-                    Text('${rating.toInt()}'),
-                  ],
-                ],
-              ),
-              selected: isSelected,
-              onSelected: (_) => controller.selectRating(rating),
-              selectedColor: Colors.purple,
-              backgroundColor: Colors.white,
-              labelStyle: TextStyle(
-                color: isSelected ? Colors.white : Colors.black87,
-              ),
-            ),
-          );
-        },
-      )),
+            scrollDirection: Axis.horizontal,
+            itemCount: 6, // 0 (any) + 1-5 stars
+            itemBuilder: (context, index) {
+              final rating = index.toDouble();
+              final isSelected = controller.selectedRating.value == rating;
+
+              return Padding(
+                padding: EdgeInsets.only(right: 10),
+                child: ChoiceChip(
+                  label: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      if (rating == 0)
+                        Text('Any')
+                      else ...[
+                        Icon(Icons.star,
+                            size: 16,
+                            color: isSelected ? Colors.white : Colors.amber),
+                        SizedBox(width: 4),
+                        Text('${rating.toInt()}'),
+                      ],
+                    ],
+                  ),
+                  selected: isSelected,
+                  onSelected: (_) => controller.selectRating(rating),
+                  selectedColor: Colors.purple,
+                  backgroundColor: Colors.white,
+                  labelStyle: TextStyle(
+                    color: isSelected ? Colors.white : Colors.black87,
+                  ),
+                ),
+              );
+            },
+          )),
     );
   }
 
@@ -220,15 +218,15 @@ class FilterPage extends StatelessWidget {
           children: [
             Expanded(
               child: Obx(() => Text(
-                controller.selectedDate.value == null
-                    ? 'Select booking date'
-                    : '${controller.selectedDate.value!.day}/${controller.selectedDate.value!.month}/${controller.selectedDate.value!.year}',
-                style: TextStyle(
-                  color: controller.selectedDate.value == null
-                      ? Colors.grey
-                      : Colors.black87,
-                ),
-              )),
+                    controller.selectedDate.value == null
+                        ? 'Select booking date'
+                        : '${controller.selectedDate.value!.day}/${controller.selectedDate.value!.month}/${controller.selectedDate.value!.year}',
+                    style: TextStyle(
+                      color: controller.selectedDate.value == null
+                          ? Colors.grey
+                          : Colors.black87,
+                    ),
+                  )),
             ),
             Icon(Icons.calendar_today, color: Colors.grey),
           ],

@@ -1,9 +1,7 @@
 // checkout_screen.dart
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-
-import '../controller/checkout_controller.dart';
+import 'package:prettyrini/feature/customer_flow/user_checkout/controller/checkout_controller.dart';
 
 class CheckoutScreen extends StatelessWidget {
   final CheckoutController controller = Get.put(CheckoutController());
@@ -58,110 +56,111 @@ class CheckoutScreen extends StatelessWidget {
 
   Widget _buildSelectedServices() {
     return Obx(() => Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Column(
-        children: [
-          InkWell(
-            onTap: controller.toggleServicesExpanded,
-            child: Padding(
-              padding: EdgeInsets.all(16),
-              child: Row(
-                children: [
-                  Text(
-                    'Selected Services',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  Spacer(),
-                  Icon(
-                    controller.showServicesExpanded.value
-                        ? Icons.keyboard_arrow_up
-                        : Icons.keyboard_arrow_down,
-                    color: Colors.grey[600],
-                  ),
-                ],
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(12),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.05),
+                blurRadius: 10,
+                offset: Offset(0, 2),
               ),
-            ),
+            ],
           ),
-          if (controller.showServicesExpanded.value)
-            Container(
-              margin: EdgeInsets.fromLTRB(16, 0, 16, 16),
-              padding: EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Color(0xFF8B5FBF),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Row(
-                children: [
-                  Container(
-                    width: 40,
-                    height: 40,
-                    decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.2),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Icon(
-                      Icons.content_cut,
-                      color: Colors.white,
-                      size: 20,
-                    ),
+          child: Column(
+            children: [
+              InkWell(
+                onTap: controller.toggleServicesExpanded,
+                child: Padding(
+                  padding: EdgeInsets.all(16),
+                  child: Row(
+                    children: [
+                      Text(
+                        'Selected Services',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      Spacer(),
+                      Icon(
+                        controller.showServicesExpanded.value
+                            ? Icons.keyboard_arrow_up
+                            : Icons.keyboard_arrow_down,
+                        color: Colors.grey[600],
+                      ),
+                    ],
                   ),
-                  SizedBox(width: 12),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          controller.serviceData['name']!,
+                ),
+              ),
+              if (controller.showServicesExpanded.value)
+                Container(
+                  margin: EdgeInsets.fromLTRB(16, 0, 16, 16),
+                  padding: EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: Color(0xFF8B5FBF),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 40,
+                        height: 40,
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.2),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Icon(
+                          Icons.content_cut,
+                          color: Colors.white,
+                          size: 20,
+                        ),
+                      ),
+                      SizedBox(width: 12),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              controller.serviceData['name']!,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            Text(
+                              controller.serviceData['duration']!,
+                              style: TextStyle(
+                                color: Colors.white.withOpacity(0.8),
+                                fontSize: 12,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.2),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Text(
+                          '\$${controller.serviceData['price']}',
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 14,
+                            fontSize: 12,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
-                        Text(
-                          controller.serviceData['duration']!,
-                          style: TextStyle(
-                            color: Colors.white.withOpacity(0.8),
-                            fontSize: 12,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.2),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Text(
-                      '\$${controller.serviceData['price']}',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w600,
                       ),
-                    ),
+                    ],
                   ),
-                ],
-              ),
-            ),
-        ],
-      ),
-    ));
+                ),
+            ],
+          ),
+        ));
   }
 
   Widget _buildSpecialistSection() {
@@ -191,31 +190,32 @@ class CheckoutScreen extends StatelessWidget {
             ),
           ),
           Obx(() => Container(
-            margin: EdgeInsets.fromLTRB(16, 0, 16, 16),
-            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey[300]!),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: DropdownButton<String>(
-              value: controller.selectedSpecialist.value,
-              hint: Text('Choose a Specialist'),
-              isExpanded: true,
-              underline: SizedBox(),
-              icon: Icon(Icons.person, color: Colors.grey[600]),
-              items: controller.specialists.map<DropdownMenuItem<String>>((String specialist) {
-                return DropdownMenuItem<String>(
-                  value: specialist,
-                  child: Text(specialist),
-                );
-              }).toList(),
-              onChanged: (String? newValue) {
-                if (newValue != null) {
-                  controller.selectSpecialist(newValue);
-                }
-              },
-            ),
-          )),
+                margin: EdgeInsets.fromLTRB(16, 0, 16, 16),
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.grey[300]!),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: DropdownButton<String>(
+                  value: controller.selectedSpecialist.value,
+                  hint: Text('Choose a Specialist'),
+                  isExpanded: true,
+                  underline: SizedBox(),
+                  icon: Icon(Icons.person, color: Colors.grey[600]),
+                  items: controller.specialists
+                      .map<DropdownMenuItem<String>>((String specialist) {
+                    return DropdownMenuItem<String>(
+                      value: specialist,
+                      child: Text(specialist),
+                    );
+                  }).toList(),
+                  onChanged: (String? newValue) {
+                    if (newValue != null) {
+                      controller.selectSpecialist(newValue);
+                    }
+                  },
+                ),
+              )),
         ],
       ),
     );
@@ -248,32 +248,34 @@ class CheckoutScreen extends StatelessWidget {
             ),
           ),
           Obx(() => InkWell(
-            onTap: controller.toggleCalendar,
-            child: Container(
-              margin: EdgeInsets.fromLTRB(16, 0, 16, 16),
-              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey[300]!),
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      controller.formatDate(controller.selectedDate.value),
-                      style: TextStyle(
-                        color: controller.selectedDate.value != null
-                            ? Colors.black
-                            : Colors.grey[600],
-                      ),
-                    ),
+                onTap: controller.toggleCalendar,
+                child: Container(
+                  margin: EdgeInsets.fromLTRB(16, 0, 16, 16),
+                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey[300]!),
+                    borderRadius: BorderRadius.circular(8),
                   ),
-                  Icon(Icons.calendar_today, color: Colors.grey[600], size: 20),
-                ],
-              ),
-            ),
-          )),
-          Obx(() => controller.showCalendar.value ? _buildCalendar() : SizedBox()),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          controller.formatDate(controller.selectedDate.value),
+                          style: TextStyle(
+                            color: controller.selectedDate.value != null
+                                ? Colors.black
+                                : Colors.grey[600],
+                          ),
+                        ),
+                      ),
+                      Icon(Icons.calendar_today,
+                          color: Colors.grey[600], size: 20),
+                    ],
+                  ),
+                ),
+              )),
+          Obx(() =>
+              controller.showCalendar.value ? _buildCalendar() : SizedBox()),
         ],
       ),
     );
@@ -281,7 +283,7 @@ class CheckoutScreen extends StatelessWidget {
 
   Widget _buildCalendar() {
     final calendarDays = controller.getCalendarDays();
-    
+
     return Container(
       margin: EdgeInsets.fromLTRB(16, 0, 16, 16),
       padding: EdgeInsets.all(16),
@@ -314,12 +316,14 @@ class CheckoutScreen extends StatelessWidget {
             itemBuilder: (context, index) {
               final date = calendarDays[index];
               final isSelectable = controller.isDateSelectable(date);
-              
+
               return Obx(() {
-                final isSelected = controller.selectedDate.value?.day == date.day;
-                
+                final isSelected =
+                    controller.selectedDate.value?.day == date.day;
+
                 return InkWell(
-                  onTap: isSelectable ? () => controller.selectDate(date) : null,
+                  onTap:
+                      isSelectable ? () => controller.selectDate(date) : null,
                   child: Container(
                     decoration: BoxDecoration(
                       color: isSelected
@@ -329,9 +333,8 @@ class CheckoutScreen extends StatelessWidget {
                               : Colors.grey[200],
                       borderRadius: BorderRadius.circular(8),
                       border: Border.all(
-                        color: isSelected
-                            ? Color(0xFF8B5FBF)
-                            : Colors.grey[300]!,
+                        color:
+                            isSelected ? Color(0xFF8B5FBF) : Colors.grey[300]!,
                       ),
                     ),
                     child: Center(
@@ -343,7 +346,8 @@ class CheckoutScreen extends StatelessWidget {
                               : isSelectable
                                   ? Colors.black
                                   : Colors.grey[400],
-                          fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+                          fontWeight:
+                              isSelected ? FontWeight.w600 : FontWeight.normal,
                         ),
                       ),
                     ),
@@ -397,18 +401,21 @@ class CheckoutScreen extends StatelessWidget {
               itemCount: controller.timeSlots.length,
               itemBuilder: (context, index) {
                 final timeSlot = controller.timeSlots[index];
-                
+
                 return Obx(() {
                   final isSelected = controller.selectedTime.value == timeSlot;
-                  
+
                   return InkWell(
                     onTap: () => controller.selectTime(timeSlot),
                     child: Container(
                       decoration: BoxDecoration(
-                        color: isSelected ? Color(0xFF8B5FBF) : Colors.grey[100],
+                        color:
+                            isSelected ? Color(0xFF8B5FBF) : Colors.grey[100],
                         borderRadius: BorderRadius.circular(8),
                         border: Border.all(
-                          color: isSelected ? Color(0xFF8B5FBF) : Colors.grey[300]!,
+                          color: isSelected
+                              ? Color(0xFF8B5FBF)
+                              : Colors.grey[300]!,
                         ),
                       ),
                       child: Center(
@@ -417,7 +424,9 @@ class CheckoutScreen extends StatelessWidget {
                           style: TextStyle(
                             color: isSelected ? Colors.white : Colors.black,
                             fontSize: 12,
-                            fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+                            fontWeight: isSelected
+                                ? FontWeight.w600
+                                : FontWeight.normal,
                           ),
                         ),
                       ),
@@ -436,30 +445,30 @@ class CheckoutScreen extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(16),
       child: Obx(() => SizedBox(
-        width: double.infinity,
-        height: 56,
-        child: ElevatedButton(
-          onPressed: controller.isBookingComplete() 
-              ? controller.confirmBooking 
-              : null,
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Color(0xFF8B5FBF),
-            disabledBackgroundColor: Colors.grey[300],
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
+            width: double.infinity,
+            height: 56,
+            child: ElevatedButton(
+              onPressed: controller.isBookingComplete()
+                  ? controller.confirmBooking
+                  : null,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Color(0xFF8B5FBF),
+                disabledBackgroundColor: Colors.grey[300],
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                elevation: 0,
+              ),
+              child: Text(
+                'Confirm Booking',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
             ),
-            elevation: 0,
-          ),
-          child: Text(
-            'Confirm Booking',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-        ),
-      )),
+          )),
     );
   }
 }

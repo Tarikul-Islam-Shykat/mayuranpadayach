@@ -6,6 +6,8 @@ import 'dart:async';
 
 import '../model/specialist_model.dart';
 
+import 'package:prettyrini/feature/customer_flow/user_choose_specialist/model/specialist_model.dart';
+
 class SpecialistCardWidget extends StatefulWidget {
   final SpecialistModel specialist;
 

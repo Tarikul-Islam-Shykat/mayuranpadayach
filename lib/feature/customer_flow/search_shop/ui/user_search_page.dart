@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 
 
 import '../controller/search_controller.dart';
+import 'package:prettyrini/feature/customer_flow/search_shop/controller/search_controller.dart';
 
 class SearchPage extends StatelessWidget {
   final UserSearchController controller = Get.put(UserSearchController());
@@ -41,7 +42,8 @@ class SearchPage extends StatelessWidget {
                       onPressed: controller.performSearch,
                     ),
                     border: InputBorder.none,
-                    contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                    contentPadding:
+                        EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                   ),
                   onSubmitted: (_) => controller.performSearch(),
                 ),
@@ -80,36 +82,39 @@ class SearchPage extends StatelessWidget {
 
               // Recent Search Tags
               Obx(() => Wrap(
-                spacing: 10,
-                runSpacing: 10,
-                children: controller.recentSearches
-                    .map((search) => GestureDetector(
-                          onTap: () => controller.searchFromHistory(search),
-                          child: Container(
-                            padding: EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(20),
-                              border: Border.all(color: Colors.grey.shade300),
-                            ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Icon(Icons.history, size: 16, color: Colors.grey),
-                                SizedBox(width: 8),
-                                Text(
-                                  search,
-                                  style: TextStyle(
-                                    color: Colors.black87,
-                                    fontSize: 14,
-                                  ),
+                    spacing: 10,
+                    runSpacing: 10,
+                    children: controller.recentSearches
+                        .map((search) => GestureDetector(
+                              onTap: () => controller.searchFromHistory(search),
+                              child: Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 15, vertical: 8),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(20),
+                                  border:
+                                      Border.all(color: Colors.grey.shade300),
                                 ),
-                              ],
-                            ),
-                          ),
-                        ))
-                    .toList(),
-              )),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Icon(Icons.history,
+                                        size: 16, color: Colors.grey),
+                                    SizedBox(width: 8),
+                                    Text(
+                                      search,
+                                      style: TextStyle(
+                                        color: Colors.black87,
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ))
+                        .toList(),
+                  )),
             ],
           ),
         ),
