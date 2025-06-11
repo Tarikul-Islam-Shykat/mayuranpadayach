@@ -49,15 +49,19 @@ class CustomAuthField extends StatelessWidget {
         inputFormatters: [
           if (isDigitOnly) FilteringTextInputFormatter.digitsOnly,
         ],
-        style: globalTextStyle(color: const Color(0xff000000)),
+        style:GoogleFonts.poppins(
+          color: AppColors.blackColor,
+          fontWeight: FontWeight.w400,
+          fontSize: 16.sp,
+        ),
         decoration: InputDecoration(
           prefixIcon: prefixIcon,
           hintText: hintText,
           suffixIcon: suffixIcon,
           hintStyle: GoogleFonts.poppins(
             color: AppColors.hintTextColor.withValues(alpha: 0.5),
-            fontWeight: FontWeight.w300,
-            fontSize: 14.sp,
+            fontWeight: FontWeight.w400,
+            fontSize: 16.sp,
           ),
           fillColor: AppColors.fillColor.withValues(alpha:.1), // Make background transparent
           filled: true,

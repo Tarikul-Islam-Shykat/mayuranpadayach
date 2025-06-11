@@ -1,11 +1,8 @@
 import 'dart:convert';
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:prettyrini/core/services_class/local_service/local_data.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
 import '../../../core/global_widegts/app_snackbar.dart';
 import '../../../core/network_caller/endpoints.dart';
 import '../../../core/network_caller/network_config.dart';
@@ -49,9 +46,10 @@ class LoginController extends GetxController {
       if (response != null && response['success'] == true) {
 
         var  localService = await LocalService();
-      //  sh.setString("token", response["data"]["token"]);
       await   localService.setToken( response["data"]["token"]);
-var token = await localService.getToken();
+      await   localService.setRole( response["data"]["role"]);
+      var token = await localService.getToken();
+      debugPrint("user token --- $token");
         AppSnackbar.show(message: "Login Successful", isSuccess: true);
         return true;
       } else {

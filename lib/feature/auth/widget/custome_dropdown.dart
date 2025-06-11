@@ -20,7 +20,11 @@ class CustomDropdown extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(() => DropdownButtonFormField<String>(
-      style: globalTextStyle(color: const Color(0xff000000)),
+      style: GoogleFonts.poppins(
+        color: AppColors.blackColor,
+        fontWeight: FontWeight.w400,
+        fontSize: 16.sp,
+      ),
       value: selectedItem.value.isEmpty ? null : selectedItem.value,
       items: items
           .map((item) =>
@@ -35,9 +39,9 @@ class CustomDropdown extends StatelessWidget {
         filled: true,
         hintText: label,
         hintStyle: GoogleFonts.poppins(
-          color: AppColors.hintTextColor,
-          fontWeight: FontWeight.w300,
-          fontSize: 14.sp,
+          color: AppColors.blackColor,
+          fontWeight: FontWeight.w400,
+          fontSize: 16.sp,
         ),
         border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(15),
