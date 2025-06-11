@@ -1,3 +1,4 @@
+// ignore_for_file: must_be_immutable
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -30,7 +31,6 @@ class ChangePasword extends StatelessWidget {
                 roundBackButton(
                   () => Get.back(),
                 ),
-                //SizedBox(width: 50.w,),
                 Expanded(
                   child: Text(
                     textAlign: TextAlign.center,
