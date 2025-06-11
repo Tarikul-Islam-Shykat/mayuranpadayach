@@ -1,7 +1,9 @@
 // checkout_screen.dart
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:prettyrini/feature/user/user_checkout/controller/checkout_controller.dart';
+
+
+import '../controller/checkout_controller.dart';
 
 class CheckoutScreen extends StatelessWidget {
   final CheckoutController controller = Get.put(CheckoutController());

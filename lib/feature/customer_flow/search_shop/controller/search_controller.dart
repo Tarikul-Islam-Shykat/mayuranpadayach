@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:prettyrini/feature/user/search_shop/ui/user_filter_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../ui/user_filter_page.dart';
 
 class UserSearchController extends GetxController {
   final TextEditingController searchTextController = TextEditingController();

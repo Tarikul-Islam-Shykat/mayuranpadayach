@@ -2,7 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:prettyrini/feature/user/serivce_details/controller/service_details_cnt.dart';
+
+
+import '../controller/service_details_cnt.dart';
 
 class AboutTab extends StatelessWidget {
   const AboutTab({Key? key}) : super(key: key);
@@ -117,7 +119,7 @@ class AboutTab extends StatelessWidget {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   image: DecorationImage(
-                    image: AssetImage(specialist.imagePath),
+                    image: AssetImage(specialist?.imagePath),
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -130,7 +132,7 @@ class AboutTab extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      specialist.name,
+                      specialist?.name,
                       style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
@@ -138,7 +140,7 @@ class AboutTab extends StatelessWidget {
                     ),
                     const SizedBox(height: 2),
                     Text(
-                      specialist.category,
+                      specialist?.category,
                       style: TextStyle(
                         fontSize: 12,
                         color: Colors.grey.shade600,
@@ -154,7 +156,7 @@ class AboutTab extends StatelessWidget {
                   const Icon(Icons.star, color: Colors.amber, size: 16),
                   const SizedBox(width: 4),
                   Text(
-                    specialist.rating.toString(),
+                    specialist!.rating.toString(),
                     style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w600,

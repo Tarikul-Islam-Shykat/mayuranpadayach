@@ -2,8 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:prettyrini/feature/user/serivce_details/model/studio_model.dart';
-import 'package:prettyrini/feature/user/user_fav/controller/user_fav_controller.dart';
+
+
+import '../../serivce_details/model/studio_model.dart';
+import '../controller/user_fav_controller.dart';
 
 class FavoritesPage extends StatelessWidget {
   const FavoritesPage({Key? key}) : super(key: key);

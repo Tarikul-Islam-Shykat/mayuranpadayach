@@ -1,8 +1,10 @@
 // controllers/favorites_controller.dart
 
 import 'package:get/get.dart';
-import 'package:prettyrini/feature/user/serivce_details/model/dummy_data.dart';
-import 'package:prettyrini/feature/user/serivce_details/model/studio_model.dart';
+
+
+import '../../serivce_details/model/dummy_data.dart';
+import '../../serivce_details/model/studio_model.dart';
 
 class FavoritesController extends GetxController {
   // Observable list of favorite studios

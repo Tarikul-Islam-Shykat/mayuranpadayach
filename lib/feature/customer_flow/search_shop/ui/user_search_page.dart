@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:prettyrini/feature/user/search_shop/controller/search_controller.dart';
+
+
+import '../controller/search_controller.dart';
 
 class SearchPage extends StatelessWidget {
   final UserSearchController controller = Get.put(UserSearchController());

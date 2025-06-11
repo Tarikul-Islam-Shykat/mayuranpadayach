@@ -2,9 +2,12 @@
 
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
-import 'package:prettyrini/feature/user/serivce_details/model/dummy_data.dart';
+
 import 'dart:async';
-import 'package:prettyrini/feature/user/serivce_details/model/studio_model.dart';
+
+
+import '../../serivce_details/model/dummy_data.dart';
+import '../../serivce_details/model/studio_model.dart';
 
 class UserDashboardContrller extends GetxController {
   // Observable variables

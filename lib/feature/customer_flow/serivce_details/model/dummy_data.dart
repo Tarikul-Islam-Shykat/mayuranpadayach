@@ -1,7 +1,8 @@
 // lib/data/dummy_data.dart
 
 import 'package:prettyrini/core/const/image_path.dart';
-import 'package:prettyrini/feature/user/serivce_details/model/studio_model.dart';
+import 'package:prettyrini/feature/customer_flow/serivce_details/model/studio_model.dart';
+
 
 class DummyData {
   static List<StudioModel> getStudioList() {

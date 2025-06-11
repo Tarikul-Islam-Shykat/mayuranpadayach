@@ -1,9 +1,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:prettyrini/feature/user/serivce_details/model/dummy_data.dart';
-import 'package:prettyrini/feature/user/serivce_details/model/studio_model.dart';
-import 'package:prettyrini/feature/user/user_booking_page/ui/user_booking_details.dart';
+
+
+import '../../serivce_details/model/dummy_data.dart';
+import '../../serivce_details/model/studio_model.dart';
+import '../ui/user_booking_details.dart';
 
 class BookingController extends GetxController with GetSingleTickerProviderStateMixin {
   late TabController tabController;

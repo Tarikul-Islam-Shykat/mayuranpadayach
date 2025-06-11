@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:prettyrini/feature/user/serivce_details/model/studio_model.dart';
-import 'package:prettyrini/feature/user/user_dashboard/controller/user_dashboard_contrller.dart';
+
+
+import '../../serivce_details/model/studio_model.dart';
+import '../controller/user_dashboard_contrller.dart';
 
 class UserDashboard extends StatelessWidget {
   const UserDashboard({Key? key}) : super(key: key);

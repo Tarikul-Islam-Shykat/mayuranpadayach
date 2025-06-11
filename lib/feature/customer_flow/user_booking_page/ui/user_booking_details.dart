@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:prettyrini/feature/user/serivce_details/model/studio_model.dart';
+
+import '../../serivce_details/model/studio_model.dart';
+
 
 class UserBookingDetailsScreen extends StatelessWidget {
   final StudioModel studio;

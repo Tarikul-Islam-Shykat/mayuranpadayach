@@ -2,7 +2,9 @@
 import 'package:get/get.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:prettyrini/core/const/image_path.dart';
-import 'package:prettyrini/feature/user/user_choose_specialist/model/specialist_model.dart';
+
+
+import '../model/specialist_model.dart';
 
 
 class SpecialistController extends GetxController {

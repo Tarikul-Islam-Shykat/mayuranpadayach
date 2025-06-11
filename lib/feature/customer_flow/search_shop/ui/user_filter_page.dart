@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:prettyrini/feature/user/search_shop/controller/filter_controller.dart';
-import 'package:prettyrini/feature/user/search_shop/widget/price_range.dart';
+
+
+import '../controller/filter_controller.dart';
+import '../widget/price_range.dart';
 
 
 class FilterPage extends StatelessWidget {

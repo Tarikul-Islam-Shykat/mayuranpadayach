@@ -1,8 +1,10 @@
 // lib/controllers/studio_controller.dart
 
 import 'package:get/get.dart';
-import 'package:prettyrini/feature/user/serivce_details/model/dummy_data.dart';
-import 'package:prettyrini/feature/user/serivce_details/model/studio_model.dart';
+
+
+import '../model/dummy_data.dart';
+import '../model/studio_model.dart';
 
 
 class StudioController extends GetxController {

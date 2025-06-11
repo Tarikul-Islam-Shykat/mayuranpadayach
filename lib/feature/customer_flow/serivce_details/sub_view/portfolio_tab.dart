@@ -2,7 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:prettyrini/feature/user/serivce_details/controller/service_details_cnt.dart';
+
+
+import '../controller/service_details_cnt.dart';
 
 class PortfolioTab extends StatelessWidget {
   const PortfolioTab({Key? key}) : super(key: key);

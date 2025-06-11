@@ -1,8 +1,10 @@
 // widgets/specialist_card_widget.dart
 import 'package:flutter/material.dart';
 import 'package:prettyrini/core/const/image_path.dart';
-import 'package:prettyrini/feature/user/user_choose_specialist/model/specialist_model.dart';
+
 import 'dart:async';
+
+import '../model/specialist_model.dart';
 
 class SpecialistCardWidget extends StatefulWidget {
   final SpecialistModel specialist;
