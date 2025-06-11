@@ -1,10 +1,13 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:prettyrini/core/global_widegts/app_snackbar.dart';
+import 'package:prettyrini/core/network_caller/network_config.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../core/network_caller/endpoints.dart';
@@ -14,60 +17,56 @@ class ChangePaswordController extends GetxController {
   TextEditingController oldpaswordController = TextEditingController();
   TextEditingController newpaswordController = TextEditingController();
   TextEditingController confirmpaswordController = TextEditingController();
+  final NetworkConfig _networkConfig = NetworkConfig();
+  final isUpdatePasswordLoading = false.obs;
 
   void changePassword() async {
     if (newpaswordController.text != confirmpaswordController.text) {
-      Get.snackbar("Error", "Password not match");
+      AppSnackbar.show(message: "Password not match", isSuccess: false);
     } else {
       if (newpaswordController.text.length <= 7 ||
           oldpaswordController.text.length <= 7) {
-        Get.snackbar("Error", "Password must be at least 8 characters long.");
+        AppSnackbar.show(
+            message: "Password must be at least 8 characters long.",
+            isSuccess: false);
       } else {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         String token = prefs.getString("token") ?? "";
         if (token.isEmpty) {
           Get.offAll(() => LoginScreen());
         } else if (oldpaswordController.text == newpaswordController.text) {
-          Get.snackbar("Error", "New password can't be same as old password");
+          AppSnackbar.show(
+              message: "New password can't be same as old password",
+              isSuccess: false);
         } else {
           try {
-            EasyLoading.show(status: "Processing...");
-            final response = await http.put(
-              Uri.parse('${Urls.baseUrl}/auth/change-password'),
-              headers: {"Authorization": token},
-              body: {
-                'newPassword': newpaswordController.text,
-                'oldPassword': oldpaswordController.text,
-              },
+            isUpdatePasswordLoading.value = true;
+            String oldPassword = oldpaswordController.text.trim();
+            String newPassword = newpaswordController.text.trim();
+            final Map<String, dynamic> requestBody = {
+              "oldPassword": oldPassword,
+              "newPassword": newPassword,
+            };
+            final response = await _networkConfig.ApiRequestHandler(
+              RequestMethod.PUT,
+              Urls.changePassword,
+              json.encode(requestBody),
+              is_auth: true,
             );
 
-            if (kDebugMode) {
-              print(response.body);
-            }
-            if (response.statusCode == 201) {
-              var data = jsonDecode(response.body);
-              if (data['success'] == true) {
-                Get.snackbar(
-                  "Success",
-                  "Password changed successfully Please login again",
-                );
-                Future.delayed(Duration(seconds: 2), () {
-                  Get.offAll(() => LoginScreen());
-                });
-              } else {
-                Get.snackbar("Error", "Something went wrong");
-              }
+            log(response.toString());
+            if (response != null && response['success'] == true) {
+              AppSnackbar.show(
+                  message: "Password Updated Successful", isSuccess: true);
             } else {
-              if (kDebugMode) {
-                print('Request failed with status: ${response.statusCode}');
-              }
+              AppSnackbar.show(
+                  message: response['message'].toString(), isSuccess: false);
             }
           } catch (e) {
-            if (kDebugMode) {
-              print('Error: $e');
-            }
+            AppSnackbar.show(
+                message: "Failed To Update Password $e", isSuccess: false);
           } finally {
-            EasyLoading.dismiss();
+            isUpdatePasswordLoading.value = false;
           }
         }
       }

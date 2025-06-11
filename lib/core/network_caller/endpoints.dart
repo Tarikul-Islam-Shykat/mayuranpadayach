@@ -2,6 +2,7 @@ class Urls {
   static const String baseUrl = 'https://mayuranpadayach.vercel.app/api/v1';
   static const String signUp = '$baseUrl/users/register';
   static const String verifyOTP = '$baseUrl/auth/verify-otp';
+  static const String changePassword = '$baseUrl/auth/change-password';
 
   // --------------------------------------
   static const String login = '$baseUrl/auth/login';

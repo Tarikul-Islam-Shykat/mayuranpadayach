@@ -17,7 +17,7 @@ class NetworkConfig {
     if (await InternetConnectionChecker().hasConnection) {
       var header = <String, String>{"Content-type": "application/json"};
       if (is_auth == true) {
-        header["Authorization"] = "Bearer ${sh.getString("token")}";
+        header["Authorization"] = "${sh.getString("token")}";
       }
 
       if (method.name == RequestMethod.GET.name) {
@@ -58,7 +58,9 @@ class NetworkConfig {
           if (req.statusCode == 200) {
             return json.decode(req.body);
           } else {
-            throw Exception("Server Error");
+            return json.decode(req.body);
+
+            //  throw Exception("Server Error");
           }
         } catch (e) {
           ShowError(e);

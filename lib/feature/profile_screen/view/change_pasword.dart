@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:prettyrini/core/global_widegts/loading_screen.dart';
 import 'package:prettyrini/feature/auth/widget/custom_booton_widget.dart';
 import 'package:prettyrini/feature/auth/widget/text_field_title.dart';
 import '../../../core/const/app_colors.dart';
@@ -11,7 +12,8 @@ import '../widget/round_back_button.dart';
 
 class ChangePasword extends StatelessWidget {
   ChangePasword({super.key});
-  final controller = Get.put(ChangePaswordController());
+  ChangePaswordController changePaswordController =
+      Get.put(ChangePaswordController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,7 +27,9 @@ class ChangePasword extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                roundBackButton(()=>Get.back(),),
+                roundBackButton(
+                  () => Get.back(),
+                ),
                 //SizedBox(width: 50.w,),
                 Expanded(
                   child: Text(
@@ -39,8 +43,6 @@ class ChangePasword extends StatelessWidget {
                 ),
               ],
             ),
-
-
             SizedBox(height: 20.h),
             Expanded(
               child: Column(
@@ -51,7 +53,7 @@ class ChangePasword extends StatelessWidget {
                   CustomAuthField(
                     radiusValue2: 15,
                     radiusValue: 15,
-                    controller: controller.oldpaswordController,
+                    controller: changePaswordController.oldpaswordController,
                     hintText: 'Enter old password',
                   ),
                   SizedBox(
@@ -61,7 +63,7 @@ class ChangePasword extends StatelessWidget {
                   CustomAuthField(
                     radiusValue2: 15,
                     radiusValue: 15,
-                    controller: controller.newpaswordController,
+                    controller: changePaswordController.newpaswordController,
                     hintText: 'Enter new password',
                   ),
                   SizedBox(
@@ -71,32 +73,33 @@ class ChangePasword extends StatelessWidget {
                   CustomAuthField(
                     radiusValue2: 15,
                     radiusValue: 15,
-                    controller: controller.confirmpaswordController,
+                    controller:
+                        changePaswordController.confirmpaswordController,
                     hintText: 'Enter confirm password',
                   ),
                 ],
               ),
             ),
-          ],
-        ),
-      ),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.all(15.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            CustomButton(
-                onTap: () {},
-                title: Text(
-                  "Save",
-                  style: GoogleFonts.poppins(
-                      fontWeight: FontWeight.w600, fontSize: 18.sp,color: AppColors.whiteColor),
-                )),
+            Obx(() => changePaswordController.isUpdatePasswordLoading.value
+                ? btnLoading()
+                : Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: CustomButton(
+                        onTap: changePaswordController.changePassword,
+                        title: Text(
+                          "Update Password",
+                          style: GoogleFonts.poppins(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 18.sp,
+                              color: AppColors.whiteColor),
+                        )),
+                  )),
+            SizedBox(
+              height: 40,
+            )
           ],
         ),
       ),
     );
   }
 }
-
-
