@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LocalService {
@@ -114,13 +116,18 @@ class LocalService {
   getImagePath() async {
     final prefs = await SharedPreferences.getInstance();
     final imagePath = prefs.getString(_keyImagePath);
+    log("dfasfas");
     return imagePath;
+
+
   }
 
   getToken() async {
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString(_keyToken);
     return token;
+
+
   }
 
   Future<void> clearUserData() async {
