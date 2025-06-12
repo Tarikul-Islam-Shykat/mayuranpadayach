@@ -9,6 +9,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 import '../../../core/network_caller/endpoints.dart';
+import '../../../core/services_class/local_service/local_data.dart';
+import '../../auth/controller/login_controller.dart';
 import '../../auth/screen/login_screen.dart';
 import '../../auth/screen/profile_setup_screen.dart';
 
@@ -60,7 +62,8 @@ class SplashScreenController extends GetxController {
       }
     }
   }
-  
+
+
 
   @override
   void onInit() async {
@@ -68,7 +71,29 @@ class SplashScreenController extends GetxController {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
    await  Future.delayed(Duration(seconds: 5),(){
-      Get.toNamed(AppRoute.loginScreen);
+     checkLoginStatus();
     });
   }
+
+  Future<void> checkLoginStatus() async {
+    final localService = await LocalService();
+    final token = await localService.getToken();
+    final role = await localService.getRole();
+
+    if (token != null && token.isNotEmpty) {
+      if (role == RoleType.PROFESSIONAL.name) {
+        Get.offAllNamed(AppRoute.adminBusinessScreen);
+      }else if(role == RoleType.ADMIN.name){
+        Get.offAllNamed(AppRoute.adminBusinessScreen);
+      } else if (role == RoleType.USER.name) {
+        Get.offAllNamed(AppRoute.profileScreen);
+      } else {
+        Get.offAllNamed(AppRoute.loginScreen);
+      }
+    } else {
+      Get.offAllNamed(AppRoute.loginScreen);
+    }
+  }
+
+
 }

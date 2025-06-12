@@ -52,10 +52,11 @@ class LoginController extends GetxController {
         String role = await localService.getRole();
       if(role == RoleType.PROFESSIONAL.name){
          Get.offAllNamed(AppRoute.adminBusinessScreen);
+      }else if(role == RoleType.ADMIN.name){
+        Get.offAllNamed(AppRoute.adminBusinessScreen);
       }else if(role == RoleType.USER.name){
          Get.offNamed(AppRoute.profileScreen);
       }
-
         AppSnackbar.show(message: "Login Successful", isSuccess: true);
         return true;
       } else {

@@ -52,7 +52,7 @@ class ServiceScreen extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(vertical: 5.0),
                 child: ListTile(
                   onTap: () =>
-                      Get.toNamed(AppRoute.adminServiceDetailsScreen),
+                      Get.toNamed(AppRoute.adminBusinessDetailsScreen),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),

@@ -6,6 +6,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:prettyrini/core/global_widegts/custom_text.dart';
 import 'package:prettyrini/feature/admin/admin_business/controller/add_business_controller.dart';
+import 'package:prettyrini/feature/admin/admin_business/controller/admin_business_controller.dart';
+import 'package:prettyrini/route/route.dart';
 import '../../../../core/const/app_colors.dart';
 import '../../../../core/const/image_path.dart';
 import '../../../../core/global_widegts/app_network_image.dart';
@@ -24,6 +26,7 @@ import '../widget/common_dropdown_button.dart';
 class BusinessScreen extends StatelessWidget {
    BusinessScreen({super.key});
   final AddBusinessController controller = Get.put(AddBusinessController());
+  final AdminBusinessController businessController = Get.put(AdminBusinessController());
   final GalleryController imageController = Get.put(GalleryController());
 
   @override
@@ -51,113 +54,136 @@ class BusinessScreen extends StatelessWidget {
       ),
       body:Padding(
         padding: const EdgeInsets.all(15.0),
-        child: ListView.builder(
-          itemCount: 5,
-            itemBuilder: (context,index){
-          return  Padding(
-            padding: const EdgeInsets.symmetric(vertical: 5.0),
-            child: Container(
-              padding: EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: Colors.white,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: AppNetworkImage(
-                      src: "https://adonis.com.bd/wp-content/uploads/2025/03/man-getting-haircut-in-salon.jpg",
-                      height: 80,
-                      width: 83,
-                    ),
-                  ),
-                  SizedBox(width: 10.w,),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text("Zero Hair Studio",
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 2,
-                            style: GoogleFonts.inter(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 18.sp,
-                              color: AppColors.textBlackColor,
-                            ),),
-                          SizedBox(width: 55.w,),
-                          InkWell(
-                            onTap: ()=>addBusinessPlane(context),
-                            child: Container(
-                              padding: EdgeInsets.all(5),
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(100),
-                                  color: Color(0xffFAF5FE)
+        child: Obx((){
+          if(businessController.isBusinessLoading.value){
+            return Center(child: loading(),);
+          }else if(businessController.adminBusinessModel.isEmpty){
+            return Center(child: Text("No Data Found"),);
+          }else{
+            return ListView.builder(
+                itemCount: businessController.adminBusinessModel.length,
+                itemBuilder: (context,index){
+                  final data = businessController.adminBusinessModel[index];
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 5.0),
+                    child: GestureDetector(
+                      onTap: ()=>Get.toNamed(
+                        arguments:{
+                          "id":data.id.toString(),
+                        },
+                          AppRoute.adminBusinessDetailsScreen),
+                      child: Container(
+                        padding: EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: Colors.white,
+                        ),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(5),
+                              child: AppNetworkImage(
+                                src: data.image.toString(),
+                                height: 80,
+                                width: 83,
+                                fit: BoxFit.cover,
                               ),
-                              child: Center(child: Image.asset(ImagePath.arrowUp),),
                             ),
-                          ),
-
-                        ],
+                            SizedBox(width: 10),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(data.name.toString(),
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 2,
+                                        style: GoogleFonts.inter(
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 18.sp,
+                                          color: AppColors.textBlackColor,
+                                        ),
+                                      ),
+                                      InkWell(
+                                        onTap: () => addBusinessPlane(context),
+                                        child: Container(
+                                          padding: EdgeInsets.all(5),
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(100),
+                                            color: Color(0xffFAF5FE),
+                                          ),
+                                          child: Image.asset(ImagePath.arrowUp),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: 4.h),
+                                  Row(
+                                    children: [
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.circular(100),
+                                        child: AppNetworkImage(
+                                          src: "${data.category!.image}",
+                                          height: 15,
+                                          width: 15,
+                                        ),
+                                      ),
+                                      SizedBox(width: 5.w),
+                                      Text("${data.category!.name}",
+                                        style: GoogleFonts.poppins(
+                                          fontSize: 12.sp,
+                                          fontWeight: FontWeight.w500,
+                                          color: AppColors.textGreyColor,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: 5.h),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Expanded(
+                                        child: Text(
+                                          "Booking Date : ${DateFormat('dd-MM-yyyy').format(data.createdAt!)}",
+                                          overflow: TextOverflow.ellipsis,
+                                          style: GoogleFonts.inter(
+                                            fontWeight: FontWeight.w400,
+                                            fontSize: 11.sp,
+                                            color: AppColors.textGreyColor,
+                                          ),
+                                        ),
+                                      ),
+                                      Row(
+                                        children: [
+                                          Image.asset(ImagePath.starIcon),
+                                          SizedBox(width: 3),
+                                          Text("${data.overallRating}",
+                                            style: GoogleFonts.poppins(
+                                              fontSize: 11.sp,
+                                              fontWeight: FontWeight.w500,
+                                              color: AppColors.textBlackColor,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                      SizedBox(height: 4.h,),
-                      Row(
-                        children: [
-                          ClipRRect(
-                              borderRadius: BorderRadius.circular(100),
-                              child: AppNetworkImage(src: "https://adonis.com.bd/wp-content/uploads/2025/03/man-getting-haircut-in-salon.jpg",height: 15,width: 15,)),
-                          SizedBox(width: 5.w,),
-                          Text("Ronald Richards",style: GoogleFonts.poppins(fontSize: 12.sp,fontWeight: FontWeight.w500,color: AppColors.textGreyColor),),
-                        ],
-                      ),
-                      SizedBox(height: 5.h,),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          SizedBox(
-                            width: 200,
-                            child: Text(
-                              "Booking Date : 05-04-2025",
-                              overflow: TextOverflow.ellipsis,
+                    ),
+                  );
+                });
+          }
 
-                              style: GoogleFonts.inter(
-                                fontWeight: FontWeight.w400,
-                                fontSize: 11.sp,
-                                color: AppColors.textGreyColor,
-                              ),),
-                          ),
-                          SizedBox(width: 15.w,),
-                          Row(
-                            children: [
-                              Image.asset(ImagePath.starIcon,),
-                              SizedBox(width: 3,),
-                              Text("4.9",style: GoogleFonts.poppins(
-                                fontSize: 11.sp,
-                                fontWeight: FontWeight.w500,
-                                color: AppColors.textBlackColor,
-                              ),)
-
-                            ],
-                          )
-                        ],
-                      ),
-
-
-                    ],
-                  )
-
-                ],
-              ),
-            ),
-          );
-        }),
+          }
+        ),
       ),
     );
   }
@@ -434,7 +460,7 @@ class BusinessScreen extends StatelessWidget {
                           fit: BoxFit.cover,
                           width: 100,
                           height: 100,
-                        ): Image.asset(ImagePath.fileIcon,height: 80,width: 80,),
+                        ): Image.asset(ImagePath.fileIcon,height: 100,width: 100,),
                       ),
                     )),
                     SizedBox(

@@ -4,7 +4,7 @@ import 'package:prettyrini/feature/admin/admin_business/view/business_screen.dar
 import 'package:prettyrini/feature/admin/admin_home/view/admin_home_screen.dart';
 import 'package:prettyrini/feature/admin/admin_service/view/about_screen.dart';
 import 'package:prettyrini/feature/admin/admin_service/view/portfolio_screen.dart';
-import 'package:prettyrini/feature/admin/admin_service/view/service_details_screen.dart';
+import 'package:prettyrini/feature/admin/admin_business/view/business_details_screen.dart';
 import 'package:prettyrini/feature/admin/admin_service/view/service_screen.dart';
 import 'package:prettyrini/feature/admin/admin_service/view/specialist_screen.dart';
 import 'package:prettyrini/feature/auth/screen/otp_very_screen.dart';
@@ -37,7 +37,7 @@ class AppRoute {
   static const String adminHomeScreen = "/admin_home_screen";
   static const String adminBusinessScreen = "/admin_business_screen";
   static const String adminServiceScreen = "/admin_service_screen";
-  static const String adminServiceDetailsScreen =
+  static const String adminBusinessDetailsScreen =
       "/admin_service_Details_screen";
   static const String servicePortfolioScreen = "/service_portfolio_screen";
   static const String serviceSpecialistScreen = "/service_specialist_screen";
@@ -63,7 +63,7 @@ class AppRoute {
   static String getAdminHomeScreen() => adminHomeScreen;
   static String getAdminBusinessScreen() => adminBusinessScreen;
   static String getAdminServiceScreen() => adminServiceScreen;
-  static String getAdminServiceDetailsScreen() => adminServiceDetailsScreen;
+  static String getAdminServiceDetailsScreen() => adminBusinessDetailsScreen;
   static String getServicePortfolioScreen() => servicePortfolioScreen;
   static String getServiceSpecialistScreen() => serviceSpecialistScreen;
   static String getServiceAboutScreen() => serviceAboutScreen;
@@ -100,7 +100,7 @@ class AppRoute {
     GetPage(name: adminBusinessScreen, page: () => BusinessScreen()),
     GetPage(name: adminServiceScreen, page: () => ServiceScreen()),
     GetPage(
-        name: adminServiceDetailsScreen, page: () => ServiceDetailsScreen()),
+        name: adminBusinessDetailsScreen, page: () => BusinessDetailsScreen()),
     GetPage(name: servicePortfolioScreen, page: () => PortfolioScreen()),
     GetPage(name: serviceSpecialistScreen, page: () => SpecialistScreen()),
     GetPage(name: serviceAboutScreen, page: () => AboutScreen()),

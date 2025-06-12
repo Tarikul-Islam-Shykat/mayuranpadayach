@@ -8,10 +8,12 @@ import 'package:get/get.dart';
 import 'package:http/http.dart'as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:prettyrini/feature/admin/admin_business/model/business_category_model.dart';
+import 'package:prettyrini/feature/admin/admin_business/model/get_admin_business.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../core/global_widegts/app_snackbar.dart';
 import '../../../../core/network_caller/endpoints.dart';
 import '../../../../core/network_caller/network_config.dart';
+
 
 class AddBusinessController extends GetxController{
 
@@ -22,6 +24,10 @@ class AddBusinessController extends GetxController{
   var imageSizeText = ''.obs;
   var errorMessage = ''.obs;
   var uploadProgress = 0.0.obs;
+  RxBool isForEdit = false.obs;
+  RxString selectedID = "".obs;
+  RxString profileImageUrl = ''.obs;
+  var status = "OPEN".obs;
   final _picker = ImagePicker();
   Rx<File?> profileImage = Rx<File?>(null);
   var openingTime = Rx<TimeOfDay?>(null);
@@ -197,7 +203,7 @@ class AddBusinessController extends GetxController{
         "closingHours":timeOfDayToIso8601(closingTime.value),
       };
       request.fields['data'] = json.encode(data);
-      debugPrint("response body------- ${data}");
+      debugPrint("response body------- $data");
       var imageBytes  = await profileImage.value!.readAsBytes();
       var multipartFile = http.MultipartFile.fromBytes(
         'image', // Field name for image as shown in Postman
@@ -242,6 +248,141 @@ class AddBusinessController extends GetxController{
       isAddBusinessLoading.value = false;
     }
   }
+
+  Future<bool> editBusinessProfile(String userId) async {
+    try {
+      if (profileImage.value == null) {
+        errorMessage.value = 'Please select an image';
+        return false;
+      }
+
+      isAddBusinessLoading.value = true;
+      errorMessage.value = '';
+      uploadProgress.value = 0.0;
+
+      final request = http.MultipartRequest(
+        "PUT",
+        Uri.parse("${Urls.editBusiness}/$userId"), // dynamic ID
+      );
+
+      SharedPreferences sh = await SharedPreferences.getInstance();
+      request.headers.addAll({
+        'Content-Type': 'multipart/form-data',
+        'Authorization': "${sh.getString("token")}",
+      });
+      log("user id----------:$userId");
+      log("user token----------:${sh.getString("token")}");
+
+
+
+      Map<String, dynamic> data = {
+        "name": businessNameTEC.text,
+        "categoryId": selectedCategory.value!.id.toString(),
+        "subCategoryId": selectedSubCategory.value!.id.toString(),
+        "latitude": lat,
+        "longitude": long,
+        "address": locationName,
+        "openingHours": timeOfDayToIso8601(openingTime.value),
+        "closingHours": timeOfDayToIso8601(closingTime.value),
+        "openStatus":status.value ?? "OPEN",
+      };
+      log("data------------$data");
+      request.fields['data'] = json.encode(data);
+
+      if (profileImage.value != null) {
+        var imageBytes = await profileImage.value!.readAsBytes();
+        var multipartFile = http.MultipartFile.fromBytes(
+          'image',
+          imageBytes,
+          filename: 'edit_${DateTime.now().millisecondsSinceEpoch}.jpg',
+        );
+        request.files.add(multipartFile);
+      }
+
+      // Send request
+      var streamedResponse = await request.send();
+      final response = await http.Response.fromStream(streamedResponse);
+      final responseJson = json.decode(response.body);
+
+      log("Edit response------: $responseJson");
+
+      if (response.statusCode == 200 && responseJson['success'] == true) {
+        AppSnackbar.show(
+          message: "Business updated successfully!",
+          isSuccess: true,
+        );
+
+        clearForm();
+        clearImage();
+        Get.back();
+        return true;
+      } else {
+        errorMessage.value = responseJson['message'] ?? 'Update failed';
+        return false;
+      }
+    } catch (e) {
+      errorMessage.value = 'Update failed: ${e.toString()}';
+      return false;
+    } finally {
+      isAddBusinessLoading.value = false;
+    }
+  }
+
+
+
+  void setEditBusinessValue(data) {
+    isForEdit.value = true;
+    selectedID.value = data.id.toString();
+
+    selectedCategory.value = categoryList.firstWhere(
+          (cat) => cat.id.toString() == data.categoryId.toString(),
+      orElse: () => CategoryModel(
+        id: "",
+        name: '',
+        image: '',
+        isDeleted: false,
+        createdAt: '',
+        updatedAt: '',
+        subCategories: [],
+      ),
+    );
+
+    selectedSubCategory.value = subCategoryList.firstWhere(
+          (sub) => sub.id.toString() == data.subCategoryId.toString(),
+      orElse: () => SubCategoryModel(id: "", name: ''),
+    );
+
+    businessNameTEC.text = data.name ?? '';
+    lat = data.latitude ?? 0.0;
+    long = data.longitude ?? 0.0;
+    locationName = data.address ?? '';
+
+    if (data.openingHours != null && data.openingHours is DateTime) {
+      openingTime.value = _toTimeOfDay(data.openingHours);
+    }
+
+    if (data.closingHours != null && data.closingHours is DateTime) {
+      closingTime.value = _toTimeOfDay(data.closingHours);
+    }
+
+    // Here replace imagePath with the correct field name, for example image:
+    if (data.image != null && data.image.isNotEmpty) {
+      profileImage.value = null; // আগের লোকাল ইমেজ null করো
+      profileImageUrl.value = data.image ?? '';
+    }
+  }
+
+
+
+
+  TimeOfDay _toTimeOfDay(DateTime dateTime) {
+    return TimeOfDay(hour: dateTime.hour, minute: dateTime.minute);
+  }
+
+
+
+
+
 
   //category list model and get function
   RxList<CategoryModel> categoryList = <CategoryModel>[].obs;

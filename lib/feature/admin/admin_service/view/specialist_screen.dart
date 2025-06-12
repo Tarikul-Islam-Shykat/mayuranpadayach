@@ -51,7 +51,7 @@ class SpecialistScreen extends StatelessWidget {
           return  Padding(
             padding: const EdgeInsets.symmetric(vertical: 5.0),
             child: ListTile(
-              onTap: ()=>Get.toNamed(AppRoute.adminServiceDetailsScreen),
+              onTap: ()=>Get.toNamed(AppRoute.adminBusinessDetailsScreen),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
               ),

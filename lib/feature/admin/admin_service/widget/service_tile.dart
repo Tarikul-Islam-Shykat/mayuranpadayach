@@ -60,9 +60,9 @@ serviceTile(
         borderRadius: BorderRadius.circular(10.r),
       ),
       tileColor: AppColors.whiteColor,
-      contentPadding: EdgeInsets.symmetric(horizontal: 10),
+      contentPadding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
       leading:Container(
-        height: 42.h,
+        height: 34.h,
         width: 40.w,
         padding: EdgeInsets.all(2),
         decoration: BoxDecoration(

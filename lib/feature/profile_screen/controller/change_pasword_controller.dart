@@ -51,6 +51,14 @@ class ChangePaswordController extends GetxController {
               is_auth: true,
             );
 
+            final response2 = await _networkConfig.ApiRequestHandler(
+              RequestMethod.GET,
+              Urls.getUserProfile,
+             {},
+              is_auth: true,
+            );
+
+
             log(response.toString());
             if (response != null && response['success'] == true) {
               AppSnackbar.show(

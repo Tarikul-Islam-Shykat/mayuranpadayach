@@ -3,6 +3,8 @@ class Urls {
   static const String signUp = '$baseUrl/users/register';
   static const String verifyOTP = '$baseUrl/auth/verify-otp';
   static const String changePassword = '$baseUrl/auth/change-password';
+  static const String getUserProfile = '$baseUrl/auth/profile';
+
 
   // --------------------------------------
   static const String login = '$baseUrl/auth/login';
@@ -17,5 +19,8 @@ class Urls {
 
   //---------------------------Admin---------------------------------------
   static const String addBusiness = "$baseUrl/businesses/create";
+  static const String editBusiness = "$baseUrl/businesses";  //id PUT
   static const String addBusinessCategory = "$baseUrl/categories";
+  static const String userBusiness = "$baseUrl/businesses?limit=10";
+  static const String adminBusinessDetails = "$baseUrl/businesses"; //id
 }
