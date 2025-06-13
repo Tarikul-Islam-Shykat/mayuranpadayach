@@ -23,4 +23,5 @@ class Urls {
   static const String addBusinessCategory = "$baseUrl/categories";
   static const String userBusiness = "$baseUrl/businesses?limit=10";
   static const String adminBusinessDetails = "$baseUrl/businesses"; //id
+  static const String allServiceGet = "$baseUrl/services/all"; //id
 }

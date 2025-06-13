@@ -108,12 +108,12 @@ class BusinessDetailsScreen extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               SizedBox(
-                                width: MediaQuery.sizeOf(context).width*0.7,
+                                width: MediaQuery.sizeOf(context).width*0.6,
                                 child: Text(
                                   "${data.address}",
                                   style: GoogleFonts.poppins(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 16.sp,
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 15.sp,
                                       color: AppColors.whiteColor),
                                 ),
                               ),
@@ -148,7 +148,7 @@ class BusinessDetailsScreen extends StatelessWidget {
                             child: Text(
                               "${detailsController.adminBusinessDetailsModel.value.openStatus}",
                               style: GoogleFonts.poppins(
-                                  fontWeight: FontWeight.w500,
+                                  fontWeight: FontWeight.w400,
                                   fontSize: 12.sp,
                                   color: AppColors.whiteColor),
                             ),
@@ -161,7 +161,15 @@ class BusinessDetailsScreen extends StatelessWidget {
                 SizedBox(
                   height: 20.h,
                 ),
-                serviceTile((){}, 'Services', ImagePath.service),
+                serviceTile((){
+                  Get.toNamed(
+                      arguments:{
+                        "id":data.id.toString(),
+                        //"id":"68382b3843d158737954cdd6",
+                      },
+                      AppRoute.adminServiceScreen);
+                  log("id-----------${data.id}");
+                }, 'Services', ImagePath.service),
                 serviceTile(()=> Get.toNamed(AppRoute.serviceSpecialistScreen), 'Specialist', ImagePath.specialist),
                 serviceTile(()=> Get.toNamed(AppRoute.servicePortfolioScreen), "Portfolio", ImagePath.portfolio),
                 serviceTile((){}, "Review", ImagePath.rating),
@@ -324,7 +332,7 @@ class BusinessDetailsScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     SizedBox(
-                      width: 300.w,
+                      width:MediaQuery.sizeOf(context).width*0.8,
                       child: Text(
                         controller.locationName.isNotEmpty
                             ? controller.locationName
@@ -415,7 +423,10 @@ class BusinessDetailsScreen extends StatelessWidget {
 
             SizedBox(height: 10.h,),
               Obx(() => InkWell(
-                onTap: ()=>controller.status.value == "OPEN",
+                onTap: (){
+                  controller.status.value =
+                  controller.status.value == "OPEN" ? "CLOSED" : "OPEN";
+                },
                 child: Container(
                   height: 45.h,
                   padding: EdgeInsets.symmetric(horizontal: 10),
@@ -501,7 +512,7 @@ class BusinessDetailsScreen extends StatelessWidget {
               ),
             ),
             SizedBox(
-              height: 30.h,
+              height: 20.h,
             ),
             Obx(()=>controller.isAddBusinessLoading.value?
             btnLoading():CustomButton(
