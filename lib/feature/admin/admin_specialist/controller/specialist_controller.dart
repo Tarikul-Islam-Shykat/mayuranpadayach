@@ -1,43 +1,50 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
-import 'dart:typed_data';
-import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:http/http.dart' as http;
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:prettyrini/core/network_caller/endpoints.dart';
-import 'package:prettyrini/core/network_caller/network_config.dart';
+import 'package:prettyrini/feature/admin/admin_service/controller/service_controller.dart';
 import 'package:prettyrini/feature/admin/admin_service/model/all_service_model.dart';
+import 'package:prettyrini/feature/admin/admin_specialist/model/get_specialist_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../../../../core/global_widegts/app_snackbar.dart';
+import '../../../../core/network_caller/endpoints.dart';
+import '../../../../core/network_caller/network_config.dart';
 
-class ServiceController extends GetxController{
-  Rx<TextEditingController> serviceNameTEC = TextEditingController().obs;
-  Rx<TextEditingController> servicePriceTEC = TextEditingController().obs;
-  Rx<TextEditingController> offerPercentTEC = TextEditingController().obs;
-  RxList<ServiceModel> serviceModel = <ServiceModel>[].obs;
-  Rx<ServiceModel?> selectedService = Rx<ServiceModel?>(null);
 
-  var isLoadingService = false.obs;
-  var isLoadingCreate = false.obs;
-  RxBool isEditing = false.obs;
-  RxBool isActive = true.obs;
-  RxBool isOffered = false.obs;
 
+class SpecialistController extends GetxController{
+
+  Rx<TextEditingController> nameTEC = TextEditingController().obs;
+  Rx<TextEditingController> specialistTEC = TextEditingController().obs;
+  Rx<TextEditingController> specialistExperienceTEC = TextEditingController().obs;
+  RxList<GetSpecialistModel> specialistModel = <GetSpecialistModel>[].obs;
+
+  RxBool isLoadingSpecialist = false.obs;
   var hasMore = true.obs;
   var page = 1.obs;
-  var errorMessage = "".obs;
+  RxBool isEditing = false.obs;
+  RxBool isActive = false.obs;
+  RxString errorMessage = "".obs;
   var uploadProgress = 0.0.obs;
-  var imageSizeText = ''.obs;
-  final _picker = ImagePicker();
-  Rx<File?> serviceImage = Rx<File?>(null);
+  RxString imageSizeText = ''.obs;
   RxString serviceImageUrl = ''.obs;
   RxString editingServiceId = ''.obs;
-
+  final _picker = ImagePicker();
+  Rx<File?> serviceImage = Rx<File?>(null);
   final NetworkConfig _networkConfig = NetworkConfig();
+  @override
+  void onInit() {
+    super.onInit();
+    getAllSpecialist();
+  }
+  RxList<ServiceModel> serviceList = <ServiceModel>[].obs;
+  Rx<ServiceModel?> selectedService = Rx<ServiceModel?>(null);
+
 
 
   //service create
@@ -166,101 +173,29 @@ class ServiceController extends GetxController{
     }
 
   }
-  Future<bool> createService(id)async{
+  Future<bool> createSpecialist({required String businessId})async{
     if (serviceImage.value == null) {
       errorMessage.value = 'Please select a Image';
       return false;
     }
     try{
-      isLoadingCreate.value = true;
+      isLoadingSpecialist.value = true;
       errorMessage.value = '';
       uploadProgress.value = 0.0;
-      final request = http.MultipartRequest("POST", Uri.parse(Urls.serviceCreate),);
+      final request = http.MultipartRequest("POST", Uri.parse(Urls.createAdminSpecialist),);
       SharedPreferences sh = await SharedPreferences.getInstance();
       request.headers.addAll({
         'Content-Type': 'multipart/form-data',
         'Authorization': "${sh.getString("token")}",
       });
       // Create the JSON data for the data field
+      final serviceId = Get.put(ServiceController()).selectedService.value!.id.toString();
       Map<String, dynamic> data = {
-        "name":serviceNameTEC.value.text,
-        "price":double.parse(servicePriceTEC.value.text),
-        "businessId":id.toString(),
-      };
-      request.fields['data'] = json.encode(data);
-      debugPrint("response body------- $data");
-      var imageBytes  = await serviceImage.value!.readAsBytes();
-      var multipartFile = http.MultipartFile.fromBytes(
-        'image', // Field name for image as shown in Postman
-        imageBytes,
-        filename: 'profile_${DateTime.now().millisecondsSinceEpoch}.jpg',
-      );
-      request.files.add(multipartFile);
-
-      // Send request with progress tracking
-      var streamedResponse = await request.send();
-
-      for(int i = 0 ; i<=100; i += 10){
-        uploadProgress.value = i.toDouble();
-        await Future.delayed(Duration(milliseconds: 50));
-      }
-      final response = await http.Response.fromStream(streamedResponse);
-      final responseJson = json.decode(response.body);
-
-      log("Image upload response: $responseJson");
-      log("Status code: ${response.statusCode}");
-      if(response.statusCode == 201 && responseJson['success'] == true){
-        await getAllService(id);
-        allClear();
-        Get.back();
-        AppSnackbar.show(
-          message: "Image uploaded successfully!",
-          isSuccess: true,
-        );
-        Get.back();
-        return true;
-
-      }else{
-        errorMessage.value = responseJson['message'] ?? 'Upload failed';
-        log("Upload failed: ${responseJson['message']}");
-        return false;
-      }
-
-    }catch(e){
-      log("Profile picture upload error: $e");
-      errorMessage.value = 'Upload failed: ${e.toString()}';
-      return false;
-    }finally{
-      isLoadingCreate.value = false;
-    }
-  }
-
-
-  Future<bool> editService(businessId,serviceId)async{
-    if (serviceImage.value == null) {
-      errorMessage.value = 'Please select a Image';
-      return false;
-    }
-    try{
-      isLoadingCreate.value = true;
-      errorMessage.value = '';
-      uploadProgress.value = 0.0;
-      final request = http.MultipartRequest("PUT", Uri.parse("${Urls.serviceEdit}/$serviceId"),);
-      SharedPreferences sh = await SharedPreferences.getInstance();
-      request.headers.addAll({
-        'Content-Type': 'multipart/form-data',
-        'Authorization': "${sh.getString("token")}",
-      });
-      // Create the JSON data for the data field
-      Map<String, dynamic> data = {
-        "name":serviceNameTEC.value.text,
-        "price":double.parse(servicePriceTEC.value.text),
-        "businessId":businessId.toString(),
-        "isActive":isActive.value,
-        "isOffered": isOffered.value,
-        "offeredPercent": isOffered.value
-            ? int.tryParse(offerPercentTEC.value.text) ?? 0
-            : 0,
+        "fullName":nameTEC.value.text,
+        "specialization": specialistTEC.value.text,
+        "businessId": businessId,
+        "serviceId": serviceId,
+        "experience": int.parse(specialistExperienceTEC.value.text)
       };
       request.fields['data'] = json.encode(data);
       debugPrint("response body------- $data");
@@ -285,8 +220,8 @@ class ServiceController extends GetxController{
       log("Image upload response: $responseJson");
       log("Status code: ${response.statusCode}");
       if(response.statusCode == 201 || response.statusCode == 200 && responseJson['success'] == true){
-        await getAllService(businessId);
-        allClear();
+        // await getAllService(id);
+        // allClear();
         Get.back();
         AppSnackbar.show(
           message: "Image uploaded successfully!",
@@ -306,44 +241,113 @@ class ServiceController extends GetxController{
       errorMessage.value = 'Upload failed: ${e.toString()}';
       return false;
     }finally{
-      isLoadingCreate.value = false;
+      isLoadingSpecialist.value = false;
     }
   }
 
-  void setEditServiceData(ServiceModel service) {
-    isEditing.value = true;
-    editingServiceId.value = service.id.toString()??"";
-    serviceNameTEC.value.text = service.name ?? '';
-    servicePriceTEC.value.text = service.price.toString();
-    isActive.value = service.isActive ?? true;
-    isOffered.value = service.isOffered ?? true;
-    offerPercentTEC.value.text = service.offeredPercent?.toString() ?? '';
+  //edit specialist
+  Future<bool> editSpecialist(serviceId)async{
+    if (serviceImage.value == null) {
+      errorMessage.value = 'Please select a Image';
+      return false;
+    }
+    try{
+      isLoadingSpecialist.value = true;
+      errorMessage.value = '';
+      uploadProgress.value = 0.0;
+      final request = http.MultipartRequest("PUT", Uri.parse("${Urls.editAdminSpecialist}/$serviceId"),);
+      SharedPreferences sh = await SharedPreferences.getInstance();
+      request.headers.addAll({
+        'Content-Type': 'multipart/form-data',
+        'Authorization': "${sh.getString("token")}",
+      });
+      // Create the JSON data for the data field
+      Map<String, dynamic> data = {
+      "fullName":nameTEC.value.text,
+      "specialization":specialistTEC.value.text,
+      "experience": specialistExperienceTEC.value.text,
+        "status": isActive.value ? "ACTIVE" : "INACTIVE",
+      };
+      request.fields['data'] = json.encode(data);
+      debugPrint("response body------- $data");
+      var imageBytes  = await serviceImage.value!.readAsBytes();
+      var multipartFile = http.MultipartFile.fromBytes(
+        'image', // Field name for image as shown in Postman
+        imageBytes,
+        filename: 'profile_${DateTime.now().millisecondsSinceEpoch}.jpg',
+      );
+      request.files.add(multipartFile);
 
-    if (service.image != null) {
-      serviceImageUrl.value = service.image!;
+      // Send request with progress tracking
+      var streamedResponse = await request.send();
+
+      for(int i = 0 ; i<=100; i += 10){
+        uploadProgress.value = i.toDouble();
+        await Future.delayed(Duration(milliseconds: 50));
+      }
+      final response = await http.Response.fromStream(streamedResponse);
+      final responseJson = json.decode(response.body);
+
+      log("Image upload response: $responseJson");
+      log("Status code: ${response.statusCode}");
+      if(response.statusCode == 201 || response.statusCode == 200 && responseJson['success'] == true){
+        Get.back();
+        AppSnackbar.show(
+          message: "Image uploaded successfully!",
+          isSuccess: true,
+        );
+        Get.back();
+        return true;
+
+      }else{
+        errorMessage.value = responseJson['message'] ?? 'Upload failed';
+        log("Upload failed: ${responseJson['message']}");
+        return false;
+      }
+
+    }catch(e){
+      log("Profile picture upload error: $e");
+      errorMessage.value = 'Upload failed: ${e.toString()}';
+      return false;
+    }finally{
+      isLoadingSpecialist.value = false;
+    }
+  }
+
+  void setEditSpecialistData(GetSpecialistModel specialist) {
+    isEditing.value = true;
+    editingServiceId.value = specialist.id ?? '';
+    nameTEC.value.text =specialist.fullName.toString();
+    specialistTEC.value.text= specialist.specialization.toString();
+    specialistExperienceTEC.value.text= specialist.experience.toString();
+    isActive.value = specialist.status == "ACTIVE";
+
+    if (specialist.profileImage != null) {
+      serviceImageUrl.value = specialist.profileImage!;
       serviceImage.value = null;
     }
   }
 
 
-  Future<bool> getAllService(id)async{
-    if(isLoadingService.value || !hasMore.value){
+
+  Future<bool> getAllSpecialist()async{
+    if(isLoadingSpecialist.value || !hasMore.value){
       return false;
     }
-    isLoadingService.value = true;
+    isLoadingSpecialist.value = true;
     try{
       final response = await _networkConfig.ApiRequestHandler(
           RequestMethod.GET,
-          "${Urls.allServiceGet}/$id?page=${page.value}&limit=10",{},is_auth: true);
+          "${Urls.getAdminSpecialist}&page=${page.value}",{},is_auth: true);
       log("service response  $response");
       if(response != null && response["success"] == true){
+        allClear();
         List dataList = response["data"]["data"];
         if(dataList.isEmpty){
           hasMore.value = false;
         }else{
-          List<ServiceModel> serviceData = dataList.map((e)=>ServiceModel.fromJson(e)).toList();
-          //serviceModel.assignAll(serviceData);
-          serviceModel.addAll(serviceData);
+          List<GetSpecialistModel> specialistData = dataList.map((e)=>GetSpecialistModel.fromJson(e)).toList();
+          specialistModel.addAll(specialistData);
           page.value ++;
         }
         return true;
@@ -356,22 +360,19 @@ class ServiceController extends GetxController{
     }catch(e){
       log("Error in getAllService $e");
     }finally{
-      isLoadingService.value = false;
+      isLoadingSpecialist.value = false;
     }
     return false;
   }
 
 
   void allClear() {
-    serviceNameTEC.value.clear();
-    servicePriceTEC.value.clear();
-    offerPercentTEC.value.clear();
-    isOffered.value = false;
+    nameTEC.value.clear();
+    specialistExperienceTEC.value.clear();
+    specialistTEC.value.clear();
     isActive.value = true;
     serviceImage.value = null;
     serviceImageUrl.value = '';
     isEditing.value = false;
-    editingServiceId.value = '';
   }
-
 }

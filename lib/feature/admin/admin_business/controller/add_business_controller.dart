@@ -8,7 +8,6 @@ import 'package:get/get.dart';
 import 'package:http/http.dart'as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:prettyrini/feature/admin/admin_business/model/business_category_model.dart';
-import 'package:prettyrini/feature/admin/admin_business/model/get_admin_business.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../core/global_widegts/app_snackbar.dart';
 import '../../../../core/network_caller/endpoints.dart';
@@ -367,7 +366,7 @@ class AddBusinessController extends GetxController{
 
     // Here replace imagePath with the correct field name, for example image:
     if (data.image != null && data.image.isNotEmpty) {
-      profileImage.value = null; // আগের লোকাল ইমেজ null করো
+      profileImage.value = null;
       profileImageUrl.value = data.image ?? '';
     }
   }

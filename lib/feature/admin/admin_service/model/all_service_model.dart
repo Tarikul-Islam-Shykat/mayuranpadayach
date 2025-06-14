@@ -2,7 +2,7 @@ class ServiceModel {
   String? id;
   String? name;
   String? description;
-  int? price;
+  dynamic price;
   String? image;
   bool? isActive;
   bool? isOffered;

@@ -82,3 +82,22 @@ serviceTile(
     ),
   );
 }
+
+Widget fieldText({
+  required String name,
+}){
+  return Column(
+    mainAxisAlignment: MainAxisAlignment.start,
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Text(
+       name,
+        style: GoogleFonts.poppins(
+            fontSize: 14.sp,
+            fontWeight: FontWeight.w600,
+            color: AppColors.textBlackColor),
+      ),
+      SizedBox(height: 5,),
+    ],
+  );
+}

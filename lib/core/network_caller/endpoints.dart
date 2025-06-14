@@ -23,5 +23,13 @@ class Urls {
   static const String addBusinessCategory = "$baseUrl/categories";
   static const String userBusiness = "$baseUrl/businesses?limit=10";
   static const String adminBusinessDetails = "$baseUrl/businesses"; //id
+
   static const String allServiceGet = "$baseUrl/services/all"; //id
+  static const String serviceCreate = "$baseUrl/services"; //id
+  static const String serviceEdit = "$baseUrl/services"; //id PUT
+
+
+  static const String getAdminSpecialist = "$baseUrl/specialists/all?limit=10"; //page GET ID
+  static const String createAdminSpecialist = "$baseUrl/specialists"; //POST
+  static const String editAdminSpecialist = "$baseUrl/specialists"; //PUT
 }
