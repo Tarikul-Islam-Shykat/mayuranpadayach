@@ -3,7 +3,7 @@ import 'package:prettyrini/feature/admin/admin_booking/view/booking_screen.dart'
 import 'package:prettyrini/feature/admin/admin_business/view/business_screen.dart';
 import 'package:prettyrini/feature/admin/admin_home/view/admin_home_screen.dart';
 import 'package:prettyrini/feature/admin/admin_service/view/about_screen.dart';
-import 'package:prettyrini/feature/admin/admin_service/view/portfolio_screen.dart';
+import 'package:prettyrini/feature/admin/admin_portfolio/view/portfolio_screen.dart';
 import 'package:prettyrini/feature/admin/admin_business/view/business_details_screen.dart';
 import 'package:prettyrini/feature/admin/admin_service/view/service_screen.dart';
 import 'package:prettyrini/feature/auth/screen/otp_very_screen.dart';

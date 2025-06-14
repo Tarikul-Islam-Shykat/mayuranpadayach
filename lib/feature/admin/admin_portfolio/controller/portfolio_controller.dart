@@ -1,33 +1,26 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
-import 'package:http/http.dart' as http;
 import 'dart:typed_data';
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:prettyrini/feature/admin/admin_service/controller/service_controller.dart';
-import 'package:prettyrini/feature/admin/admin_service/model/all_service_model.dart';
+import 'package:prettyrini/core/network_caller/endpoints.dart';
+import 'package:prettyrini/core/network_caller/network_config.dart';
+import 'package:prettyrini/feature/admin/admin_portfolio/model/get_portfolio_model.dart';
+import 'package:prettyrini/feature/admin/admin_specialist/controller/specialist_controller.dart';
 import 'package:prettyrini/feature/admin/admin_specialist/model/get_specialist_model.dart';
+import 'package:http/http.dart' as http;
+import 'package:prettyrini/feature/customer_flow/user_choose_specialist/controller/specialist_controller.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../core/global_widegts/app_snackbar.dart';
-import '../../../../core/network_caller/endpoints.dart';
-import '../../../../core/network_caller/network_config.dart';
+import '../../admin_service/controller/service_controller.dart';
 
-
-
-class AdminSpecialistController extends GetxController{
-
-  Rx<TextEditingController> nameTEC = TextEditingController().obs;
-  Rx<TextEditingController> specialistTEC = TextEditingController().obs;
-  Rx<TextEditingController> specialistExperienceTEC = TextEditingController().obs;
-  RxList<GetSpecialistModel> specialistModel = <GetSpecialistModel>[].obs;
-  Rx<GetSpecialistModel?> selectedSpecialist = Rx<GetSpecialistModel?>(null);
-
-  RxBool isLoadingSpecialist = false.obs;
-  var hasMore = true.obs;
-  var page = 1.obs;
+class PortfolioController extends GetxController{
+  RxList<GetPortfolioModel> portfolioModel = <GetPortfolioModel>[].obs;
+  Rx<TextEditingController> title = TextEditingController().obs;
+  RxBool isLoadingPortfolio = false.obs;
   RxBool isEditing = false.obs;
   RxBool isActive = false.obs;
   RxString errorMessage = "".obs;
@@ -37,14 +30,38 @@ class AdminSpecialistController extends GetxController{
   RxString editingServiceId = ''.obs;
   final _picker = ImagePicker();
   Rx<File?> serviceImage = Rx<File?>(null);
+  RxList<GetSpecialistModel> specialistList = <GetSpecialistModel>[].obs;
+  Rx<GetSpecialistModel?> selectedSpecialist = Rx<GetSpecialistModel?>(null);
   final NetworkConfig _networkConfig = NetworkConfig();
+
   @override
-  void onInit() {
+  onInit(){
     super.onInit();
-    getAllSpecialist();
+    getPortfolio();
   }
-  RxList<ServiceModel> serviceList = <ServiceModel>[].obs;
-  Rx<ServiceModel?> selectedService = Rx<ServiceModel?>(null);
+
+
+  Future<bool> getPortfolio()async{
+    isLoadingPortfolio.value = true;
+    try{
+      final response = await _networkConfig.ApiRequestHandler(RequestMethod.GET, Urls.getPortfolio,{},is_auth: true);
+      if(response != null && response['success'] == true){
+        portfolioModel.value = List<GetPortfolioModel>.from(response["data"].map((e)=>GetPortfolioModel.fromJson(e)));
+        log("${response['message']}");
+        return true;
+      }else{
+        log("${response['message']}");
+        return false;
+      }
+    }catch(e){
+      log("get portfolio failed $e");
+      return false;
+    }finally{
+      isLoadingPortfolio.value = false;
+    }
+
+  }
+
 
 
 
@@ -175,104 +192,31 @@ class AdminSpecialistController extends GetxController{
 
   }
 
-  Future<bool> createSpecialist({required String businessId})async{
+  Future<bool> createPortfolio({required String businessId})async{
+    log("nothing-----");
     if (serviceImage.value == null) {
       errorMessage.value = 'Please select a Image';
       return false;
     }
     try{
-      isLoadingSpecialist.value = true;
+      isLoadingPortfolio.value = true;
       errorMessage.value = '';
       uploadProgress.value = 0.0;
-      final request = http.MultipartRequest("POST", Uri.parse(Urls.createAdminSpecialist),);
+      final request = http.MultipartRequest("POST", Uri.parse(Urls.createPortfolio),);
       SharedPreferences sh = await SharedPreferences.getInstance();
       request.headers.addAll({
         'Content-Type': 'multipart/form-data',
         'Authorization': "${sh.getString("token")}",
       });
       // Create the JSON data for the data field
-      final serviceId = Get.put(ServiceController()).selectedService.value!.id.toString();
+
       Map<String, dynamic> data = {
-        "fullName":nameTEC.value.text,
-        "specialization": specialistTEC.value.text,
-        "businessId": businessId,
-        "serviceId": serviceId,
-        "experience": int.parse(specialistExperienceTEC.value.text)
+          "title":title.value.text,
+          "specialistId":selectedSpecialist.value!.id.toString(),
+          "businessId":businessId.toString()
       };
       request.fields['data'] = json.encode(data);
-      debugPrint("response body------- $data");
-      var imageBytes  = await serviceImage.value!.readAsBytes();
-      var multipartFile = http.MultipartFile.fromBytes(
-        'image', // Field name for image as shown in Postman
-        imageBytes,
-        filename: 'profile_${DateTime.now().millisecondsSinceEpoch}.jpg',
-      );
-      request.files.add(multipartFile);
-
-      // Send request with progress tracking
-      var streamedResponse = await request.send();
-
-      for(int i = 0 ; i<=100; i += 10){
-        uploadProgress.value = i.toDouble();
-        await Future.delayed(Duration(milliseconds: 50));
-      }
-      final response = await http.Response.fromStream(streamedResponse);
-      final responseJson = json.decode(response.body);
-
-      log("Image upload response: $responseJson");
-      log("Status code: ${response.statusCode}");
-      if(response.statusCode == 201 || response.statusCode == 200 && responseJson['success'] == true){
-        // await getAllService(id);
-        // allClear();
-        Get.back();
-        AppSnackbar.show(
-          message: "Image uploaded successfully!",
-          isSuccess: true,
-        );
-        Get.back();
-        return true;
-
-      }else{
-        errorMessage.value = responseJson['message'] ?? 'Upload failed';
-        log("Upload failed: ${responseJson['message']}");
-        return false;
-      }
-
-    }catch(e){
-      log("Profile picture upload error: $e");
-      errorMessage.value = 'Upload failed: ${e.toString()}';
-      return false;
-    }finally{
-      isLoadingSpecialist.value = false;
-    }
-  }
-
-  //edit specialist
-  Future<bool> editSpecialist(id)async{
-    if (serviceImage.value == null) {
-      errorMessage.value = 'Please select a Image';
-      Get.snackbar("Failed", "Please select a Image");
-      return false;
-    }
-    try{
-      isLoadingSpecialist.value = true;
-      errorMessage.value = '';
-      uploadProgress.value = 0.0;
-      final request = http.MultipartRequest("PUT", Uri.parse("${Urls.editAdminSpecialist}/$id"),);
-      SharedPreferences sh = await SharedPreferences.getInstance();
-      request.headers.addAll({
-        'Content-Type': 'multipart/form-data',
-        'Authorization': "${sh.getString("token")}",
-      });
-      // Create the JSON data for the data field
-      Map<String, dynamic> data = {
-      "fullName":nameTEC.value.text,
-      "specialization":specialistTEC.value.text,
-      "experience": int.parse(specialistExperienceTEC.value.text),
-       "status": isActive.value ? "ACTIVE" : "INACTIVE",
-      };
-      request.fields['data'] = json.encode(data);
-      debugPrint("response body------- $data");
+      log("response body------- $data");
       var imageBytes  = await serviceImage.value!.readAsBytes();
       var multipartFile = http.MultipartFile.fromBytes(
         'image',
@@ -294,6 +238,8 @@ class AdminSpecialistController extends GetxController{
       log("Image upload response: $responseJson");
       log("Status code: ${response.statusCode}");
       if(response.statusCode == 201 || response.statusCode == 200 && responseJson['success'] == true){
+         await getPortfolio();
+         allClear();
         Get.back();
         AppSnackbar.show(
           message: "Image uploaded successfully!",
@@ -313,69 +259,103 @@ class AdminSpecialistController extends GetxController{
       errorMessage.value = 'Upload failed: ${e.toString()}';
       return false;
     }finally{
-      isLoadingSpecialist.value = false;
+      isLoadingPortfolio.value = false;
     }
   }
 
-  void setEditSpecialistData(GetSpecialistModel specialist) {
-    isEditing.value = true;
-    editingServiceId.value = specialist.id ?? '';
-    nameTEC.value.text =specialist.fullName.toString();
-    specialistTEC.value.text= specialist.specialization.toString();
-    specialistExperienceTEC.value.text= specialist.experience.toString();
-    isActive.value = specialist.status == "ACTIVE";
+  //edit specialist
+  Future<bool> editPortfolio(id)async{
+    if (serviceImage.value == null) {
+      errorMessage.value = 'Please select a Image';
+      Get.snackbar("Failed", "Please select a Image");
+      return false;
+    }
+    try{
+      isLoadingPortfolio.value = true;
+      errorMessage.value = '';
+      uploadProgress.value = 0.0;
+      final request = http.MultipartRequest("PUT", Uri.parse("${Urls.editPortfolio}/$id"),);
+      SharedPreferences sh = await SharedPreferences.getInstance();
+      request.headers.addAll({
+        'Content-Type': 'multipart/form-data',
+        'Authorization': "${sh.getString("token")}",
+      });
+      // Create the JSON data for the data field
 
-    if (specialist.profileImage != null) {
-      serviceImageUrl.value = specialist.profileImage!;
+      Map<String, dynamic> data = {
+      "title":title.value.text,
+      "specialistId":selectedSpecialist.value!.id.toString()
+      };
+      request.fields['data'] = json.encode(data);
+      log("response body------- $data");
+      var imageBytes  = await serviceImage.value!.readAsBytes();
+      var multipartFile = http.MultipartFile.fromBytes(
+        'image',
+        imageBytes,
+        filename: 'profile_${DateTime.now().millisecondsSinceEpoch}.jpg',
+      );
+      request.files.add(multipartFile);
+
+      // Send request with progress tracking
+      var streamedResponse = await request.send();
+
+      for(int i = 0 ; i<=100; i += 10){
+        uploadProgress.value = i.toDouble();
+        await Future.delayed(Duration(milliseconds: 50));
+      }
+      final response = await http.Response.fromStream(streamedResponse);
+      final responseJson = json.decode(response.body);
+
+      log("Image upload response: $responseJson");
+      log("Status code: ${response.statusCode}");
+      if(response.statusCode == 201 || response.statusCode == 200 && responseJson['success'] == true){
+        allClear();
+        Get.back();
+
+        AppSnackbar.show(
+          message: "Image uploaded successfully!",
+          isSuccess: true,
+        );
+        Get.back();
+        return true;
+
+      }else{
+        errorMessage.value = responseJson['message'] ?? 'Upload failed';
+        log("Upload failed: ${responseJson['message']}");
+        return false;
+      }
+
+    }catch(e){
+      log("Profile picture upload error: $e");
+      errorMessage.value = 'Upload failed: ${e.toString()}';
+      return false;
+    }finally{
+      isLoadingPortfolio.value = false;
+    }
+  }
+
+  void setEditPortfolioData(GetPortfolioModel portfolio) {
+    final matchedSpecialist = Get.find<AdminSpecialistController>()
+        .specialistModel
+        .firstWhereOrNull((element) => element.id == portfolio.specialistId);
+
+    Get.find<AdminSpecialistController>().selectedSpecialist.value = matchedSpecialist;
+    isEditing.value = true;
+    editingServiceId.value = portfolio.id ?? '';
+    title.value.text =portfolio.title.toString();
+    selectedSpecialist.value= matchedSpecialist;
+
+    if (portfolio.image != null) {
+      serviceImageUrl.value = portfolio.image!;
       serviceImage.value = null;
     }
   }
 
-
-
-  Future<bool> getAllSpecialist()async{
-    if(isLoadingSpecialist.value || !hasMore.value){
-      return false;
-    }
-    isLoadingSpecialist.value = true;
-    try{
-      final response = await _networkConfig.ApiRequestHandler(
-          RequestMethod.GET,
-          "${Urls.getAdminSpecialist}&page=${page.value}",{},is_auth: true);
-      log("service response  $response");
-      if(response != null && response["success"] == true){
-        allClear();
-        List dataList = response["data"]["data"];
-        if(dataList.isEmpty){
-          hasMore.value = false;
-        }else{
-          List<GetSpecialistModel> specialistData = dataList.map((e)=>GetSpecialistModel.fromJson(e)).toList();
-          specialistModel.addAll(specialistData);
-          page.value ++;
-        }
-        return true;
-      }else{
-        debugPrint("get service failed message: ${response["message"]}");
-        return false;
-      }
-
-
-    }catch(e){
-      log("Error in getAllService $e");
-    }finally{
-      isLoadingSpecialist.value = false;
-    }
-    return false;
-  }
-
-
   void allClear() {
-    nameTEC.value.clear();
-    specialistExperienceTEC.value.clear();
-    specialistTEC.value.clear();
-    isActive.value = true;
+    title.value.clear();
     serviceImage.value = null;
     serviceImageUrl.value = '';
+    selectedSpecialist.value=null;
     isEditing.value = false;
   }
 }

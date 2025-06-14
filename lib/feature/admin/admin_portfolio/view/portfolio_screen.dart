@@ -1,45 +1,33 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:get/get.dart';
+import 'package:prettyrini/core/global_widegts/app_network_image.dart';
 import 'package:prettyrini/core/global_widegts/loading_screen.dart';
-import 'package:prettyrini/feature/admin/admin_business/widget/common_dropdown_button.dart';
-import 'package:prettyrini/feature/admin/admin_service/controller/service_controller.dart';
 import 'package:prettyrini/feature/admin/admin_specialist/controller/specialist_controller.dart';
 import '../../../../core/const/app_colors.dart';
 import '../../../../core/const/image_path.dart';
-import '../../../../core/global_widegts/app_network_image.dart';
 import '../../../../core/global_widegts/custom_text.dart';
-import '../../../../route/route.dart';
 import '../../../auth/widget/custom_booton_widget.dart';
 import '../../../auth/widget/text_field_widget.dart';
 import '../../../profile_screen/widget/round_back_button.dart';
+import '../../admin_business/widget/common_dropdown_button.dart';
 import '../../admin_home/widget/custom_circular_button.dart';
-import '../../admin_service/model/all_service_model.dart';
 import '../../admin_service/widget/service_tile.dart';
+import '../../admin_specialist/model/get_specialist_model.dart';
+import '../controller/portfolio_controller.dart';
 
-class SpecialistScreen extends StatelessWidget {
-   SpecialistScreen({super.key}){
-     scrollController.addListener(() {
-       if (scrollController.position.pixels ==
-           scrollController.position.maxScrollExtent) {
-         controller.getAllSpecialist();
-       }
-     });
-   }
-   final AdminSpecialistController controller = Get.put(AdminSpecialistController());
-   final ServiceController serviceController = Get.put(ServiceController());
-   final scrollController = ScrollController();
+class PortfolioScreen extends StatelessWidget {
+   PortfolioScreen({super.key});
+   final PortfolioController controller = Get.put(PortfolioController());
+   final AdminSpecialistController specialistController = Get.put(AdminSpecialistController());
    final String? businessId = Get.arguments?["businessId"];
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      serviceController.getAllService(businessId);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      specialistController.getAllSpecialist();
     });
-
     return Scaffold(
       backgroundColor: AppColors.bgColor,
       appBar: AppBar(
@@ -47,81 +35,65 @@ class SpecialistScreen extends StatelessWidget {
         backgroundColor: AppColors.bgColor,
         leading: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: roundBackButton(() => Get.back()),
+          child: roundBackButton(()=>Get.back()),
         ),
-        title: Text(
-          "All Specialist",
-          style: GoogleFonts.poppins(
-              fontWeight: FontWeight.w600,
-              fontSize: 20.sp,
-              color: AppColors.textBlackColor),
-        ),
+        title:Text("Portfolio",style: GoogleFonts.poppins(fontWeight: FontWeight.w600,fontSize: 20.sp,color: AppColors.textBlackColor),) ,
         centerTitle: true,
         actions: [
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: CustomCircularButton(icon: Icon(Icons.add),
-                onTap: ()=>addSpecialistBuild(context)),
-          ),
+            child: CustomCircularButton(icon: Icon(Icons.add), onTap:()=>addPortfolioBuild(context),),
+          )
         ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(15.0),
-        child: Obx((){
-          if(controller.specialistModel.isEmpty && controller.isLoadingSpecialist.value){
+        child: Obx(() {
+          if(controller.isLoadingPortfolio.value){
             return Center(child: loading(),);
-          }else if(controller.specialistModel.isEmpty){
+          }else if(controller.portfolioModel.isEmpty){
             return Center(child: Text("No Data Found"),);
           }else{
-            return ListView.builder(
-              controller: scrollController,
-                itemCount: controller.hasMore.value
-                    ? controller.specialistModel.length + 1
-                    : controller.specialistModel.length,
+            return GridView.builder(
+                itemCount: controller.portfolioModel.length,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 4,
+                  crossAxisSpacing: 4,
+                  childAspectRatio: 1,
+                ),
                 itemBuilder: (context,index){
-                  if (index < controller.specialistModel.length) {
-                    final data = controller.specialistModel[index];
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 5.0),
-                      child: ListTile(
-                        onTap: (){},
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
+                  final data = controller.portfolioModel[index];
+                  return Center(
+                    child: Stack(
+                      children: [
+                        Container(
+                          height: 176,
+                          width: 172,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(18.r),
+                          ),
+                          child: ClipRRect(
+                              borderRadius: BorderRadius.circular(18.r),
+                              child: AppNetworkImage(src: "${data.image}")),
                         ),
-                        tileColor:Color(0xFFF1EEF9),
-                        contentPadding: EdgeInsets.symmetric(horizontal: 5),
-                        leading: ClipRRect(
-                          borderRadius: BorderRadius.circular(6),
-                          child: AppNetworkImage(
-                              height: 56.h,
-                              width: 56.w,
-                              src: "${data.profileImage}"),
+                        Positioned(
+                          right: 10,
+                          top: 10,
+                          child: CustomCircularButton(
+                            borderColor: AppColors.redColor,
+                            icon: Icon(Icons.remove,color: Colors.white,size: 18,),
+                            onTap: (){
+                              controller.setEditPortfolioData(data);
+                              addPortfolioBuild(context);
+                            },bgColor:AppColors.redColor,
+                            height: 24,width: 24,
+                          ),
                         ),
-                        title:Text("${data.fullName}",style: GoogleFonts.poppins(fontSize: 16.sp,fontWeight: FontWeight.w600,color: AppColors.textBlackColor),) ,
-                        subtitle:Text("${data.specialization}",style: GoogleFonts.poppins(fontSize: 10.sp,fontWeight: FontWeight.w500,color: AppColors.textBlackColor),),
-                        trailing:CustomCircularButton(
-                            height: 32,
-                            width: 32,
-                            icon: Image.asset(
-                              ImagePath.editIcon,
-                              color: Colors.black,
-                              height: 16,
-                              width: 16,
-                            ),
-                            onTap:(){
-                              controller.setEditSpecialistData(data);
-                              addSpecialistBuild(context);
-                            }) ,
-                      ),
-                    );
-                  }
 
-                  return controller.specialistModel.length >= 10 && controller.hasMore.value?  Center(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 20),
-                      child: loading(),
+                      ],
                     ),
-                  ):Center();
+                  );
                 });
           }
 
@@ -131,8 +103,7 @@ class SpecialistScreen extends StatelessWidget {
     );
   }
 
-  //same function edit and add just change name
-  Future<dynamic> addSpecialistBuild(BuildContext context) {
+  Future<dynamic> addPortfolioBuild(BuildContext context) {
     return Get.bottomSheet(
       isScrollControlled: true,
       backgroundColor: Colors.red,
@@ -162,8 +133,8 @@ class SpecialistScreen extends StatelessWidget {
               crossAxisAlignment:
               CrossAxisAlignment.center,
               children: [
-                Text(controller.isEditing.value?"Update Specialist":
-                  "Add Specialist",
+                Text(controller.isEditing.value?"Edit Portfolio":
+                  "Add Portfolio",
                   style: GoogleFonts.poppins(
                     fontWeight: FontWeight.w500,
                     fontSize: 20.sp,
@@ -178,79 +149,41 @@ class SpecialistScreen extends StatelessWidget {
                     icon: Icon(Icons.cancel_outlined))
               ],
             ),
-            SizedBox(
-              height: 10.h,
-            ),
+
             fieldText(name: "Name"),
             CustomAuthField(
               radiusValue2: 10,
               radiusValue: 10,
               controller:
-              controller.nameTEC.value,
-              hintText: "Arlene McCoy",
+              controller.title.value,
+              hintText: "Name",
             ),
             SizedBox(
               height: 10.h,
             ),
+            fieldText(name: "Specialist"),
+            Obx((){
+              if(specialistController.isLoadingSpecialist.value){
+                return Center(child: loading(),);
+              }else if(specialistController.specialistModel.isEmpty){
+                return Center(child: Text("no data"),);
+              }else{
+                return CommonDropdown<GetSpecialistModel>(
+                  items: specialistController.specialistModel,
+                  selectedItem: specialistController.selectedSpecialist.value,
+                  label: 'Select Specialist',
+                  itemAsString: (item) => item.fullName ?? '',
+                  onChanged: (value) {
+                    controller.selectedSpecialist.value = value;
+                  },
+                );
+              }
 
-
-            fieldText(name: "Hair Specialist"),
-            CustomAuthField(
-              radiusValue2: 10,
-              radiusValue: 10,
-              controller:
-              controller.specialistTEC.value,
-              hintText: "Hair Specialist",
+              }
             ),
             SizedBox(
               height: 10.h,
             ),
-
-            controller.isEditing.value?Center():fieldText(name: "Specialist"),
-
-
-            controller.isEditing.value?Center():Obx(() {
-              return CommonDropdown<ServiceModel>(
-                items: serviceController.serviceModel,
-                selectedItem: serviceController.selectedService.value,
-                label: "Specialist",
-                onChanged: (value) {
-                  serviceController.selectedService.value = value!;
-
-                },
-                itemAsString: (item) => item.name ?? "Unknown",
-              );
-            }),
-
-            SizedBox(height: 10.h,),
-            fieldText(name: "Year Of Experience"),
-            CustomAuthField(
-              radiusValue2: 10,
-              radiusValue: 10,
-              controller:
-              controller.specialistExperienceTEC.value,
-              hintText: "4 year",
-            ),
-            SizedBox(
-              height: 10.h,
-            ),
-            controller.isEditing.value ? Obx(() => SwitchListTile(
-              tileColor: AppColors.blackColor,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              contentPadding: EdgeInsets.symmetric(horizontal: 5),
-              title: Text("Status : ${controller.isActive.value ? "ACTIVE" : "INACTIVE"}",style: GoogleFonts.poppins(
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.textBlackColor
-              ),),
-              value: controller.isActive.value,
-              onChanged: (value) => controller.isActive.value = value,
-            )):Center(),
-
-
-
             fieldText(name: "Upload Image"),
             InkWell(
               onTap: () => _showImagePickerOptions(context),
@@ -306,22 +239,17 @@ class SpecialistScreen extends StatelessWidget {
                 ),
               ),
             ),
-
             SizedBox(
               height: 30.h,
             ),
             Obx(() {
-                return controller.isLoadingSpecialist.value?btnLoading(): CustomButton(
+                return controller.isLoadingPortfolio.value?btnLoading():CustomButton(
                     onTap: () {
-                        if (controller.isEditing.value) {
-                          print("Is editing: ${controller.isEditing.value}");
-                          print("id---------edit${controller.editingServiceId.value.toString()}");
-                          controller.editSpecialist(controller.editingServiceId.value.toString());
-                        } else {
-                          controller.createSpecialist(businessId: businessId.toString());
-                        }
-                        print("id---------edit${controller.editingServiceId.value.toString()}");
-
+                      if (controller.isEditing.value) {
+                        controller.editPortfolio(controller.editingServiceId.value.toString());
+                      } else {
+                        controller.createPortfolio(businessId: businessId.toString());
+                      }
                     },
                     title: Text(
                       "Save",
@@ -331,7 +259,8 @@ class SpecialistScreen extends StatelessWidget {
                           color: AppColors.whiteColor),
                     ));
               }
-            )
+            ),
+            SizedBox(height: 10.h,),
           ],
         ),
       ),
