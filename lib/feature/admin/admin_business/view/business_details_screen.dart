@@ -182,7 +182,11 @@ class BusinessDetailsScreen extends StatelessWidget {
                       "businessId":data.id.toString(),
                     },
                     AppRoute.servicePortfolioScreen), "Portfolio", ImagePath.portfolio),
-                serviceTile((){}, "Review", ImagePath.rating),
+                serviceTile(()=>Get.toNamed(
+                  arguments: {
+                    "businessId":data.id.toString(),
+                  },
+                    AppRoute.reviewAdminScreen), "Review", ImagePath.rating),
                 serviceTile(()=> Get.toNamed(AppRoute.serviceAboutScreen), "About", ImagePath.about),
               ],
             );

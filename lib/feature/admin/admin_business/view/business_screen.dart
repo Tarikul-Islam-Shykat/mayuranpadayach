@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:prettyrini/core/global_widegts/custom_text.dart';
 import 'package:prettyrini/feature/admin/admin_business/controller/add_business_controller.dart';
 import 'package:prettyrini/feature/admin/admin_business/controller/admin_business_controller.dart';
+import 'package:prettyrini/feature/admin/admin_business/controller/admin_subscription_controller.dart';
 import 'package:prettyrini/route/route.dart';
 import '../../../../core/const/app_colors.dart';
 import '../../../../core/const/image_path.dart';
@@ -28,6 +29,7 @@ class BusinessScreen extends StatelessWidget {
   final AddBusinessController controller = Get.put(AddBusinessController());
   final AdminBusinessController businessController = Get.put(AdminBusinessController());
   final GalleryController imageController = Get.put(GalleryController());
+  final AdminSubscriptionController subscriptionController = Get.put(AdminSubscriptionController());
 
   @override
   Widget build(BuildContext context) {
@@ -494,6 +496,7 @@ class BusinessScreen extends StatelessWidget {
     );
   }
   Future<dynamic> addBusinessPlane(BuildContext context) {
+    final AdminSubscriptionController controller = Get.put(AdminSubscriptionController());
     return Get.bottomSheet(
       isScrollControlled: true,
       shape: RoundedRectangleBorder(
@@ -521,7 +524,7 @@ class BusinessScreen extends StatelessWidget {
                 Text(
                   "Subscription Plan",
                   style: GoogleFonts.poppins(
-                    fontWeight: FontWeight.w500,
+                    fontWeight: FontWeight.w600,
                     fontSize: 16.sp,
                     color: AppColors.textBlackColor,
                   ),
@@ -533,111 +536,123 @@ class BusinessScreen extends StatelessWidget {
             ),
             SizedBox(height: 10.h,),
             SizedBox(
-             height: 515,
-              child: ListView.builder(
-                  itemCount: 3,
-                    scrollDirection: Axis.horizontal,
-
-                    itemBuilder: (context,index){
-                  return Container(
-                    width: 350,
-                    margin: EdgeInsets.symmetric(horizontal: 15),
-                    padding: EdgeInsets.symmetric(vertical: 10,horizontal: 10),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: Color(0xFFE9EAEE),
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text("Free",style:GoogleFonts.poppins(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 24.sp,
-                          color: AppColors.textBlackColor,
-                        ) ,),
-                        Text("\$2.00",style: GoogleFonts.poppins(
-                          decoration: TextDecoration.lineThrough,
-                          fontSize: 16,fontWeight: FontWeight.w400,color: AppColors.grayColor,
-                        ),),
-
-
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text("\$0.00",style: GoogleFonts.poppins(
-                              fontSize: 48.sp,fontWeight: FontWeight.w600,color: AppColors.textBlackColor,
-                            ),),
-                            Text("/month",style: GoogleFonts.poppins(
-                              fontSize: 16.sp,fontWeight: FontWeight.w500,color: AppColors.grayColor,
-                            ),),
-                          ],
-                        ),
-                        Text("15% Platform fee per booking",style: GoogleFonts.poppins(
-                          fontSize: 16,fontWeight: FontWeight.w400,color: AppColors.grayColor,
-                        ),),
-                        SizedBox(height: 10.h,),
-
-                        Container(
-                          margin: EdgeInsets.symmetric(horizontal: 10),
-                          padding: EdgeInsets.only(right:10,left:10,top:25,bottom:0),
-                          alignment: Alignment.center,
+             height: MediaQuery.sizeOf(context).height*0.54,
+              child: Obx((){
+                if(controller.isLoadingSubscription.value){
+                  return Center(child: loading(),);
+                }else if(controller.adminSubscription.isEmpty){
+                  return Center(child: Text("No Data Found"),);
+                }else{
+                  return ListView.builder(
+                      itemCount: controller.adminSubscription.length,
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (context,index){
+                        final data = controller.adminSubscription[index];
+                        return Container(
+                          width: 350,
+                          margin: EdgeInsets.symmetric(horizontal: 15),
+                          padding: EdgeInsets.symmetric(vertical: 10,horizontal: 10),
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Colors.grey.shade100,
+                            borderRadius: BorderRadius.circular(20),
+                            color: Color(0xFFE9EAEE),
                           ),
-                          child: ListView.builder(
-                              itemCount: 4,
-                              shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
-                              itemBuilder: (context,index){
-                                return Column(
-                                  mainAxisAlignment:MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      children: [
-                                        Text("Verified Badge",style: GoogleFonts.poppins(fontSize: 12.sp,fontWeight: FontWeight.w400,color: AppColors.textGreyColor),),
-                                        Icon(Icons.cancel_outlined,color: Colors.purple,),
-                                      ],
-                                    ),
-                                    Divider(),
-                                  ],
-                                );
-                              }),
-                        ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(data.title,style:GoogleFonts.poppins(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 24.sp,
+                                color: AppColors.textBlackColor,
+                              ) ,),
 
 
-                        SizedBox(height: 30,),
-                        InkWell(
-                          onTap: (){},
-                          child: Container(
-                            width: Get.width,
-                            padding: EdgeInsets.symmetric(vertical: 8.h),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              border: Border.all(color: Colors.purple),
-                              color:Colors.transparent,
-                            ),
-                            child: Center(child:Text("Choose Basic",style: GoogleFonts.poppins(
-                              fontSize: 20.sp,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.purple,
-                            ),),),
+
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text("\$${data.price}",style: GoogleFonts.poppins(
+                                    fontSize: 40.sp,fontWeight: FontWeight.w600,color: AppColors.textBlackColor,
+                                  ),),
+                                  Text("/ ${data.duration } month",style: GoogleFonts.poppins(
+                                    fontSize: 16.sp,fontWeight: FontWeight.w500,color: AppColors.grayColor,
+                                  ),),
+                                ],
+                              ),
+                              Text("${data.platformFee}% Platform fee per booking",style: GoogleFonts.poppins(
+                                fontSize: 16,fontWeight: FontWeight.w400,color: AppColors.grayColor,
+                              ),),
+                              SizedBox(height: 10.h,),
+
+
+
+
+                              Container(
+                                margin: EdgeInsets.symmetric(horizontal: 10),
+                                padding: EdgeInsets.only(right:10,left:10,top:25,bottom:0),
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: Colors.grey.shade100,
+                                ),
+
+                                child: ListView.builder(
+                                    itemCount: data.features.length,
+                                    shrinkWrap: true,
+                                    physics: NeverScrollableScrollPhysics(),
+                                    itemBuilder: (context,index){
+                                      final feature = data.features[index];
+                                      return Column(
+                                        mainAxisAlignment:MainAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            children: [
+                                              Text("${feature.category} Badge",style: GoogleFonts.poppins(fontSize: 12.sp,fontWeight: FontWeight.w400,color: AppColors.textGreyColor),),
+                                              Icon(feature.value?Icons.done:Icons.cancel_outlined,color: Colors.purple,),
+                                            ],
+                                          ),
+                                          Divider(),
+                                        ],
+                                      );
+                                    }),
+                              ),
+
+
+                              SizedBox(height: 10.h,),
+                              InkWell(
+                                onTap: (){},
+                                child: Container(
+                                  width: Get.width,
+                                  padding: EdgeInsets.symmetric(vertical: 8.h),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    border: Border.all(color: Colors.purple),
+                                    color:Colors.transparent,
+                                  ),
+                                  child: Center(child:Text("Choose Basic",style: GoogleFonts.poppins(
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.purple,
+                                  ),),),
+                                ),
+                              ),
+
+                              SizedBox(height: 10.h,),
+
+
+                            ],
                           ),
-                        ),
+                        );
+                      });
+                }
 
-                        SizedBox(height: 15.h,),
-
-
-                      ],
-                    ),
-                  );
-                }),
+                }
+              ),
 
             ),
             SizedBox(height: 20,),

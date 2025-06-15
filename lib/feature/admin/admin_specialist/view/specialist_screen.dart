@@ -12,7 +12,6 @@ import '../../../../core/const/app_colors.dart';
 import '../../../../core/const/image_path.dart';
 import '../../../../core/global_widegts/app_network_image.dart';
 import '../../../../core/global_widegts/custom_text.dart';
-import '../../../../route/route.dart';
 import '../../../auth/widget/custom_booton_widget.dart';
 import '../../../auth/widget/text_field_widget.dart';
 import '../../../profile_screen/widget/round_back_button.dart';
@@ -314,13 +313,13 @@ class SpecialistScreen extends StatelessWidget {
                 return controller.isLoadingSpecialist.value?btnLoading(): CustomButton(
                     onTap: () {
                         if (controller.isEditing.value) {
-                          print("Is editing: ${controller.isEditing.value}");
-                          print("id---------edit${controller.editingServiceId.value.toString()}");
+                          log("Is editing: ${controller.isEditing.value}");
+                          log("id---------edit${controller.editingServiceId.value.toString()}");
                           controller.editSpecialist(controller.editingServiceId.value.toString());
                         } else {
                           controller.createSpecialist(businessId: businessId.toString());
                         }
-                        print("id---------edit${controller.editingServiceId.value.toString()}");
+                        log("id---------edit${controller.editingServiceId.value.toString()}");
 
                     },
                     title: Text(

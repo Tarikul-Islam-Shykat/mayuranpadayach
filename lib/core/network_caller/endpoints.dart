@@ -37,4 +37,10 @@ class Urls {
   static const String createPortfolio = "$baseUrl/portfolios"; //POST
   static const String editPortfolio = "$baseUrl/portfolios"; //PUT id
 
+
+  static const String getReviewAdmin = "$baseUrl/reviews/business"; //GET id
+
+
+  static const String getAdminSubscription = "$baseUrl/subscriptionOffers"; //GET id
+
 }

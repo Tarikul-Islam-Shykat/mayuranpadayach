@@ -12,10 +12,8 @@ import 'package:prettyrini/feature/admin/admin_portfolio/model/get_portfolio_mod
 import 'package:prettyrini/feature/admin/admin_specialist/controller/specialist_controller.dart';
 import 'package:prettyrini/feature/admin/admin_specialist/model/get_specialist_model.dart';
 import 'package:http/http.dart' as http;
-import 'package:prettyrini/feature/customer_flow/user_choose_specialist/controller/specialist_controller.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../core/global_widegts/app_snackbar.dart';
-import '../../admin_service/controller/service_controller.dart';
 
 class PortfolioController extends GetxController{
   RxList<GetPortfolioModel> portfolioModel = <GetPortfolioModel>[].obs;

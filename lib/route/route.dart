@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:prettyrini/feature/admin/admin_booking/view/booking_screen.dart';
 import 'package:prettyrini/feature/admin/admin_business/view/business_screen.dart';
 import 'package:prettyrini/feature/admin/admin_home/view/admin_home_screen.dart';
+import 'package:prettyrini/feature/admin/admin_review/view/admin_review_screen.dart';
 import 'package:prettyrini/feature/admin/admin_service/view/about_screen.dart';
 import 'package:prettyrini/feature/admin/admin_portfolio/view/portfolio_screen.dart';
 import 'package:prettyrini/feature/admin/admin_business/view/business_details_screen.dart';
@@ -46,6 +47,7 @@ class AppRoute {
       "/service_about_details_screen";
   static const String bookingScreen = "/booking_screen";
   static const String bookingDetailsScreen = "/booking_details_screen";
+  static const String reviewAdminScreen = "/review_admin_screen";
 
   //common getter
   static String getSplashScreen() => splashScreen;
@@ -70,6 +72,7 @@ class AppRoute {
   static String getServiceAboutDetailsScreen() => serviceAboutDetailsScreen;
   static String getBookingScreen() => bookingScreen;
   static String getBookingDetailsScreen() => bookingDetailsScreen;
+  static String getReviewAdminScreen() => reviewAdminScreen;
 
   static List<GetPage> routes = [
     //common route page
@@ -99,13 +102,13 @@ class AppRoute {
     GetPage(name: adminHomeScreen, page: () => AdminHomeScreen()),
     GetPage(name: adminBusinessScreen, page: () => BusinessScreen()),
     GetPage(name: adminServiceScreen, page: () => ServiceScreen()),
-    GetPage(
-        name: adminBusinessDetailsScreen, page: () => BusinessDetailsScreen()),
+    GetPage(name: adminBusinessDetailsScreen, page: () => BusinessDetailsScreen()),
     GetPage(name: servicePortfolioScreen, page: () => PortfolioScreen()),
     GetPage(name: serviceSpecialistScreen, page: () => SpecialistScreen()),
     GetPage(name: serviceAboutScreen, page: () => AboutScreen()),
     GetPage(name: serviceAboutDetailsScreen, page: () => AboutDetailsScreen()),
     GetPage(name: bookingScreen, page: () => BookingScreen()),
     GetPage(name: bookingDetailsScreen, page: () => BookingDetailsScreen()),
+    GetPage(name: reviewAdminScreen, page: () => AdminReviewScreen()),
   ];
 }
