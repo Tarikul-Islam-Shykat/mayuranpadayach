@@ -50,18 +50,17 @@ class ForgetPasswordScreen extends StatelessWidget {
                 hintText: 'Enter Email Here',
               ),
               Spacer(),
-              CustomButton(
-
-                onTap: () =>Get.toNamed(AppRoute.otpVerificationScreen),
-                title: Text(
-                  'Send Email',
-                  style: GoogleFonts.manrope(
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.w800,
-                    color: Colors.white,
+           CustomButton(
+                    onTap: ()=>controller.sendemail(),
+                    title: Text(
+                      'Send Email',
+                      style: GoogleFonts.manrope(
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.w800,
+                        color: Colors.white,
+                      ),
+                    ),
                   ),
-                ),
-              ),
 
             ],
           ),

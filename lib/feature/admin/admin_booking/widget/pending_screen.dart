@@ -20,7 +20,7 @@ class PendingScreen extends StatelessWidget {
           return Padding(
             padding: const EdgeInsets.symmetric(vertical: 5.0),
             child: InkWell(
-              onTap: ()=>Get.toNamed(AppRoute.bookingDetailsScreen),
+              onTap: ()=>Get.toNamed(AppRoute.bookingAdminDetailsScreen),
               child: Container(
                 padding: EdgeInsets.all(10),
                 decoration: BoxDecoration(

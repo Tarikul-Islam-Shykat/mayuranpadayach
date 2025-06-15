@@ -57,15 +57,15 @@ class BusinessScreen extends StatelessWidget {
       body:Padding(
         padding: const EdgeInsets.all(15.0),
         child: Obx((){
-          if(businessController.isBusinessLoading.value){
+          if(controller.isBusinessLoading.value){
             return Center(child: loading(),);
-          }else if(businessController.adminBusinessModel.isEmpty){
+          }else if(controller.adminBusinessModel.isEmpty){
             return Center(child: Text("No Data Found"),);
           }else{
             return ListView.builder(
-                itemCount: businessController.adminBusinessModel.length,
+                itemCount: controller.adminBusinessModel.length,
                 itemBuilder: (context,index){
-                  final data = businessController.adminBusinessModel[index];
+                  final data = controller.adminBusinessModel[index];
                   return Padding(
                     padding: const EdgeInsets.symmetric(vertical: 5.0),
                     child: GestureDetector(
@@ -242,7 +242,7 @@ class BusinessScreen extends StatelessWidget {
                 radiusValue: 10,
                 radiusValue2: 10,
                 controller: controller.businessNameTEC,
-                hintText: "Zero Hair Studio"),
+                hintText: "Business Name"),
             SizedBox(
               height: 10.h,
             ),
@@ -474,7 +474,7 @@ class BusinessScreen extends StatelessWidget {
               ),
             ),
             SizedBox(
-              height: 30.h,
+              height: 20.h,
             ),
             Obx(()=>controller.isAddBusinessLoading.value?
             btnLoading():CustomButton(
@@ -488,7 +488,8 @@ class BusinessScreen extends StatelessWidget {
                       fontSize: 16.sp,
                       fontWeight: FontWeight.w600,
                       color: AppColors.whiteColor),
-                )))
+                ))),
+            SizedBox(height: 10.h,),
 
           ],
         ),

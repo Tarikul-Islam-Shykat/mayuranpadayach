@@ -24,25 +24,24 @@ import '../widget/common_dropdown_button.dart';
 
 class BusinessDetailsScreen extends StatelessWidget {
   BusinessDetailsScreen({super.key});
-  final AdminBusinessController detailsController = Get.put(AdminBusinessController());
   final AddBusinessController controller = Get.put(AddBusinessController());
 
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      detailsController.businessDetails(Get.arguments["id"]);
+      controller.businessDetails(Get.arguments["id"]);
     });
     return Scaffold(
       backgroundColor: AppColors.bgColor,
       body: Padding(
         padding: EdgeInsets.all(15),
         child: Obx((){
-          if(detailsController.isBusinessDetailsLoading.value){
+          if(controller.isBusinessDetailsLoading.value){
             return Center(child: loading(),);
-          }else if(detailsController.adminBusinessDetailsModel.value == null){
+          }else if(controller.adminBusinessDetailsModel.value == null){
             return Center(child: Text("No Data Found"));
           }else{
-            final data = detailsController.adminBusinessDetailsModel.value;
+            final data = controller.adminBusinessDetailsModel.value;
             return Column(
               children: [
                 SizedBox(height: 20.h,),
@@ -146,7 +145,7 @@ class BusinessDetailsScreen extends StatelessWidget {
                               color: Colors.black.withValues(alpha: .5),
                             ),
                             child: Text(
-                              "${detailsController.adminBusinessDetailsModel.value.openStatus}",
+                              "${controller.adminBusinessDetailsModel.value.openStatus}",
                               style: GoogleFonts.poppins(
                                   fontWeight: FontWeight.w400,
                                   fontSize: 12.sp,
@@ -526,13 +525,13 @@ class BusinessDetailsScreen extends StatelessWidget {
               ),
             ),
             SizedBox(
-              height: 20.h,
+              height: 15.h,
             ),
             Obx(()=>controller.isAddBusinessLoading.value?
             btnLoading():CustomButton(
                 onTap: (){
                   if (controller.isForEdit.value) {
-                    controller.editBusinessProfile(detailsController.adminBusinessDetailsModel.value.id.toString());
+                    controller.editBusinessProfile(controller.adminBusinessDetailsModel.value.id.toString());
                   } else {
                     controller.addBusinessProfile();
                   }
@@ -543,7 +542,8 @@ class BusinessDetailsScreen extends StatelessWidget {
                       fontSize: 16.sp,
                       fontWeight: FontWeight.w600,
                       color: AppColors.whiteColor),
-                )))
+                ))),
+            SizedBox(height: 10.h,),
 
           ],
         ),

@@ -1,4 +1,4 @@
-// booking_screen.dart
+// admin_booking_screen.dart
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:prettyrini/feature/customer_flow/serivce_details/model/studio_model.dart';

@@ -19,10 +19,10 @@ class EmailOtpVeryScreen extends StatefulWidget {
 
 class _EmailOtpVeryScreenState extends State<EmailOtpVeryScreen> {
   final List<TextEditingController> _controllers = List.generate(
-    5,
+    4,
         (_) => TextEditingController(),
   );
-  final List<FocusNode> _focusNodes = List.generate(5, (_) => FocusNode());
+  final List<FocusNode> _focusNodes = List.generate(4, (_) => FocusNode());
   String get _otp => _controllers.map((controller) => controller.text).join();
   bool _canResend = false;
 
@@ -34,7 +34,7 @@ class _EmailOtpVeryScreenState extends State<EmailOtpVeryScreen> {
 
   @override
   void dispose() {
-    for (var i = 0; i < 5; i++) {
+    for (var i = 0; i < 4; i++) {
       _controllers[i].dispose();
       _focusNodes[i].dispose();
     }
@@ -73,7 +73,7 @@ class _EmailOtpVeryScreenState extends State<EmailOtpVeryScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: List.generate(
-                5,
+                4,
                     (index) => _buildOtpTextField(index),
               ),
             ),
@@ -131,7 +131,7 @@ class _EmailOtpVeryScreenState extends State<EmailOtpVeryScreen> {
         inputFormatters: [FilteringTextInputFormatter.digitsOnly],
         onChanged: (value) {
           // Auto focus to next field when this field is filled
-          if (value.isNotEmpty && index < 4) {
+          if (value.isNotEmpty && index < 3) {
             FocusScope.of(context).requestFocus(_focusNodes[index + 1]);
           }
           setState(() {});

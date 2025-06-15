@@ -23,6 +23,7 @@ class Urls {
   static const String addBusinessCategory = "$baseUrl/categories";
   static const String userBusiness = "$baseUrl/businesses?limit=10";
   static const String adminBusinessDetails = "$baseUrl/businesses"; //id
+  static const String adminBusinessDelete= "$baseUrl/businesses"; //DELETE id
 
   static const String allServiceGet = "$baseUrl/services/all"; //id
   static const String serviceCreate = "$baseUrl/services"; //id
@@ -42,5 +43,6 @@ class Urls {
 
 
   static const String getAdminSubscription = "$baseUrl/subscriptionOffers"; //GET id
+  static const String adminBookingStatus = "$baseUrl/bookings?limit=10"; //GET Page
 
 }

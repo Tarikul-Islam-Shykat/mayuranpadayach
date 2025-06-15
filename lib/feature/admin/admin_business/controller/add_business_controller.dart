@@ -12,17 +12,25 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../core/global_widegts/app_snackbar.dart';
 import '../../../../core/network_caller/endpoints.dart';
 import '../../../../core/network_caller/network_config.dart';
+import '../model/admin_business_details.dart';
+import '../model/get_admin_business.dart';
 
 
 class AddBusinessController extends GetxController{
-
+  RxList<GetAdminBusinessModel> adminBusinessModel = <GetAdminBusinessModel>[].obs;
+  Rx<AdminBusinessDetails> adminBusinessDetailsModel = AdminBusinessDetails().obs;
   final TextEditingController businessNameTEC = TextEditingController();
+  Rx<TextEditingController> aboutTEC = TextEditingController().obs;
+  Rx<TextEditingController> contactTEC = TextEditingController().obs;
+
   var long = 0.0;
   var lat = 0.0;
   var locationName = '';
   var imageSizeText = ''.obs;
   var errorMessage = ''.obs;
   var uploadProgress = 0.0.obs;
+  RxBool isAboutLoading = false.obs;
+  RxBool isBusinessLoading = false.obs;
   RxBool isForEdit = false.obs;
   RxString selectedID = "".obs;
   RxString profileImageUrl = ''.obs;
@@ -34,6 +42,7 @@ class AddBusinessController extends GetxController{
 
   RxBool isAddBusinessLoading = false.obs;
   RxBool isCategoryLoading = false.obs;
+  RxBool isBusinessDetailsLoading = false.obs;
 
   final NetworkConfig _networkConfig = NetworkConfig();
 
@@ -41,10 +50,56 @@ class AddBusinessController extends GetxController{
   void onInit() {
     super.onInit();
     getBusinessCategory();
+    adminBusinessGet();
   }
 
 
+  Future<bool> adminBusinessGet()async{
+    isBusinessLoading.value = true;
+    try{
+      final response = await _networkConfig.ApiRequestHandler(RequestMethod.GET, "${Urls.userBusiness}&page=1",{},is_auth: true);
+      log("response  === ${response.toString()}");
+      if(response != null && response['success'] == true){
+        adminBusinessModel.value = List<GetAdminBusinessModel>.from(response["data"]["data"].map((x) => GetAdminBusinessModel.fromJson(x)));
+        debugPrint("-----=---get admin business success");
+        return true;
+      }else{
+        debugPrint(" get admin business message: ${response["message"]}");
+        adminBusinessModel.clear();
 
+        return false;
+      }
+
+    }catch(e){
+      adminBusinessModel.clear();
+      debugPrint("-----=---get admin business failed$e");
+      return false;
+
+    }finally{
+      isBusinessLoading.value = false;
+    }
+  }
+
+  Future<bool> businessDetails(id)async{
+    isBusinessDetailsLoading.value = true;
+    try{
+      final response = await _networkConfig.ApiRequestHandler(RequestMethod.GET, "${Urls.adminBusinessDetails}/$id",{},is_auth: true,);
+      log("details response ------$response");
+      if(response != null && response["success"] == true){
+        adminBusinessDetailsModel.value = AdminBusinessDetails.fromJson(response['data']);
+        log("business details get successful");
+        return true;
+      }else{
+        log("get business failed${response["message"]}");
+        return false;
+      }
+    }catch(e){
+      log("get business details error ---$e}");
+      return false;
+    }finally{
+      isBusinessDetailsLoading.value = false;
+    }
+  }
 
 
   Future<void> pickImageProfile()async{
@@ -224,13 +279,18 @@ class AddBusinessController extends GetxController{
       log("Image upload response: $responseJson");
       log("Status code: ${response.statusCode}");
       if(response.statusCode == 201 && responseJson['success'] == true){
+        adminBusinessGet();
+        clearForm();
+        clearImage();
+        Get.back();
+
         AppSnackbar.show(
           message: "Image uploaded successfully!",
           isSuccess: true,
         );
-        clearForm();
-        clearImage();
-        Get.back();
+
+
+
         return true;
 
       }else{
@@ -306,6 +366,8 @@ class AddBusinessController extends GetxController{
       log("Edit response------: $responseJson");
 
       if (response.statusCode == 200 && responseJson['success'] == true) {
+        businessDetails(selectedID.value.toString());
+        Get.back();
         AppSnackbar.show(
           message: "Business updated successfully!",
           isSuccess: true,
@@ -313,7 +375,7 @@ class AddBusinessController extends GetxController{
 
         clearForm();
         clearImage();
-        Get.back();
+
         return true;
       } else {
         errorMessage.value = responseJson['message'] ?? 'Update failed';
@@ -329,7 +391,7 @@ class AddBusinessController extends GetxController{
 
 
 
-  void setEditBusinessValue(data) {
+  void setEditBusinessValue(AdminBusinessDetails data) {
     isForEdit.value = true;
     selectedID.value = data.id.toString();
 
@@ -357,21 +419,54 @@ class AddBusinessController extends GetxController{
     locationName = data.address ?? '';
 
     if (data.openingHours != null && data.openingHours is DateTime) {
-      openingTime.value = _toTimeOfDay(data.openingHours);
+      openingTime.value = _toTimeOfDay(data.openingHours!);
     }
 
     if (data.closingHours != null && data.closingHours is DateTime) {
-      closingTime.value = _toTimeOfDay(data.closingHours);
+      closingTime.value = _toTimeOfDay(data.closingHours!);
     }
+    contactTEC.value.text = data.contactNumber.toString();
+    aboutTEC.value.text = data.about.toString();
 
-    // Here replace imagePath with the correct field name, for example image:
-    if (data.image != null && data.image.isNotEmpty) {
+    if (data.image != null && data.image!.isNotEmpty) {
       profileImage.value = null;
       profileImageUrl.value = data.image ?? '';
     }
   }
 
+  Future<bool> editAbout(String userId) async {
+    isAboutLoading.value = true;
 
+    try {
+      final response = await _networkConfig.ApiRequestHandler(
+        RequestMethod.PUT,
+        "${Urls.editBusiness}/$userId",
+        {
+          "categoryId": selectedCategory.value!.id.toString(),
+          "subCategoryId": selectedSubCategory.value!.id.toString(),
+          "about": aboutTEC.value.text,
+          "contactNumber": contactTEC.value.text,
+        },
+        is_auth: true,
+      );
+
+      if (response != null && response['success'] == true) {
+        AppSnackbar.show(
+          message: "About updated successfully!",
+          isSuccess: true,
+        );
+        return true;
+      } else {
+        log("About update failed: ${response.body}");
+        return false;
+      }
+    } catch (e) {
+      log("❌ Failed about Error: $e");
+      return false;
+    } finally {
+      isAboutLoading.value = false;
+    }
+  }
 
 
   TimeOfDay _toTimeOfDay(DateTime dateTime) {

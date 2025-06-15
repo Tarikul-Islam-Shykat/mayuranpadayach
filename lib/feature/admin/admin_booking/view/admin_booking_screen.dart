@@ -7,9 +7,9 @@ import 'package:prettyrini/feature/admin/admin_booking/widget/complete_screen.da
 import '../../../../core/const/app_colors.dart';
 import '../widget/pending_screen.dart';
 
-class BookingScreen extends StatelessWidget {
-   BookingScreen({super.key});
-   final BookingController controller =Get.put( BookingController());
+class BookingAdminScreen extends StatelessWidget {
+   BookingAdminScreen({super.key});
+   final BookingAdminController controller =Get.put( BookingAdminController());
 
   @override
   Widget build(BuildContext context) {

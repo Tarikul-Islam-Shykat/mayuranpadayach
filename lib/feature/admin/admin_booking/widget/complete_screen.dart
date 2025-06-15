@@ -18,7 +18,7 @@ class CompleteScreen extends StatelessWidget {
         itemCount: 2,
         itemBuilder: (context,index){
           return InkWell(
-            onTap: ()=>Get.toNamed(AppRoute.bookingDetailsScreen),
+            onTap: ()=>Get.toNamed(AppRoute.bookingAdminDetailsScreen),
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 5.0),
               child: Container(

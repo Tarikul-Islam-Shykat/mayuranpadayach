@@ -1,9 +1,9 @@
 import 'package:get/get.dart';
-import 'package:prettyrini/feature/admin/admin_booking/view/booking_screen.dart';
+import 'package:prettyrini/feature/admin/admin_booking/view/admin_booking_screen.dart';
 import 'package:prettyrini/feature/admin/admin_business/view/business_screen.dart';
 import 'package:prettyrini/feature/admin/admin_home/view/admin_home_screen.dart';
 import 'package:prettyrini/feature/admin/admin_review/view/admin_review_screen.dart';
-import 'package:prettyrini/feature/admin/admin_service/view/about_screen.dart';
+import 'package:prettyrini/feature/admin/admin_business/view/about_screen.dart';
 import 'package:prettyrini/feature/admin/admin_portfolio/view/portfolio_screen.dart';
 import 'package:prettyrini/feature/admin/admin_business/view/business_details_screen.dart';
 import 'package:prettyrini/feature/admin/admin_service/view/service_screen.dart';
@@ -12,8 +12,8 @@ import 'package:prettyrini/feature/auth/screen/sign_up_screen.dart';
 import 'package:prettyrini/feature/profile_screen/view/change_pasword.dart';
 import 'package:prettyrini/feature/profile_screen/view/edit_profile.dart';
 import 'package:prettyrini/feature/profile_screen/view/profile_screen.dart';
-import '../feature/admin/admin_booking/view/booking_details_screen.dart';
-import '../feature/admin/admin_service/view/about_details_screen.dart';
+import '../feature/admin/admin_booking/view/booking_admin_details_screen.dart';
+import '../feature/admin/admin_business/view/about_details_screen.dart';
 import '../feature/admin/admin_specialist/view/specialist_screen.dart';
 import '../feature/auth/screen/forget_pasword_screen.dart';
 import '../feature/auth/screen/login_screen.dart';
@@ -45,8 +45,8 @@ class AppRoute {
   static const String serviceAboutScreen = "/service_about_screen";
   static const String serviceAboutDetailsScreen =
       "/service_about_details_screen";
-  static const String bookingScreen = "/booking_screen";
-  static const String bookingDetailsScreen = "/booking_details_screen";
+  static const String bookingAdminScreen = "/booking_admin_screen";
+  static const String bookingAdminDetailsScreen = "/booking_admin_details_screen";
   static const String reviewAdminScreen = "/review_admin_screen";
 
   //common getter
@@ -70,8 +70,8 @@ class AppRoute {
   static String getServiceSpecialistScreen() => serviceSpecialistScreen;
   static String getServiceAboutScreen() => serviceAboutScreen;
   static String getServiceAboutDetailsScreen() => serviceAboutDetailsScreen;
-  static String getBookingScreen() => bookingScreen;
-  static String getBookingDetailsScreen() => bookingDetailsScreen;
+  static String getBookingScreen() => bookingAdminScreen;
+  static String getBookingDetailsScreen() => bookingAdminDetailsScreen;
   static String getReviewAdminScreen() => reviewAdminScreen;
 
   static List<GetPage> routes = [
@@ -107,8 +107,8 @@ class AppRoute {
     GetPage(name: serviceSpecialistScreen, page: () => SpecialistScreen()),
     GetPage(name: serviceAboutScreen, page: () => AboutScreen()),
     GetPage(name: serviceAboutDetailsScreen, page: () => AboutDetailsScreen()),
-    GetPage(name: bookingScreen, page: () => BookingScreen()),
-    GetPage(name: bookingDetailsScreen, page: () => BookingDetailsScreen()),
+    GetPage(name: bookingAdminScreen, page: () => BookingAdminScreen()),
+    GetPage(name: bookingAdminDetailsScreen, page: () => BookingAdminDetailsScreen()),
     GetPage(name: reviewAdminScreen, page: () => AdminReviewScreen()),
   ];
 }

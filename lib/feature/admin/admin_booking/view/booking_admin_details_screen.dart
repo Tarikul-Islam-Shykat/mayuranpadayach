@@ -10,9 +10,9 @@ import '../../../../core/global_widegts/app_network_image.dart';
 import '../../../profile_screen/widget/round_back_button.dart';
 
 
-class BookingDetailsScreen extends StatelessWidget {
-   BookingDetailsScreen({super.key});
-  final BookingController controller = Get.put(BookingController());
+class BookingAdminDetailsScreen extends StatelessWidget {
+   BookingAdminDetailsScreen({super.key});
+  final BookingAdminController controller = Get.put(BookingAdminController());
 
   @override
   Widget build(BuildContext context) {
