@@ -313,13 +313,11 @@ class SpecialistScreen extends StatelessWidget {
                 return controller.isLoadingSpecialist.value?btnLoading(): CustomButton(
                     onTap: () {
                         if (controller.isEditing.value) {
-                          log("Is editing: ${controller.isEditing.value}");
-                          log("id---------edit${controller.editingServiceId.value.toString()}");
-                          controller.editSpecialist(controller.editingServiceId.value.toString());
+                          controller.editSpecialist(controller.editingSpecialistId.value.toString());
                         } else {
                           controller.createSpecialist(businessId: businessId.toString());
                         }
-                        log("id---------edit${controller.editingServiceId.value.toString()}");
+                        log("id---------edit${controller.editingSpecialistId.value.toString()}");
 
                     },
                     title: Text(

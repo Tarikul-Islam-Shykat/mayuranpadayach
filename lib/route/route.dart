@@ -14,6 +14,7 @@ import 'package:prettyrini/feature/profile_screen/view/edit_profile.dart';
 import 'package:prettyrini/feature/profile_screen/view/profile_screen.dart';
 import '../feature/admin/admin_booking/view/booking_admin_details_screen.dart';
 import '../feature/admin/admin_business/view/about_details_screen.dart';
+import '../feature/admin/admin_service/controller/service_controller.dart';
 import '../feature/admin/admin_specialist/view/specialist_screen.dart';
 import '../feature/auth/screen/forget_pasword_screen.dart';
 import '../feature/auth/screen/login_screen.dart';
@@ -101,8 +102,17 @@ class AppRoute {
     //admin route page
     GetPage(name: adminHomeScreen, page: () => AdminHomeScreen()),
     GetPage(name: adminBusinessScreen, page: () => BusinessScreen()),
-    GetPage(name: adminServiceScreen, page: () => ServiceScreen()),
-    GetPage(name: adminBusinessDetailsScreen, page: () => BusinessDetailsScreen()),
+    GetPage(
+        name: adminServiceScreen,
+        page: () => ServiceScreen(),
+        binding: BindingsBuilder(() {
+          Get.put(ServiceController());
+          }),
+    ),
+    GetPage(
+        name: adminBusinessDetailsScreen,
+        page: () => BusinessDetailsScreen(),
+    ),
     GetPage(name: servicePortfolioScreen, page: () => PortfolioScreen()),
     GetPage(name: serviceSpecialistScreen, page: () => SpecialistScreen()),
     GetPage(name: serviceAboutScreen, page: () => AboutScreen()),

@@ -11,8 +11,8 @@ import 'package:prettyrini/core/network_caller/endpoints.dart';
 import 'package:prettyrini/core/network_caller/network_config.dart';
 import 'package:prettyrini/feature/admin/admin_service/model/all_service_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../../../../core/global_widegts/app_snackbar.dart';
+
 
 class ServiceController extends GetxController{
   Rx<TextEditingController> serviceNameTEC = TextEditingController().obs;
@@ -20,24 +20,37 @@ class ServiceController extends GetxController{
   Rx<TextEditingController> offerPercentTEC = TextEditingController().obs;
   RxList<ServiceModel> serviceModel = <ServiceModel>[].obs;
   Rx<ServiceModel?> selectedService = Rx<ServiceModel?>(null);
+  final NetworkConfig _networkConfig = NetworkConfig();
+  final scrollController = ScrollController();
 
-  var isLoadingService = false.obs;
-  var isLoadingCreate = false.obs;
+  RxBool isLoadingService = false.obs;
+  RxBool isLoadingCreate = false.obs;
   RxBool isEditing = false.obs;
   RxBool isActive = true.obs;
   RxBool isOffered = false.obs;
-
-  var hasMore = true.obs;
-  var page = 1.obs;
-  var errorMessage = "".obs;
-  var uploadProgress = 0.0.obs;
-  var imageSizeText = ''.obs;
-  final _picker = ImagePicker();
-  Rx<File?> serviceImage = Rx<File?>(null);
+  RxBool hasMore = true.obs;
+  RxString imageSizeText = ''.obs;
+  RxString errorMessage = "".obs;
   RxString serviceImageUrl = ''.obs;
   RxString editingServiceId = ''.obs;
+  RxString businessId = ''.obs;
+  var uploadProgress = 0.0.obs;
+  var page = 1.obs;
+  final _picker = ImagePicker();
+  Rx<File?> serviceImage = Rx<File?>(null);
 
-  final NetworkConfig _networkConfig = NetworkConfig();
+  @override
+  onInit(){
+    super.onInit();
+    businessId.value = Get.arguments?["id"]??"";
+    scrollController.addListener(() {
+      if (scrollController.position.pixels ==
+          scrollController.position.maxScrollExtent && hasMore.value && serviceModel.length >= 10) {
+        getAllService(businessId.value);
+      }
+    });
+    getAllService(businessId.value.toString());
+  }
 
 
   //service create
@@ -166,6 +179,7 @@ class ServiceController extends GetxController{
     }
 
   }
+
   Future<bool> createService(id)async{
     if (serviceImage.value == null) {
       errorMessage.value = 'Please select a Image';
@@ -181,7 +195,7 @@ class ServiceController extends GetxController{
         'Content-Type': 'multipart/form-data',
         'Authorization': "${sh.getString("token")}",
       });
-      // Create the JSON data for the data field
+
       Map<String, dynamic> data = {
         "name":serviceNameTEC.value.text,
         "price":double.parse(servicePriceTEC.value.text),
@@ -189,6 +203,7 @@ class ServiceController extends GetxController{
       };
       request.fields['data'] = json.encode(data);
       debugPrint("response body------- $data");
+
       var imageBytes  = await serviceImage.value!.readAsBytes();
       var multipartFile = http.MultipartFile.fromBytes(
         'image', // Field name for image as shown in Postman
@@ -210,14 +225,18 @@ class ServiceController extends GetxController{
       log("Image upload response: $responseJson");
       log("Status code: ${response.statusCode}");
       if(response.statusCode == 201 && responseJson['success'] == true){
-        await getAllService(id);
+
+        page.value = 1;
+        hasMore.value = true;
+        getAllService(businessId.value.toString());
+        update();
         allClear();
         Get.back();
+        log("just id============${businessId.value.toString()}");
         AppSnackbar.show(
-          message: "Image uploaded successfully!",
+          message: "Add Service successfully!",
           isSuccess: true,
         );
-        Get.back();
         return true;
 
       }else{
@@ -227,7 +246,7 @@ class ServiceController extends GetxController{
       }
 
     }catch(e){
-      log("Profile picture upload error: $e");
+      log("add service error: $e");
       errorMessage.value = 'Upload failed: ${e.toString()}';
       return false;
     }finally{
@@ -285,7 +304,8 @@ class ServiceController extends GetxController{
       log("Image upload response: $responseJson");
       log("Status code: ${response.statusCode}");
       if(response.statusCode == 201 || response.statusCode == 200 && responseJson['success'] == true){
-        await getAllService(businessId);
+        await getAllService(businessId.toString());
+        log("id business ----$businessId");
         allClear();
         Get.back();
         AppSnackbar.show(
@@ -337,12 +357,15 @@ class ServiceController extends GetxController{
           "${Urls.allServiceGet}/$id?page=${page.value}&limit=10",{},is_auth: true);
       log("service response  $response");
       if(response != null && response["success"] == true){
+        log("service get success");
         List dataList = response["data"]["data"];
         if(dataList.isEmpty){
           hasMore.value = false;
         }else{
           List<ServiceModel> serviceData = dataList.map((e)=>ServiceModel.fromJson(e)).toList();
-          //serviceModel.assignAll(serviceData);
+          if (serviceData.isEmpty || serviceData.length < 10) {
+            hasMore.value = false;
+          }
           serviceModel.addAll(serviceData);
           page.value ++;
         }

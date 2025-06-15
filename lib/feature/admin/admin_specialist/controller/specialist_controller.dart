@@ -34,7 +34,7 @@ class AdminSpecialistController extends GetxController{
   var uploadProgress = 0.0.obs;
   RxString imageSizeText = ''.obs;
   RxString serviceImageUrl = ''.obs;
-  RxString editingServiceId = ''.obs;
+  RxString editingSpecialistId = ''.obs;
   final _picker = ImagePicker();
   Rx<File?> serviceImage = Rx<File?>(null);
   final NetworkConfig _networkConfig = NetworkConfig();
@@ -222,14 +222,14 @@ class AdminSpecialistController extends GetxController{
       log("Image upload response: $responseJson");
       log("Status code: ${response.statusCode}");
       if(response.statusCode == 201 || response.statusCode == 200 && responseJson['success'] == true){
-        // await getAllService(id);
-        // allClear();
+        getAllSpecialist();
+        update();
+         allClear();
         Get.back();
         AppSnackbar.show(
           message: "Image uploaded successfully!",
           isSuccess: true,
         );
-        Get.back();
         return true;
 
       }else{
@@ -251,7 +251,8 @@ class AdminSpecialistController extends GetxController{
   Future<bool> editSpecialist(id)async{
     if (serviceImage.value == null) {
       errorMessage.value = 'Please select a Image';
-      Get.snackbar("Failed", "Please select a Image");
+
+      log("-------please upload image ");
       return false;
     }
     try{
@@ -294,6 +295,8 @@ class AdminSpecialistController extends GetxController{
       log("Image upload response: $responseJson");
       log("Status code: ${response.statusCode}");
       if(response.statusCode == 201 || response.statusCode == 200 && responseJson['success'] == true){
+        getAllSpecialist();
+        update();
         Get.back();
         AppSnackbar.show(
           message: "Image uploaded successfully!",
@@ -319,7 +322,7 @@ class AdminSpecialistController extends GetxController{
 
   void setEditSpecialistData(GetSpecialistModel specialist) {
     isEditing.value = true;
-    editingServiceId.value = specialist.id ?? '';
+    editingSpecialistId.value = specialist.id ?? '';
     nameTEC.value.text =specialist.fullName.toString();
     specialistTEC.value.text= specialist.specialization.toString();
     specialistExperienceTEC.value.text= specialist.experience.toString();
@@ -327,7 +330,6 @@ class AdminSpecialistController extends GetxController{
 
     if (specialist.profileImage != null) {
       serviceImageUrl.value = specialist.profileImage!;
-      serviceImage.value = null;
     }
   }
 
@@ -344,6 +346,7 @@ class AdminSpecialistController extends GetxController{
           "${Urls.getAdminSpecialist}&page=${page.value}",{},is_auth: true);
       log("service response  $response");
       if(response != null && response["success"] == true){
+        update();
         allClear();
         List dataList = response["data"]["data"];
         if(dataList.isEmpty){

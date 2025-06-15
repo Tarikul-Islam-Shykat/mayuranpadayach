@@ -63,9 +63,13 @@ class BusinessDetailsScreen extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: CustomCircularButton(
+                        height: 40,
+                        width: 40,
                         icon: Image.asset(
                           ImagePath.editIcon,
                           color: Colors.black,
+                          height: 20,
+                          width: 20,
                         ),
                         onTap: (){
                           controller.setEditBusinessValue(data);
@@ -241,31 +245,19 @@ class BusinessDetailsScreen extends StatelessWidget {
             ),
 
             SizedBox(
-              height: 10.h,
+              height: 8.h,
             ),
-            Text("Edit Business Name",
-              style: GoogleFonts.poppins(
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w500,
-                  color: AppColors.textBlackColor),),
+            fieldText(name: "Edit Business Name"),
             CustomAuthField(
                 radiusValue: 10,
                 radiusValue2: 10,
                 controller: controller.businessNameTEC,
                 hintText: "Zero Hair Studio"),
             SizedBox(
-              height: 10.h,
+              height: 8.h,
             ),
-            Text(controller.isForEdit.value?"Edit Category":
-              "Category",
-              style:  GoogleFonts.poppins(
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w500,
-                  color: AppColors.textBlackColor),
-            ),
-            SizedBox(
-              height: 5,
-            ),
+
+            fieldText(name: "Edit Category"),
             Obx(() => CommonDropdown<CategoryModel>(
               items: controller.categoryList,
               selectedItem: controller.selectedCategory.value,
@@ -277,17 +269,9 @@ class BusinessDetailsScreen extends StatelessWidget {
             )),
 
             SizedBox(
-              height: 10.h,
+              height: 8.h,
             ),
-            Text("Edit Sub Category",
-              style:  GoogleFonts.poppins(
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w500,
-                  color: AppColors.textBlackColor),
-            ),
-            SizedBox(
-              height: 5,
-            ),
+            fieldText(name: "Edit Sub Category"),
             // Sub Category Dropdown
             Obx(() => CommonDropdown<SubCategoryModel>(
               items: controller.subCategoryList,
@@ -305,17 +289,8 @@ class BusinessDetailsScreen extends StatelessWidget {
 
 
 
-            SizedBox(height: 10.h,),
-
-            Text("Edit Location",
-              style: GoogleFonts.poppins(
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.w500,
-                  color: AppColors.textBlackColor),
-            ),
-            SizedBox(
-              height: 5,
-            ),
+            SizedBox(height: 8.h,),
+            fieldText(name: "Edit Location"),
             InkWell(
               onTap: () async {
                 final result = await Get.to<LocationResult>(() => MapPage());
@@ -334,7 +309,7 @@ class BusinessDetailsScreen extends StatelessWidget {
               },
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 10),
-                height: 60,
+                height: 45.h,
                 width: Get.width,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
@@ -363,19 +338,10 @@ class BusinessDetailsScreen extends StatelessWidget {
               ),
             ),
             SizedBox(
-              height: 10.h,
+              height: 8.h,
             ),
 
-            Text(
-              "Opening & Closing Time",
-              style: GoogleFonts.poppins(
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w500,
-                  color: AppColors.textBlackColor),
-            ),
-            SizedBox(
-              height: 5,
-            ),
+            fieldText(name: "Opening & Closing Time"),
             Row(
               children: [
                 Expanded(
@@ -386,7 +352,7 @@ class BusinessDetailsScreen extends StatelessWidget {
                     child: Container(
                       padding: EdgeInsets.symmetric(horizontal: 10),
                       alignment: Alignment.centerLeft,
-                      height: 55,
+                      height: 40.h,
                       width: Get.width,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
@@ -404,7 +370,7 @@ class BusinessDetailsScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(width: 10,),
+                SizedBox(width: 8.w,),
                 Expanded(
                   child: GestureDetector(
                     onTap: (){
@@ -413,7 +379,7 @@ class BusinessDetailsScreen extends StatelessWidget {
                     child: Container(
                       padding: EdgeInsets.symmetric(horizontal: 10),
                       alignment: Alignment.centerLeft,
-                      height: 55,
+                      height: 40.h,
                       width: Get.width,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
@@ -434,14 +400,14 @@ class BusinessDetailsScreen extends StatelessWidget {
               ],
             ),
 
-            SizedBox(height: 10.h,),
+            SizedBox(height: 8.h,),
               Obx(() => InkWell(
                 onTap: (){
                   controller.status.value =
                   controller.status.value == "OPEN" ? "CLOSED" : "OPEN";
                 },
                 child: Container(
-                  height: 45.h,
+                  height: 40.h,
                   padding: EdgeInsets.symmetric(horizontal: 10),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
@@ -469,20 +435,10 @@ class BusinessDetailsScreen extends StatelessWidget {
 
 
             SizedBox(
-              height: 10.h,
+              height: 8.h,
             ),
 
-
-            Text(
-              "Upload Image",
-              style: GoogleFonts.poppins(
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w500,
-                  color: AppColors.textBlackColor),
-            ),
-            SizedBox(
-              height: 5,
-            ),
+            fieldText(name: "Upload Image"),
             InkWell(
               onTap: () => _showImagePickerOptions(context),
               child: Container(
@@ -497,8 +453,8 @@ class BusinessDetailsScreen extends StatelessWidget {
                   children: [
                     Obx(() => Container(
 
-                      height: 100,
-                      width: 100,
+                      height: 90.h,
+                      width: 100.w,
                       padding: EdgeInsets.all(5),
                       margin: EdgeInsets.symmetric(vertical: 5),
                       decoration: BoxDecoration(
@@ -537,7 +493,7 @@ class BusinessDetailsScreen extends StatelessWidget {
                   }
 
                 },
-                title: Text("Update",
+                title: Text("Save",
                   style: GoogleFonts.poppins(
                       fontSize: 16.sp,
                       fontWeight: FontWeight.w600,

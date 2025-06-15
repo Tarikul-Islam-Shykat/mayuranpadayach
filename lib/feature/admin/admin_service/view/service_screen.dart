@@ -16,26 +16,17 @@ import 'package:get/get.dart';
 import '../../../../core/const/app_colors.dart';
 import '../../../../core/global_widegts/custom_text.dart';
 
-class ServiceScreen extends StatelessWidget {
-  final ServiceController controller = Get.put(ServiceController());
-  final scrollController = ScrollController();
-  final String? businessId = Get.arguments?["id"];
-  ServiceScreen({super.key}) {
-    scrollController.addListener(() {
-      if (scrollController.position.pixels ==
-          scrollController.position.maxScrollExtent &&
-          controller.hasMore.value &&
-          controller.serviceModel.length >= 10) {
-        controller.getAllService(businessId);
-      }
-    });
-  }
+class ServiceScreen extends GetView<ServiceController> {
+
+  final String? businessId = Get.arguments?["id"]??"";
+   ServiceScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      controller.getAllService(businessId);
-      log("business id $businessId");
+      controller.page.value = 1;
+      controller.getAllService(businessId.toString());
+      log("business id ${businessId.toString()}");
     });
     return Scaffold(
       backgroundColor: AppColors.bgColor,
@@ -77,75 +68,83 @@ class ServiceScreen extends StatelessWidget {
                     child: Text("No Data Found"),
                   );
                 } else {
-                  return ListView.builder(
-                      controller: scrollController,
-                      itemCount:  controller.hasMore.value
-                          ? controller.serviceModel.length + 1
-                          : controller.serviceModel.length,
-                      itemBuilder: (context, index) {
-                        if (index < controller.serviceModel.length) {
-                          var data = controller.serviceModel[index];
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 5.0),
-                            child: ListTile(
-                              onTap: () {},
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
+                  return RefreshIndicator(
+                    onRefresh: () async {
+                      controller.page.value = 1;
+                      await controller.getAllService(controller.businessId.value.toString());
+                    },
+                    child: ListView.builder(
+                        controller: controller.scrollController,
+                        itemCount:  controller.hasMore.value
+                            ? controller.serviceModel.length + 1
+                            : controller.serviceModel.length,
+                        itemBuilder: (context, index) {
+                          if (index < controller.serviceModel.length) {
+                            var data = controller.serviceModel[index];
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 5.0),
+                              child: ListTile(
+                                onTap: () {},
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                tileColor: Color(0xFFF1EEF9),
+                                contentPadding:
+                                    EdgeInsets.symmetric(horizontal: 5),
+                                leading: ClipRRect(
+                                  borderRadius: BorderRadius.circular(6),
+                                  child: AppNetworkImage(
+                                      height: 50.h,
+                                      width: 55.w,
+                                      src: data.image.toString()),
+                                ),
+                                title: Text(
+                                  data.name.toString(),
+                                  style: GoogleFonts.poppins(
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.w500,
+                                      color: AppColors.textBlackColor),
+                                ),
+                                subtitle: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      "\$ ${data.price}",
+                                      style: GoogleFonts.poppins(
+                                          fontSize: 16.sp,
+                                          fontWeight: FontWeight.w600,
+                                          color: AppColors.textBlackColor),
+                                    ),
+                                    Text(
+                                      " / 1 hour",
+                                      style: GoogleFonts.poppins(
+                                          fontSize: 11.sp,
+                                          fontWeight: FontWeight.w500,
+                                          color: AppColors.textBlackColor),
+                                    ),
+                                  ],
+                                ),
+                                trailing: CustomCircularButton(
+                                  height: 30,
+                                  width: 30,
+                                  icon: Image.asset(ImagePath.editIcon,height: 25,width: 25,),
+                                  onTap: () {
+                                    controller.setEditServiceData(data); // ServiceModel
+                                   addServiceBuild(context);
+                                  },
+                                ),
                               ),
-                              tileColor: Color(0xFFF1EEF9),
-                              contentPadding:
-                                  EdgeInsets.symmetric(horizontal: 5),
-                              leading: ClipRRect(
-                                borderRadius: BorderRadius.circular(6),
-                                child: AppNetworkImage(
-                                    height: 42.h,
-                                    width: 45.w,
-                                    src: data.image.toString()),
-                              ),
-                              title: Text(
-                                data.name.toString(),
-                                style: GoogleFonts.poppins(
-                                    fontSize: 14.sp,
-                                    fontWeight: FontWeight.w500,
-                                    color: AppColors.textBlackColor),
-                              ),
-                              subtitle: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    "\$ ${data.price}",
-                                    style: GoogleFonts.poppins(
-                                        fontSize: 16.sp,
-                                        fontWeight: FontWeight.w600,
-                                        color: AppColors.textBlackColor),
-                                  ),
-                                  Text(
-                                    " / 1 hour",
-                                    style: GoogleFonts.poppins(
-                                        fontSize: 11.sp,
-                                        fontWeight: FontWeight.w500,
-                                        color: AppColors.textBlackColor),
-                                  ),
-                                ],
-                              ),
-                              trailing: CustomCircularButton(
-                                icon: Image.asset(ImagePath.editIcon),
-                                onTap: () {
-                                  controller.setEditServiceData(data); // ServiceModel
-                                 addServiceBuild(context);
-                                },
-                              ),
+                            );
+                          }
+                          return controller.serviceModel.length >= 10 && controller.hasMore.value? Center(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 20),
+                              child: loading(),
                             ),
-                          );
-                        }
-                        return controller.serviceModel.length >= 10 && controller.hasMore.value? Center(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 20),
-                            child: loading(),
-                          ),
-                        ):Center();
-                      });
+                          ):Center();
+                        }),
+                  );
                 }
               }),
             ),
@@ -267,8 +266,8 @@ class ServiceScreen extends StatelessWidget {
                   children: [
                      Obx(() {
                       return Container(
-                        height: 100,
-                        width: 100,
+                        height: 80.h,
+                        width: 80.w,
                         padding: EdgeInsets.all(5),
                         margin: EdgeInsets.symmetric(vertical: 5),
                         decoration: BoxDecoration(
@@ -280,15 +279,15 @@ class ServiceScreen extends StatelessWidget {
                               ? Image.file(
                             controller.serviceImage.value!,
                             fit: BoxFit.cover,
-                            width: 100,
-                            height: 100,
+                            width: 80.w,
+                            height: 80.h,
                           )
                               : controller.serviceImageUrl.value.isNotEmpty
                               ? Image.network(
                             controller.serviceImageUrl.value,
                             fit: BoxFit.cover,
-                            width: 100,
-                            height: 100,
+                            width: 80.w,
+                            height: 80.h,
                           )
                               : Image.asset(
                             ImagePath.fileIcon,
@@ -308,20 +307,17 @@ class ServiceScreen extends StatelessWidget {
               ),
             ),
             SizedBox(
-              height: 30.h,
+              height: 20.h,
             ),
             Obx((){
                 return controller.isLoadingCreate.value?btnLoading(): CustomButton(
                   onTap: () {
-                    if (businessId != null) {
+                    if (controller.businessId.value.isNotEmpty) {
                       if (controller.isEditing.value) {
                         controller.editService(businessId,controller.editingServiceId);
-
-
                       } else {
                         controller.createService(businessId);
                       }
-                      controller.getAllService(businessId);
                     } else {
                       log("No ID was passed to this screen");
                     }
@@ -336,7 +332,7 @@ class ServiceScreen extends StatelessWidget {
                     ));
               }
             ),
-            SizedBox(height: 10,),
+            SizedBox(height: 10.h,),
           ],
         ),
       ),
