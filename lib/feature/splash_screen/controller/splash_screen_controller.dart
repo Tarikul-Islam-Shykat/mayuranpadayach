@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
@@ -52,7 +53,7 @@ class SplashScreenController extends GetxController {
           if (kDebugMode) {
             print('Request failed with status: ${response.statusCode}');
           }
-        //  Get.offAll(() => LoginScreen());
+          //  Get.offAll(() => LoginScreen());
         }
       } catch (e) {
         // Handle any errors that occur during the request
@@ -63,15 +64,13 @@ class SplashScreenController extends GetxController {
     }
   }
 
-
-
   @override
   void onInit() async {
     super.onInit();
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-   await  Future.delayed(Duration(seconds: 5),(){
-     checkLoginStatus();
+    await Future.delayed(Duration(seconds: 5), () {
+      checkLoginStatus();
     });
   }
 
@@ -80,10 +79,12 @@ class SplashScreenController extends GetxController {
     final token = await localService.getToken();
     final role = await localService.getRole();
 
+    log("message $token $role");
+
     if (token != null && token.isNotEmpty) {
       if (role == RoleType.PROFESSIONAL.name) {
         Get.offAllNamed(AppRoute.adminBusinessScreen);
-      }else if(role == RoleType.ADMIN.name){
+      } else if (role == RoleType.ADMIN.name) {
         Get.offAllNamed(AppRoute.adminBusinessScreen);
       } else if (role == RoleType.USER.name) {
         Get.offAllNamed(AppRoute.profileScreen);
@@ -94,6 +95,4 @@ class SplashScreenController extends GetxController {
       Get.offAllNamed(AppRoute.loginScreen);
     }
   }
-
-
 }
