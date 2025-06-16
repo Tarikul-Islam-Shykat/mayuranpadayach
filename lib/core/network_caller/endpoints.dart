@@ -28,6 +28,7 @@ class Urls {
   static const String allServiceGet = "$baseUrl/services/all"; //id
   static const String serviceCreate = "$baseUrl/services"; //id
   static const String serviceEdit = "$baseUrl/services"; //id PUT
+  static const String serviceDelete = "$baseUrl/services"; //id DELETE
 
 
   static const String getAdminSpecialist = "$baseUrl/specialists/all?limit=10"; //page GET ID

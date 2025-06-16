@@ -41,10 +41,10 @@ class AppRoute {
   static const String adminServiceScreen = "/admin_service_screen";
   static const String adminBusinessDetailsScreen =
       "/admin_service_Details_screen";
-  static const String servicePortfolioScreen = "/service_portfolio_screen";
-  static const String serviceSpecialistScreen = "/service_specialist_screen";
-  static const String serviceAboutScreen = "/service_about_screen";
-  static const String serviceAboutDetailsScreen =
+  static const String businessPortfolioScreen = "/service_portfolio_screen";
+  static const String businessSpecialistScreen = "/service_specialist_screen";
+  static const String businessAboutScreen = "/service_about_screen";
+  static const String businessAboutDetailsScreen =
       "/service_about_details_screen";
   static const String bookingAdminScreen = "/booking_admin_screen";
   static const String bookingAdminDetailsScreen = "/booking_admin_details_screen";
@@ -67,10 +67,10 @@ class AppRoute {
   static String getAdminBusinessScreen() => adminBusinessScreen;
   static String getAdminServiceScreen() => adminServiceScreen;
   static String getAdminServiceDetailsScreen() => adminBusinessDetailsScreen;
-  static String getServicePortfolioScreen() => servicePortfolioScreen;
-  static String getServiceSpecialistScreen() => serviceSpecialistScreen;
-  static String getServiceAboutScreen() => serviceAboutScreen;
-  static String getServiceAboutDetailsScreen() => serviceAboutDetailsScreen;
+  static String getServicePortfolioScreen() => businessPortfolioScreen;
+  static String getServiceSpecialistScreen() => businessSpecialistScreen;
+  static String getServiceAboutScreen() => businessAboutScreen;
+  static String getServiceAboutDetailsScreen() => businessAboutDetailsScreen;
   static String getBookingScreen() => bookingAdminScreen;
   static String getBookingDetailsScreen() => bookingAdminDetailsScreen;
   static String getReviewAdminScreen() => reviewAdminScreen;
@@ -113,10 +113,10 @@ class AppRoute {
         name: adminBusinessDetailsScreen,
         page: () => BusinessDetailsScreen(),
     ),
-    GetPage(name: servicePortfolioScreen, page: () => PortfolioScreen()),
-    GetPage(name: serviceSpecialistScreen, page: () => SpecialistScreen()),
-    GetPage(name: serviceAboutScreen, page: () => AboutScreen()),
-    GetPage(name: serviceAboutDetailsScreen, page: () => AboutDetailsScreen()),
+    GetPage(name: businessPortfolioScreen, page: () => PortfolioScreen()),
+    GetPage(name: businessSpecialistScreen, page: () => SpecialistScreen()),
+    GetPage(name: businessAboutScreen, page: () => AboutScreen()),
+    GetPage(name: businessAboutDetailsScreen, page: () => AboutDetailsScreen()),
     GetPage(name: bookingAdminScreen, page: () => BookingAdminScreen()),
     GetPage(name: bookingAdminDetailsScreen, page: () => BookingAdminDetailsScreen()),
     GetPage(name: reviewAdminScreen, page: () => AdminReviewScreen()),

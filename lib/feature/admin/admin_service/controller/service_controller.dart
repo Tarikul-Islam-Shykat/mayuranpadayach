@@ -9,9 +9,11 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:prettyrini/core/network_caller/endpoints.dart';
 import 'package:prettyrini/core/network_caller/network_config.dart';
+import 'package:prettyrini/core/services_class/local_service/local_data.dart';
 import 'package:prettyrini/feature/admin/admin_service/model/all_service_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../core/global_widegts/app_snackbar.dart';
+import '../../../../route/route.dart';
 
 
 class ServiceController extends GetxController{
@@ -25,6 +27,7 @@ class ServiceController extends GetxController{
 
   RxBool isLoadingService = false.obs;
   RxBool isLoadingCreate = false.obs;
+  RxBool isLoadingDelete = false.obs;
   RxBool isEditing = false.obs;
   RxBool isActive = true.obs;
   RxBool isOffered = false.obs;
@@ -304,15 +307,17 @@ class ServiceController extends GetxController{
       log("Image upload response: $responseJson");
       log("Status code: ${response.statusCode}");
       if(response.statusCode == 201 || response.statusCode == 200 && responseJson['success'] == true){
-        await getAllService(businessId.toString());
-        log("id business ----$businessId");
+        getAllService(businessId.toString());
+        update();
+        hasMore.value = true;
+        log("id then Editing business ----$businessId");
+        log("id then Editing business ----$businessId");
         allClear();
         Get.back();
         AppSnackbar.show(
           message: "Image uploaded successfully!",
           isSuccess: true,
         );
-        Get.back();
         return true;
 
       }else{
@@ -382,6 +387,36 @@ class ServiceController extends GetxController{
       isLoadingService.value = false;
     }
     return false;
+  }
+  
+  //Delete service 
+  Future<bool> deleteService(String id)async{
+    try{
+      isLoadingDelete.value = true;
+      final response = await _networkConfig.ApiRequestHandler(RequestMethod.DELETE, "${Urls.serviceDelete}/$id", {},is_auth: true);
+      log("response $response");
+      log("response Id--- $id");
+
+      if(response != null && response['success']== true){
+        getAllService(businessId.value.toString());
+        log("business Id ---${businessId.toString()}");
+        update();
+        AppSnackbar.show(
+          message: "Delete successfully!",
+          isSuccess: true,
+        );
+        return true;
+      }else{
+        log("Delete Response Failed${response["message"]}");
+        return false;
+      }
+    }catch(e){
+      log("Delete Response Error :$e");
+      return false;
+    }finally{
+      isLoadingDelete.value= false;
+    }
+
   }
 
 

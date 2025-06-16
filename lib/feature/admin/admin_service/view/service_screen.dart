@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:prettyrini/core/const/image_path.dart';
 import 'package:prettyrini/core/global_widegts/app_network_image.dart';
+import 'package:prettyrini/core/global_widegts/custom_dialog.dart';
 import 'package:prettyrini/core/global_widegts/loading_screen.dart';
 import 'package:prettyrini/feature/admin/admin_home/widget/custom_circular_button.dart';
 import 'package:prettyrini/feature/admin/admin_service/controller/service_controller.dart';
@@ -15,6 +16,7 @@ import 'package:prettyrini/feature/profile_screen/widget/round_back_button.dart'
 import 'package:get/get.dart';
 import '../../../../core/const/app_colors.dart';
 import '../../../../core/global_widegts/custom_text.dart';
+import '../../../../route/route.dart';
 
 class ServiceScreen extends GetView<ServiceController> {
 
@@ -125,14 +127,35 @@ class ServiceScreen extends GetView<ServiceController> {
                                     ),
                                   ],
                                 ),
-                                trailing: CustomCircularButton(
-                                  height: 30,
-                                  width: 30,
-                                  icon: Image.asset(ImagePath.editIcon,height: 25,width: 25,),
-                                  onTap: () {
-                                    controller.setEditServiceData(data); // ServiceModel
-                                   addServiceBuild(context);
-                                  },
+                                trailing: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    CustomCircularButton(
+                                      height: 30,
+                                      width: 30,
+                                      icon: Icon(Icons.delete,color: Colors.red,),
+                                      onTap: () {
+                                        deleteDialog(
+                                            title: "Are you sure ?",
+                                            content: "Are you sure you want to delete this service?",
+                                            onOk: (){
+                                            controller.deleteService(data.id.toString());
+
+                                        });
+
+                                      },
+                                    ),
+                                    SizedBox(width: 8.w,),
+                                    CustomCircularButton(
+                                      height: 30,
+                                      width: 30,
+                                      icon: Image.asset(ImagePath.editIcon,height: 25,width: 25,),
+                                      onTap: ()async {
+                                         controller.setEditServiceData(data); // ServiceModel
+                                       addServiceBuild(context);
+                                      },
+                                    ),
+                                  ],
                                 ),
                               ),
                             );
@@ -311,12 +334,12 @@ class ServiceScreen extends GetView<ServiceController> {
             ),
             Obx((){
                 return controller.isLoadingCreate.value?btnLoading(): CustomButton(
-                  onTap: () {
+                  onTap: () async{
                     if (controller.businessId.value.isNotEmpty) {
                       if (controller.isEditing.value) {
                         controller.editService(businessId,controller.editingServiceId);
                       } else {
-                        controller.createService(businessId);
+                        await controller.createService(businessId);
                       }
                     } else {
                       log("No ID was passed to this screen");

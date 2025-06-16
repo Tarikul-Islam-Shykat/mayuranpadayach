@@ -45,7 +45,7 @@ class AboutDetailsScreen extends StatelessWidget {
         padding: EdgeInsets.all(15),
         child: Column(
           children: [
-            titleAndEditButton("Basic Info", 'Save', ()=>Get.toNamed(AppRoute.serviceAboutScreen)),
+            titleAndEditButton("Basic Info", 'Save', ()=>Get.toNamed(AppRoute.businessAboutScreen)),
             SizedBox(height: 4,),
             CustomAuthField(
               radiusValue2: 10,
@@ -56,7 +56,7 @@ class AboutDetailsScreen extends StatelessWidget {
             ),
             SizedBox(height: 15.h,),
 
-            titleAndEditButton('Contract Info', 'Save', ()=>Get.toNamed(AppRoute.serviceAboutScreen),),
+            titleAndEditButton('Contract Info', 'Save', ()=>Get.toNamed(AppRoute.businessAboutScreen),),
             SizedBox(height: 4,),
             CustomAuthField(
               radiusValue2: 10,

@@ -51,7 +51,7 @@ class ForgetPasswordScreen extends StatelessWidget {
               ),
               Spacer(),
            CustomButton(
-                    onTap: ()=>controller.sendemail(),
+                    onTap: ()=>controller.sendEmail(),
                     title: Text(
                       'Send Email',
                       style: GoogleFonts.manrope(

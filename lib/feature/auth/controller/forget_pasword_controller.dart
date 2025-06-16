@@ -15,7 +15,7 @@ class ForgetPasswordController extends GetxController {
   TextEditingController otpController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController rePasswordController = TextEditingController();
-  void sendemail() async {
+  void sendEmail() async {
     if (emailController.text.isNotEmpty) {
       try {
         EasyLoading.show(status: "Processing...");
