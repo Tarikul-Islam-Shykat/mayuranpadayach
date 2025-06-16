@@ -18,8 +18,9 @@ class NetworkConfig {
     if (await InternetConnectionChecker().hasConnection) {
       var header = <String, String>{"Content-type": "application/json"};
       if (is_auth == true) {
-       header["Authorization"] = "${sh.getString("token")}";
-     //   header["Authorization"]  =     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MzZhYWUwZjg4MDE4OGQzODEyMTljMiIsImVtYWlsIjoiYWRtaW5AZ21haWwuY29tIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzQ4NDEzOTUzLCJleHAiOjE3NTEwMDU5NTN9.DQfa2rT5tcYYkziqB7VQxGGtrwXVQ1jUPoSKzKngu-k";
+        //   header["Authorization"] = "${sh.getString("token")}";
+        header["Authorization"] =
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MzZiMDUwNjgzMTQ1Y2U3ZTA3MGViNCIsImVtYWlsIjoic2hhaGFkYXQxQGdtYWlsLmNvbSIsInJvbGUiOiJVU0VSIiwiaXNBbGxvd2VkIjpmYWxzZSwiaWF0IjoxNzQ4NDE0NTc2LCJleHAiOjE3NTEwMDY1NzZ9.IEnC4__MZjv43uAmR2zQwADzKP30iS3ySN457hENsOo";
       }
 
       if (method.name == RequestMethod.GET.name) {
@@ -28,7 +29,7 @@ class NetworkConfig {
           log("joybanlga  $url \n ${req.body} \n ${req.statusCode} ");
 
           print(req.statusCode);
-          if (req.statusCode == 200) {
+          if (req.statusCode == 200 || req.statusCode == 201) {
             return json.decode(req.body);
           } else {
             throw Exception("Server Error");

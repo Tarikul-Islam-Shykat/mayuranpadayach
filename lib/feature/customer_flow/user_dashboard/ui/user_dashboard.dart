@@ -4,8 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:prettyrini/core/global_widegts/app_network_image_v2.dart';
+import 'package:prettyrini/core/global_widegts/custom_text.dart';
+import 'package:prettyrini/core/global_widegts/loading_screen.dart';
 import 'package:prettyrini/feature/customer_flow/serivce_details/model/studio_model.dart';
+import 'package:prettyrini/feature/customer_flow/user_dashboard/controller/user_buisness_list_controller.dart';
 import 'package:prettyrini/feature/customer_flow/user_dashboard/controller/user_dashboard_contrller.dart';
+import 'package:prettyrini/feature/customer_flow/user_dashboard/widget/buisness_list_widget.dart';
 
 class UserDashboard extends StatelessWidget {
   const UserDashboard({Key? key}) : super(key: key);
@@ -13,6 +18,8 @@ class UserDashboard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final UserDashboardContrller controller = Get.put(UserDashboardContrller());
+    final BusinessListController controllerOne =
+        Get.put(BusinessListController());
 
     return Scaffold(
       backgroundColor: Colors.grey[50],
@@ -20,7 +27,7 @@ class UserDashboard extends StatelessWidget {
         child: Obx(() => IndexedStack(
               index: controller.currentNavIndex.value,
               children: [
-                _buildHomeContent(controller),
+                _buildHomeContent(controller, context),
                 _buildDummyPage("Search", Icons.search),
                 _buildDummyPage("Bookings", Icons.calendar_today),
                 _buildDummyPage("Messages", Icons.message),
@@ -73,14 +80,15 @@ class UserDashboard extends StatelessWidget {
     );
   }
 
-  Widget _buildHomeContent(UserDashboardContrller controller) {
+  Widget _buildHomeContent(
+      UserDashboardContrller controller, BuildContext context) {
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildHeader(),
+          _buildHeader(controller),
           _buildSearchBar(controller),
-          _buildCategories(controller),
+          _buildCategories(controller, context),
           _buildSpecialOffers(controller),
           _buildNearbyProfessionals(controller),
         ],
@@ -88,35 +96,29 @@ class UserDashboard extends StatelessWidget {
     );
   }
 
-  Widget _buildHeader() {
+  Widget _buildHeader(UserDashboardContrller controller) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Row(
         children: [
-          const CircleAvatar(
-            radius: 20,
-            backgroundColor: Color(0xFF8B5CF6),
-            child: Icon(Icons.person, color: Colors.white),
+          ResponsiveNetworkImage(
+            imageUrl: controller.userImagePath.value,
+            shape: ImageShape.circle,
+            widthPercent: 0.1,
+            heightPercent: 0.05,
+            fit: BoxFit.cover,
+            placeholderWidget: loading(),
           ),
           const SizedBox(width: 12),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'Welcome back,',
-                style: GoogleFonts.poppins(
-                  fontSize: 14,
-                  color: Colors.grey[600],
-                ),
+              smallText(
+                text: 'Welcome back',
               ),
-              Text(
-                'Darrell Steward',
-                style: GoogleFonts.poppins(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.black87,
-                ),
-              ),
+              Obx(() => normalText(
+                  text: controller.userName.value,
+                  fontWeight: FontWeight.bold)),
             ],
           ),
           const Spacer(),
@@ -164,61 +166,36 @@ class UserDashboard extends StatelessWidget {
     );
   }
 
-  Widget _buildCategories(UserDashboardContrller controller) {
+  Widget _buildCategories(
+      UserDashboardContrller controller, BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            'Categories',
-            style: GoogleFonts.poppins(
-              fontSize: 18,
-              fontWeight: FontWeight.w600,
-              color: Colors.black87,
-            ),
-          ),
+          headingText(text: 'Categories', fontWeight: FontWeight.bold),
           const SizedBox(height: 12),
           Obx(() => Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: List.generate(controller.categories.length, (index) {
-                  final category = controller.categories[index];
-                  final isSelected =
-                      controller.selectedCategoryIndex.value == index;
+                children: List.generate(
+                    controller.userDashboardCategoryList.length, (index) {
+                  final category = controller.userDashboardCategoryList[index];
 
                   return GestureDetector(
                     onTap: () => controller.onCategorySelected(index),
-                    child: Container(
-                      width: 50,
-                      height: 70,
-                      decoration: BoxDecoration(
-                        color:
-                            isSelected ? const Color(0xFF8B5CF6) : Colors.white,
-                        borderRadius: BorderRadius.circular(12),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.05),
-                            blurRadius: 10,
-                            offset: const Offset(0, 2),
-                          ),
-                        ],
-                      ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(10.0),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text(
-                            category['icon']!,
-                            style: const TextStyle(fontSize: 20),
+                          ResponsiveNetworkImage(
+                            imageUrl: category.image.toString(),
+                            shape: ImageShape.circle,
+                            widthPercent: 0.15,
+                            heightPercent: 0.08,
+                            fit: BoxFit.cover,
                           ),
-                          const SizedBox(height: 4),
-                          Text(
-                            category['name']!,
-                            style: GoogleFonts.poppins(
-                              fontSize: 10,
-                              fontWeight: FontWeight.w500,
-                              color: isSelected ? Colors.white : Colors.black87,
-                            ),
-                          ),
+                          smallerText(
+                              text: category.name, fontWeight: FontWeight.bold),
                         ],
                       ),
                     ),
@@ -238,25 +215,13 @@ class UserDashboard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                'Special Offer',
-                style: GoogleFonts.poppins(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.black87,
-                ),
-              ),
+              headingText(text: "Special Offer"),
               GestureDetector(
-                onTap: controller.onSeeAllSpecialOffers,
-                child: Text(
-                  'See All',
-                  style: GoogleFonts.poppins(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                    color: const Color(0xFF8B5CF6),
-                  ),
-                ),
-              ),
+                  onTap: controller.onSeeAllSpecialOffers,
+                  child: smallText(
+                      text: 'See All',
+                      color: Color(0xFF8B5CF6),
+                      fontWeight: FontWeight.bold)),
             ],
           ),
           const SizedBox(height: 16),
@@ -442,37 +407,30 @@ class UserDashboard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                'Nearby Professionals',
-                style: GoogleFonts.poppins(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.black87,
-                ),
-              ),
+              headingText(text: "Featured Business"),
               GestureDetector(
-                onTap: controller.onSeeAllNearbyProfessionals,
-                child: Text(
-                  'See All',
-                  style: GoogleFonts.poppins(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                    color: const Color(0xFF8B5CF6),
-                  ),
-                ),
-              ),
+                  onTap: controller.onSeeAllNearbyProfessionals,
+                  child: smallText(
+                      text: 'See All',
+                      color: Color(0xFF8B5CF6),
+                      fontWeight: FontWeight.bold)),
             ],
           ),
+
+          Container(
+            height: 400, // Fixed height for the business list
+            child: BusinessListWidget(),
+          ),
           const SizedBox(height: 16),
-          Obx(() => ListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: controller.filteredStudios.length,
-                itemBuilder: (context, index) {
-                  final studio = controller.filteredStudios[index];
-                  return _buildProfessionalCard(studio, controller);
-                },
-              )),
+          // Obx(() => ListView.builder(
+          //       shrinkWrap: true,
+          //       physics: const NeverScrollableScrollPhysics(),
+          //       itemCount: controller.filteredStudios.length,
+          //       itemBuilder: (context, index) {
+          //         final studio = controller.filteredStudios[index];
+          //         return _buildProfessionalCard(studio, controller);
+          //       },
+          //     )),
         ],
       ),
     );

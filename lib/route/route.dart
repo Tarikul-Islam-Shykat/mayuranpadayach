@@ -80,13 +80,6 @@ class AppRoute {
   static String getReviewAdminScreen() => reviewAdminScreen;
 
   static List<GetPage> routes = [
-    // user page
-
-    GetPage(
-        name: userDashboardScreen,
-        page: () => UserDashboard(),
-        transition: Transition.rightToLeft),
-
     //common route page
     GetPage(name: splashScreen, page: () => SplashScreen()),
     GetPage(name: loginScreen, page: () => LoginScreen()),
@@ -98,17 +91,16 @@ class AppRoute {
           final String email = Get.arguments?['email'] ?? '';
           return OtpVeryScreen(email: email);
         }),
-    // GetPage(
-    //     name: otpVerificationScreen,
-    //     page: () => OtpVeryScreen(
-    //           email: "",
-    //         )),
     GetPage(name: resetPassScreen, page: () => ResetPasswordScreen()),
     GetPage(name: profileScreen, page: () => ProfileScreen()),
     GetPage(name: editProfileScreen, page: () => EditProfile()),
     GetPage(name: changePasswordScreen, page: () => ChangePasword()),
 
     //user route page
+    GetPage(
+        name: userDashboardScreen,
+        page: () => UserDashboard(),
+        transition: Transition.rightToLeft),
 
     //admin route page
     GetPage(name: adminHomeScreen, page: () => AdminHomeScreen()),

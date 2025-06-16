@@ -9,18 +9,10 @@ import 'package:prettyrini/feature/customer_flow/serivce_details/sub_view/portfo
 import 'package:prettyrini/feature/customer_flow/serivce_details/sub_view/review_tab.dart';
 import 'package:prettyrini/feature/customer_flow/serivce_details/sub_view/service_tab.dart';
 
-
-import '../controller/service_details_cnt.dart';
-import '../sub_view/about_tab.dart';
-import '../sub_view/portfolio_tab.dart';
-import '../sub_view/review_tab.dart';
-import '../sub_view/service_tab.dart';
-
-
 class StudioDetailPage extends StatelessWidget {
   final StudioController controller = Get.put(StudioController());
 
-  StudioDetailPage({Key? key}) : super(key: key);
+  StudioDetailPage({super.key});
 
   @override
   Widget build(BuildContext context) {

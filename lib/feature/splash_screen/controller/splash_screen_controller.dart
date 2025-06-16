@@ -87,7 +87,7 @@ class SplashScreenController extends GetxController {
       } else if (role == RoleType.ADMIN.name) {
         Get.offAllNamed(AppRoute.adminBusinessScreen);
       } else if (role == RoleType.USER.name) {
-        Get.offAllNamed(AppRoute.profileScreen);
+        Get.offAllNamed(AppRoute.userDashboardScreen);
       } else {
         Get.offAllNamed(AppRoute.loginScreen);
       }
