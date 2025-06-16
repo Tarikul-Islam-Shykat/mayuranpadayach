@@ -3,7 +3,7 @@ import 'package:prettyrini/feature/admin/admin_booking/view/admin_booking_screen
 import 'package:prettyrini/feature/admin/admin_business/view/business_screen.dart';
 import 'package:prettyrini/feature/admin/admin_home/view/admin_home_screen.dart';
 import 'package:prettyrini/feature/admin/admin_review/view/admin_review_screen.dart';
-import 'package:prettyrini/feature/admin/admin_business/view/about_screen.dart';
+import 'package:prettyrini/feature/admin/admin_about/view/about_screen.dart';
 import 'package:prettyrini/feature/admin/admin_portfolio/view/portfolio_screen.dart';
 import 'package:prettyrini/feature/admin/admin_business/view/business_details_screen.dart';
 import 'package:prettyrini/feature/admin/admin_service/view/service_screen.dart';
@@ -13,7 +13,7 @@ import 'package:prettyrini/feature/profile_screen/view/change_pasword.dart';
 import 'package:prettyrini/feature/profile_screen/view/edit_profile.dart';
 import 'package:prettyrini/feature/profile_screen/view/profile_screen.dart';
 import '../feature/admin/admin_booking/view/booking_admin_details_screen.dart';
-import '../feature/admin/admin_business/view/about_details_screen.dart';
+import '../feature/admin/admin_about/view/about_details_screen.dart';
 import '../feature/admin/admin_service/controller/service_controller.dart';
 import '../feature/admin/admin_specialist/view/specialist_screen.dart';
 import '../feature/auth/screen/forget_pasword_screen.dart';

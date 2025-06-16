@@ -6,7 +6,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:prettyrini/core/global_widegts/custom_text.dart';
 import 'package:prettyrini/feature/admin/admin_business/controller/add_business_controller.dart';
-import 'package:prettyrini/feature/admin/admin_business/controller/admin_business_controller.dart';
 import 'package:prettyrini/feature/admin/admin_business/controller/admin_subscription_controller.dart';
 import 'package:prettyrini/route/route.dart';
 import '../../../../core/const/app_colors.dart';
@@ -15,11 +14,10 @@ import '../../../../core/global_widegts/app_network_image.dart';
 import '../../../../core/global_widegts/loading_screen.dart';
 import '../../../../core/services_class/network_service/image_adding_controller.dart';
 import '../../../../core/services_class/network_service/map.dart';
-import '../../../../core/services_class/network_service/pop_up_adding_image.dart';
 import '../../../auth/widget/custom_booton_widget.dart';
-import '../../../auth/widget/custome_dropdown.dart';
 import '../../../auth/widget/text_field_widget.dart';
 import '../../admin_home/widget/custom_circular_button.dart';
+import '../../admin_service/widget/service_tile.dart';
 import '../model/business_category_model.dart';
 import '../widget/common_dropdown_button.dart';
 
@@ -27,7 +25,6 @@ import '../widget/common_dropdown_button.dart';
 class BusinessScreen extends StatelessWidget {
    BusinessScreen({super.key});
   final AddBusinessController controller = Get.put(AddBusinessController());
-  final AdminBusinessController businessController = Get.put(AdminBusinessController());
   final GalleryController imageController = Get.put(GalleryController());
   final AdminSubscriptionController subscriptionController = Get.put(AdminSubscriptionController());
 
@@ -231,31 +228,19 @@ class BusinessScreen extends StatelessWidget {
             ),
 
             SizedBox(
-              height: 10.h,
+              height: 8.h,
             ),
-            Text("Business Name",
-              style: GoogleFonts.poppins(
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w500,
-                  color: AppColors.textBlackColor),),
+            fieldText(name: "Business Name"),
             CustomAuthField(
                 radiusValue: 10,
                 radiusValue2: 10,
                 controller: controller.businessNameTEC,
                 hintText: "Business Name"),
             SizedBox(
-              height: 10.h,
+              height: 8.h,
             ),
-            Text(
-              "Category",
-              style: GoogleFonts.poppins(
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w500,
-                  color: AppColors.textBlackColor),
-            ),
-            SizedBox(
-              height: 5,
-            ),
+            fieldText(name: "Category"),
+
             Obx(() => CommonDropdown<CategoryModel>(
               items: controller.categoryList,
               selectedItem: controller.selectedCategory.value,
@@ -267,18 +252,9 @@ class BusinessScreen extends StatelessWidget {
             )),
 
             SizedBox(
-              height: 10.h,
+              height: 8.h,
             ),
-            Text(
-              "Sub Category",
-              style: GoogleFonts.poppins(
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w500,
-                  color: AppColors.textBlackColor),
-            ),
-            SizedBox(
-              height: 5,
-            ),
+            fieldText(name: "Sub Category"),
             // Sub Category Dropdown
             Obx(() => CommonDropdown<SubCategoryModel>(
               items: controller.subCategoryList,
@@ -295,15 +271,10 @@ class BusinessScreen extends StatelessWidget {
 
 
             SizedBox(
-              height: 10.h,
+              height: 8.h,
             ),
-            Text(
-              "Opening & Closing Time",
-              style: GoogleFonts.poppins(
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w500,
-                  color: AppColors.textBlackColor),
-            ),
+
+            fieldText(name: "Opening & Closing Time"),
             Row(
               children: [
                 Expanded(
@@ -314,7 +285,7 @@ class BusinessScreen extends StatelessWidget {
                     child: Container(
                       padding: EdgeInsets.symmetric(horizontal: 10),
                       alignment: Alignment.centerLeft,
-                      height: 55,
+                      height: 40.h,
                       width: Get.width,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
@@ -338,7 +309,7 @@ class BusinessScreen extends StatelessWidget {
                     child: Container(
                       padding: EdgeInsets.symmetric(horizontal: 10),
                       alignment: Alignment.centerLeft,
-                      height: 55,
+                      height: 40.h,
                       width: Get.width,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
@@ -356,18 +327,9 @@ class BusinessScreen extends StatelessWidget {
               ],
             ),
 
-            SizedBox(height: 10.h,),
+            SizedBox(height: 8.h,),
 
-            Text(
-              "Location",
-              style: GoogleFonts.poppins(
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w500,
-                  color: AppColors.textBlackColor),
-            ),
-            SizedBox(
-              height: 5,
-            ),
+            fieldText(name: "Location"),
            InkWell(
             onTap: () async {
               final result = await Get.to<LocationResult>(() => MapPage());
@@ -386,7 +348,7 @@ class BusinessScreen extends StatelessWidget {
             },
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 10),
-              height: 60,
+              height: 45.h,
               width: Get.width,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
@@ -397,7 +359,7 @@ class BusinessScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   SizedBox(
-                    width: 300.w,
+                    width:MediaQuery.sizeOf(context).width*0.8,
                     child: Text(
                       controller.locationName.isNotEmpty
                           ? controller.locationName
@@ -418,25 +380,16 @@ class BusinessScreen extends StatelessWidget {
 
 
         SizedBox(
-              height: 10.h,
+              height: 8.h,
             ),
 
 
-            Text(
-              "Upload Image",
-              style: GoogleFonts.poppins(
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w500,
-                  color: AppColors.textBlackColor),
-            ),
-            SizedBox(
-              height: 5,
-            ),
+            fieldText(name: "Upload Image"),
             InkWell(
               onTap: () => _showImagePickerOptions(context),
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 10),
-                height: 105,
+                height: 60.h,
                 width: Get.width,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
@@ -446,8 +399,8 @@ class BusinessScreen extends StatelessWidget {
                   children: [
                     Obx(() => Container(
 
-                      height: 100,
-                      width: 100,
+                      height: 90.h,
+                      width: 100.w,
                       padding: EdgeInsets.all(5),
                       margin: EdgeInsets.symmetric(vertical: 5),
                       decoration: BoxDecoration(

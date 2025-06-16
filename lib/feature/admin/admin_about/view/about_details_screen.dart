@@ -11,13 +11,11 @@ import '../../../../route/route.dart';
 import '../../../auth/widget/custom_booton_widget.dart';
 import '../../../profile_screen/widget/round_back_button.dart';
 import '../../admin_service/widget/title_and_edit_button.dart';
-import '../controller/add_business_controller.dart';
-import '../controller/admin_business_controller.dart';
+import '../../admin_business/controller/add_business_controller.dart';
 
 class AboutDetailsScreen extends StatelessWidget {
    AboutDetailsScreen({super.key});
    final AddBusinessController controller = Get.put(AddBusinessController());
-   final AdminBusinessController businessController = Get.put(AdminBusinessController());
 
 
   @override
