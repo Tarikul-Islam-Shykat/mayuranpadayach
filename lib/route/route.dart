@@ -85,7 +85,8 @@ class AppRoute {
         name: otpVerificationScreen,
         page: () {
           final String email = Get.arguments?['email'] ?? '';
-          return OtpVeryScreen(email: email);
+          final bool isForgot = Get.arguments?['isForgot'] ?? false;
+          return OtpVeryScreen(email: email, isForgot: isForgot,);
         }),
     // GetPage(
     //     name: otpVerificationScreen,

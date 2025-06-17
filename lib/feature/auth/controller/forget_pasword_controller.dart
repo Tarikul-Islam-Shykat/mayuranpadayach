@@ -34,6 +34,7 @@ class ForgetPasswordController extends GetxController {
             Get.snackbar("Success", "Email sent successfully");
             Get.to(() => OtpVeryScreen(
                   email: emailController.text.trim(),
+                  isForgot: true,
                 ));
           } else {
             Get.snackbar("Error", "Something went wrong");

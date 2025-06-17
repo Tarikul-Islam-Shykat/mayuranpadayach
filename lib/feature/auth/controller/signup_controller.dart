@@ -70,7 +70,10 @@ class SignInController extends GetxController {
         AppSnackbar.show(message: "Registration Successful", isSuccess: true);
         Get.toNamed(
           AppRoute.getOtpVerificationScreen(),
-          arguments: {'email': email.trim()},
+          arguments: {
+            'email': email.trim(),
+            "isForgot":false,
+          },
         );
         return true;
       } else {

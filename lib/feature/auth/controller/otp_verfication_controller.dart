@@ -10,7 +10,7 @@ class OtpVerficationController extends GetxController {
   final NetworkConfig _networkConfig = NetworkConfig();
 
   var isOTPregistrationLoading = false.obs;
-  Future<bool> sendOTP(String email, int otp) async {
+  Future<bool> sendOTP(String email, int otp, bool isForgot) async {
     try {
       isOTPregistrationLoading.value = true;
       final Map<String, dynamic> requestBody = {
@@ -25,13 +25,22 @@ class OtpVerficationController extends GetxController {
         is_auth: false,
       );
       log("registerUser $response ${response['data']}");
-      if (response['success'] == false) {
-        AppSnackbar.show(message: response['message'], isSuccess: false);
-      }
       if (response != null && response['success'] == true) {
-        AppSnackbar.show(
-            message: "OTP Verification Successful", isSuccess: true);
-        Get.toNamed(AppRoute.loginScreen);
+
+        if(isForgot){
+          AppSnackbar.show(
+              message: "OTP Verification Successful", isSuccess: true);
+          Get.toNamed(
+            arguments: {
+              'email':email.toString(),
+            },
+              AppRoute.resetPassScreen);
+        }else{
+          AppSnackbar.show(
+              message: "OTP Verification Successful", isSuccess: true);
+          Get.toNamed(AppRoute.loginScreen);
+        }
+
         return true;
       } else {
         AppSnackbar.show(message: "Failed To Registration", isSuccess: false);

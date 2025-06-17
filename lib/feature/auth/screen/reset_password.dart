@@ -2,54 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:prettyrini/core/global_widegts/custom_text.dart';
+import 'package:prettyrini/core/global_widegts/loading_screen.dart';
 import 'package:prettyrini/feature/auth/widget/custom_booton_widget.dart';
 import 'package:prettyrini/feature/auth/widget/text_field_widget.dart';
 import '../../../core/const/app_colors.dart';
 import '../../../core/const/image_path.dart';
-import '../widget/auth_header_subtitle.dart';
-import '../widget/auth_header_text.dart';
+import '../controller/reset_password_controller.dart';
 import '../widget/text_field_title.dart';
+import 'package:get/get.dart';
 
 class ResetPasswordScreen extends StatelessWidget {
   ResetPasswordScreen({super.key});
-
-  final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmPasswordController = TextEditingController();
-
-  // validateAndAction() async {
-  //   String? password = passwordController.text;
-  //   String? confirmPassword = confirmPasswordController.text;
-  //
-  //   if (password.isEmpty || confirmPassword.isEmpty) {
-  //     AppSnackbar.show(message: "Please Enter Your Password", isSuccess: false);
-  //     return;
-  //   }
-  //
-  //   if (password != confirmPassword) {
-  //     AppSnackbar.show(message: "Password Aren't Same", isSuccess: false);
-  //     return;
-  //   }
-  //
-  //   if (password.length < 8 || confirmPassword.length < 8) {
-  //     AppSnackbar.show(
-  //       message: "Password Can't Be Less then 8",
-  //       isSuccess: false,
-  //     );
-  //     return;
-  //   }
-  //
-  //   //final AuthController authController = Get.put(AuthController());
-  //   final String email = Get.arguments['email'];
-  //
-  //   // var isResetPasswordSuccess = await authController.resetPassword(
-  //   //   email: email,
-  //   //   password: password,
-  //   // );
-  //   if (isResetPasswordSuccess) {
-  //     Get.offAllNamed(AppRoute.loginScreen);
-  //   }
-  // }
-  //    final AuthController authController = Get.put(AuthController());
+  final ResetPasswordController controller = Get.put(ResetPasswordController());
+  final String? email =Get.arguments['email'];
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +39,7 @@ class ResetPasswordScreen extends StatelessWidget {
               keyboardType: TextInputType.visiblePassword,
               radiusValue2: 15,
               radiusValue: 15,
-              controller: passwordController,
+              controller: controller.newPassTEC.value,
               hintText: "New Password",
             ),
 
@@ -85,22 +50,27 @@ class ResetPasswordScreen extends StatelessWidget {
               keyboardType: TextInputType.visiblePassword,
               radiusValue2: 15,
               radiusValue: 15,
-              controller: confirmPasswordController,
+              controller: controller.conPassTEC.value,
               hintText: "Confirm Password",
             ),
         
            Spacer(),
-            CustomButton(
-              onTap: (){},
-              color: Colors.white,
-              title: Text(
-                'Reset Password',
-                style: GoogleFonts.manrope(
-                  fontSize: 16.sp,
-                  color: AppColors.whiteColor,
-                  fontWeight: FontWeight.w800,
-                ),
-              ),
+            Obx((){
+                return controller.isLoading.value?btnLoading():CustomButton(
+                  onTap: (){
+                    controller.resetPassword(email.toString());
+                  },
+                  color: Colors.white,
+                  title: Text(
+                    'Reset Password',
+                    style: GoogleFonts.manrope(
+                      fontSize: 16.sp,
+                      color: AppColors.whiteColor,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                );
+              }
             ),
             SizedBox(height: 10.h,)
 

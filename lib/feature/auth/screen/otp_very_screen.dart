@@ -15,7 +15,8 @@ import '../../../route/route.dart';
 
 class OtpVeryScreen extends StatefulWidget {
   final String email;
-  const OtpVeryScreen({super.key, required this.email});
+  final  bool isForgot;
+  const OtpVeryScreen({super.key, required this.email,required this.isForgot});
 
   @override
   State<OtpVeryScreen> createState() => _OtpVeryScreenState();
@@ -113,10 +114,12 @@ class _OtpVeryScreenState extends State<OtpVeryScreen> {
                         : CustomButton(
                             onTap: () {
                               otpVerficationController.sendOTP(
-                                  widget.email, int.parse(_otp));
+                                  widget.email,
+                                int.parse(_otp),
+                                widget.isForgot,
+                              );
                             },
-                            title: Text(
-                              "Apply Code",
+                            title: Text(widget.isForgot?"Continue":"Apply Code",
                               style: GoogleFonts.manrope(
                                 fontSize: 16.sp,
                                 fontWeight: FontWeight.w800,

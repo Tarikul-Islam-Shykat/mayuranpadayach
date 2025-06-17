@@ -11,6 +11,7 @@ class Urls {
 
   static const String setupProfile = '$baseUrl/users/update-profile';
   static const String authentication = '$baseUrl/auth/verify-auth';
+  static const String resetPassword = '$baseUrl/auth/reset-password';
   static const String logout = '$baseUrl/auth/logout';
   static const String forgotPass = '$baseUrl/auth/forgot-password';
   static const String pickUpLocation = '$baseUrl/user/pickup-locations';
