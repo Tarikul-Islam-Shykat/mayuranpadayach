@@ -15,7 +15,6 @@ import '../../../auth/widget/custom_booton_widget.dart';
 import '../../../auth/widget/text_field_widget.dart';
 import '../../../profile_screen/widget/round_back_button.dart';
 import '../controller/add_business_controller.dart';
-import '../controller/admin_business_controller.dart';
 import '../../admin_home/widget/custom_circular_button.dart';
 import 'package:get/get.dart';
 import '../../admin_service/widget/service_tile.dart';
@@ -463,20 +462,25 @@ class BusinessDetailsScreen extends StatelessWidget {
                 child: Row(
                   children: [
                     Obx(() => Container(
-
                       height: 90.h,
                       width: 100.w,
                       padding: EdgeInsets.all(5),
                       margin: EdgeInsets.symmetric(vertical: 5),
                       decoration: BoxDecoration(
                           color: Colors.white,
-                          borderRadius: BorderRadius.circular(5)
+                          borderRadius: BorderRadius.circular(5),
+
                       ),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(5),
                         child: controller.profileImage.value != null
                             ? Image.file(
                           controller.profileImage.value!,
+                          fit: BoxFit.cover,
+                          width: 100,
+                          height: 100,
+                        ):controller.adminBusinessDetailsModel.value.image != null?Image.network(
+                          controller.adminBusinessDetailsModel.value.image!,
                           fit: BoxFit.cover,
                           width: 100,
                           height: 100,

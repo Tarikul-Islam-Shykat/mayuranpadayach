@@ -66,7 +66,6 @@ class AddBusinessController extends GetxController{
       }else{
         debugPrint(" get admin business message: ${response["message"]}");
         adminBusinessModel.clear();
-
         return false;
       }
 
@@ -213,6 +212,7 @@ class AddBusinessController extends GetxController{
 
   }
 // Update image size text for display
+
   Future<void> _imageSizeText(File imageFile)async{
     try{
       int sizeInBytes = await imageFile.length();
@@ -311,6 +311,10 @@ class AddBusinessController extends GetxController{
   Future<bool> editBusinessProfile(String userId) async {
     try {
       if (profileImage.value == null) {
+        AppSnackbar.show(
+          message: "Please select an Image!",
+          isSuccess: true,
+        );
         errorMessage.value = 'Please select an image';
         return false;
       }
@@ -343,7 +347,7 @@ class AddBusinessController extends GetxController{
         "address": locationName,
         "openingHours": timeOfDayToIso8601(openingTime.value),
         "closingHours": timeOfDayToIso8601(closingTime.value),
-        "openStatus":status.value ?? "OPEN",
+        "openStatus":status.value,
       };
       log("data------------$data");
       request.fields['data'] = json.encode(data);
@@ -389,11 +393,10 @@ class AddBusinessController extends GetxController{
     }
   }
 
-
-
   void setEditBusinessValue(AdminBusinessDetails data) {
     isForEdit.value = true;
     selectedID.value = data.id.toString();
+
 
     selectedCategory.value = categoryList.firstWhere(
           (cat) => cat.id.toString() == data.categoryId.toString(),
@@ -567,12 +570,6 @@ class AddBusinessController extends GetxController{
   }
 
 
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-
-  }
   // Clear selected image
   void clearImage() {
     profileImage.value = null;

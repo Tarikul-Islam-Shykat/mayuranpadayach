@@ -7,7 +7,7 @@ import 'package:prettyrini/route/route.dart';
 import '../../../../core/const/app_colors.dart';
 import '../../../profile_screen/widget/round_back_button.dart';
 import '../../admin_service/widget/title_and_edit_button.dart';
-import '../controller/add_business_controller.dart';
+import '../../admin_business/controller/add_business_controller.dart';
 
 
 class AboutScreen extends StatelessWidget {
