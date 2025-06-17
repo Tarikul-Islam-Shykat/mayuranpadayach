@@ -42,7 +42,10 @@ class AboutScreen extends StatelessWidget {
           }else{
             return Column(
               children: [
-                titleAndEditButton('Basic Info', 'Edit', ()=>Get.toNamed(AppRoute.businessAboutDetailsScreen)),
+                titleAndEditButton('Basic Info', 'Edit', (){
+                  controller.setEditBusinessValue(controller.adminBusinessDetailsModel.value);
+                  Get.toNamed(AppRoute.businessAboutDetailsScreen);
+                }),
                 SizedBox(height: 5,),
                 Container(
                   padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),

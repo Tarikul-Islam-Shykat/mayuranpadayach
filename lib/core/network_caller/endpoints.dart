@@ -31,7 +31,7 @@ class Urls {
   static const String serviceDelete = "$baseUrl/services"; //id DELETE
 
 
-  static const String getAdminSpecialist = "$baseUrl/specialists/all?limit=10"; //page GET ID
+  static const String getAdminSpecialist = "$baseUrl/specialists/all?limit=10"; //page GET page
   static const String createAdminSpecialist = "$baseUrl/specialists"; //POST
   static const String editAdminSpecialist = "$baseUrl/specialists"; //PUT
   static const String deleteAdminSpecialist = "$baseUrl/specialists"; //DELETE

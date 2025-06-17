@@ -15,7 +15,7 @@ import '../../../../core/global_widegts/app_snackbar.dart';
 import '../../../../core/network_caller/endpoints.dart';
 import '../../../../core/network_caller/network_config.dart';
 
-
+//businessId: 68497ecf4c6dba1cc44b80da, serviceId: 684d2ab067c1e787a3f94937,
 
 class AdminSpecialistController extends GetxController{
 
@@ -229,6 +229,7 @@ class AdminSpecialistController extends GetxController{
       final response = await http.Response.fromStream(streamedResponse);
       final responseJson = json.decode(response.body);
 
+
       log("Image upload response: $responseJson");
       log("Status code: ${response.statusCode}");
       if(response.statusCode == 201 || response.statusCode == 200 && responseJson['success'] == true){
@@ -355,6 +356,8 @@ class AdminSpecialistController extends GetxController{
           RequestMethod.GET,
           "${Urls.getAdminSpecialist}&page=${page.value}",{},is_auth: true);
       log("service response  $response");
+      SharedPreferences sh = await SharedPreferences.getInstance();
+      log("service token  ${sh.getString("token")}");
       if(response != null && response["success"] == true){
         update();
         allClear();

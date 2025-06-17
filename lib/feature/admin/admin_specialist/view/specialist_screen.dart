@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -11,7 +10,6 @@ import 'package:prettyrini/feature/admin/admin_specialist/controller/specialist_
 import '../../../../core/const/app_colors.dart';
 import '../../../../core/const/image_path.dart';
 import '../../../../core/global_widegts/app_network_image.dart';
-import '../../../../core/global_widegts/app_snackbar.dart';
 import '../../../../core/global_widegts/custom_dialog.dart';
 import '../../../../core/global_widegts/custom_text.dart';
 import '../../../auth/widget/custom_booton_widget.dart';
@@ -31,7 +29,7 @@ class SpecialistScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-        print("business id $businessId");
+        log("business id $businessId");
         serviceController.getAllService(businessId);
 
     });
