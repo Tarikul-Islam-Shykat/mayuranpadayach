@@ -34,10 +34,12 @@ class Urls {
   static const String getAdminSpecialist = "$baseUrl/specialists/all?limit=10"; //page GET ID
   static const String createAdminSpecialist = "$baseUrl/specialists"; //POST
   static const String editAdminSpecialist = "$baseUrl/specialists"; //PUT
+  static const String deleteAdminSpecialist = "$baseUrl/specialists"; //DELETE
 
   static const String getPortfolio = "$baseUrl/portfolios/all"; //GET
   static const String createPortfolio = "$baseUrl/portfolios"; //POST
   static const String editPortfolio = "$baseUrl/portfolios"; //PUT id
+  static const String deletePortfolio = "$baseUrl/portfolios"; //DELETE id
 
 
   static const String getReviewAdmin = "$baseUrl/reviews/business"; //GET id

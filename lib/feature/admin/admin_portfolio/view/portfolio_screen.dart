@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:get/get.dart';
 import 'package:prettyrini/core/global_widegts/app_network_image.dart';
+import 'package:prettyrini/core/global_widegts/custom_dialog.dart';
 import 'package:prettyrini/core/global_widegts/loading_screen.dart';
 import 'package:prettyrini/feature/admin/admin_specialist/controller/specialist_controller.dart';
 import '../../../../core/const/app_colors.dart';
@@ -21,7 +22,7 @@ class PortfolioScreen extends StatelessWidget {
    PortfolioScreen({super.key});
    final PortfolioController controller = Get.put(PortfolioController());
    final AdminSpecialistController specialistController = Get.put(AdminSpecialistController());
-   final String? businessId = Get.arguments?["businessId"];
+   final String? businessId = Get.arguments?["id"];
 
   @override
   Widget build(BuildContext context) {
@@ -67,15 +68,21 @@ class PortfolioScreen extends StatelessWidget {
                   return Center(
                     child: Stack(
                       children: [
-                        Container(
-                          height: 176,
-                          width: 172,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(18.r),
-                          ),
-                          child: ClipRRect(
+                        InkWell(
+                          onTap: (){
+                            controller.setEditPortfolioData(data);
+                            addPortfolioBuild(context);
+                          },
+                          child: Container(
+                            height: 176,
+                            width: 172,
+                            decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(18.r),
-                              child: AppNetworkImage(src: "${data.image}")),
+                            ),
+                            child: ClipRRect(
+                                borderRadius: BorderRadius.circular(18.r),
+                                child: AppNetworkImage(src: "${data.image}")),
+                          ),
                         ),
                         Positioned(
                           right: 10,
@@ -84,8 +91,13 @@ class PortfolioScreen extends StatelessWidget {
                             borderColor: AppColors.redColor,
                             icon: Icon(Icons.remove,color: Colors.white,size: 18,),
                             onTap: (){
-                              controller.setEditPortfolioData(data);
-                              addPortfolioBuild(context);
+                              deleteDialog(
+                                  title: "Are you sure ?",
+                                  content: "Are you sure you want to delete this portfolio?",
+                                  onOk: (){
+                                    controller.deletePortfolio(data.id.toString());
+
+                                  });
                             },bgColor:AppColors.redColor,
                             height: 24,width: 24,
                           ),

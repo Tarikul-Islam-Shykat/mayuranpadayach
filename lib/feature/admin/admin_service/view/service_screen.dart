@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -16,19 +15,20 @@ import 'package:prettyrini/feature/profile_screen/widget/round_back_button.dart'
 import 'package:get/get.dart';
 import '../../../../core/const/app_colors.dart';
 import '../../../../core/global_widegts/custom_text.dart';
-import '../../../../route/route.dart';
+
 
 class ServiceScreen extends GetView<ServiceController> {
 
-  final String? businessId = Get.arguments?["id"]??"";
+  final String? businessId = Get.arguments?["businessId"]??"";
    ServiceScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      controller.page.value = 1;
-      controller.getAllService(businessId.toString());
-      log("business id ${businessId.toString()}");
+      controller.businessId.value = Get.arguments?["businessId"]??"";
+      controller.getAllService(Get.arguments["businessId"]);
+      controller.page.value =1;
     });
     return Scaffold(
       backgroundColor: AppColors.bgColor,

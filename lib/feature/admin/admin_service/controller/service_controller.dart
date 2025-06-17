@@ -9,11 +9,9 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:prettyrini/core/network_caller/endpoints.dart';
 import 'package:prettyrini/core/network_caller/network_config.dart';
-import 'package:prettyrini/core/services_class/local_service/local_data.dart';
 import 'package:prettyrini/feature/admin/admin_service/model/all_service_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../core/global_widegts/app_snackbar.dart';
-import '../../../../route/route.dart';
 
 
 class ServiceController extends GetxController{
@@ -46,13 +44,13 @@ class ServiceController extends GetxController{
   onInit(){
     super.onInit();
     businessId.value = Get.arguments?["id"]??"";
+    log("business id ---controller --${businessId.value.toString()}");
     scrollController.addListener(() {
       if (scrollController.position.pixels ==
           scrollController.position.maxScrollExtent && hasMore.value && serviceModel.length >= 10) {
         getAllService(businessId.value);
       }
     });
-    getAllService(businessId.value.toString());
   }
 
 
@@ -352,6 +350,7 @@ class ServiceController extends GetxController{
 
 
   Future<bool> getAllService(id)async{
+    print("id----service------$id");
     if(isLoadingService.value || !hasMore.value){
       return false;
     }
@@ -400,6 +399,7 @@ class ServiceController extends GetxController{
       if(response != null && response['success']== true){
         getAllService(businessId.value.toString());
         log("business Id ---${businessId.toString()}");
+        Get.back();
         update();
         AppSnackbar.show(
           message: "Delete successfully!",

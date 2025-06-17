@@ -24,6 +24,8 @@ class AdminSpecialistController extends GetxController{
   Rx<TextEditingController> specialistExperienceTEC = TextEditingController().obs;
   RxList<GetSpecialistModel> specialistModel = <GetSpecialistModel>[].obs;
   Rx<GetSpecialistModel?> selectedSpecialist = Rx<GetSpecialistModel?>(null);
+  RxList<ServiceModel> serviceList = <ServiceModel>[].obs;
+  Rx<ServiceModel?> selectedService = Rx<ServiceModel?>(null);
 
   RxBool isLoadingSpecialist = false.obs;
   var hasMore = true.obs;
@@ -38,13 +40,20 @@ class AdminSpecialistController extends GetxController{
   final _picker = ImagePicker();
   Rx<File?> serviceImage = Rx<File?>(null);
   final NetworkConfig _networkConfig = NetworkConfig();
+  final scrollController = ScrollController();
   @override
   void onInit() {
     super.onInit();
+    scrollController.addListener(() {
+      if (scrollController.position.pixels ==
+          scrollController.position.maxScrollExtent) {
+        getAllSpecialist();
+      }
+    });
     getAllSpecialist();
+
   }
-  RxList<ServiceModel> serviceList = <ServiceModel>[].obs;
-  Rx<ServiceModel?> selectedService = Rx<ServiceModel?>(null);
+
 
 
 
@@ -190,6 +199,7 @@ class AdminSpecialistController extends GetxController{
         'Content-Type': 'multipart/form-data',
         'Authorization': "${sh.getString("token")}",
       });
+      log("token --- ${sh.getString("token")}");
       // Create the JSON data for the data field
       final serviceId = Get.put(ServiceController()).selectedService.value!.id.toString();
       Map<String, dynamic> data = {
@@ -200,7 +210,7 @@ class AdminSpecialistController extends GetxController{
         "experience": int.parse(specialistExperienceTEC.value.text)
       };
       request.fields['data'] = json.encode(data);
-      debugPrint("response body------- $data");
+      debugPrint("response specialist body------- $data");
       var imageBytes  = await serviceImage.value!.readAsBytes();
       var multipartFile = http.MultipartFile.fromBytes(
         'image', // Field name for image as shown in Postman
@@ -227,7 +237,7 @@ class AdminSpecialistController extends GetxController{
          allClear();
         Get.back();
         AppSnackbar.show(
-          message: "Image uploaded successfully!",
+          message: "Specialist Create successfully!",
           isSuccess: true,
         );
         return true;
@@ -239,8 +249,8 @@ class AdminSpecialistController extends GetxController{
       }
 
     }catch(e){
-      log("Profile picture upload error: $e");
-      errorMessage.value = 'Upload failed: ${e.toString()}';
+      log("specialist error: $e");
+      errorMessage.value = 'specialist failed: ${e.toString()}';
       return false;
     }finally{
       isLoadingSpecialist.value = false;
@@ -299,7 +309,7 @@ class AdminSpecialistController extends GetxController{
         update();
         Get.back();
         AppSnackbar.show(
-          message: "Image uploaded successfully!",
+          message: "Specialist Edit successfully!",
           isSuccess: true,
         );
         Get.back();
@@ -312,8 +322,8 @@ class AdminSpecialistController extends GetxController{
       }
 
     }catch(e){
-      log("Profile picture upload error: $e");
-      errorMessage.value = 'Upload failed: ${e.toString()}';
+      log("Specialist Edit error: $e");
+      errorMessage.value = 'Specialist Edit Error: ${e.toString()}';
       return false;
     }finally{
       isLoadingSpecialist.value = false;
@@ -369,6 +379,35 @@ class AdminSpecialistController extends GetxController{
       isLoadingSpecialist.value = false;
     }
     return false;
+  }
+
+  Future<bool> deleteSpecialist(String id)async{
+    try{
+      isLoadingSpecialist.value = true;
+      final response = await _networkConfig.ApiRequestHandler(RequestMethod.DELETE, "${Urls.deleteAdminSpecialist}/$id", {},is_auth: true);
+      log("response $response");
+      log("response Id--- $id");
+
+      if(response != null && response['success']== true){
+        getAllSpecialist();
+        Get.back();
+        update();
+        AppSnackbar.show(
+          message: "Delete successfully!",
+          isSuccess: true,
+        );
+        return true;
+      }else{
+        log("Delete Response Failed${response["message"]}");
+        return false;
+      }
+    }catch(e){
+      log("Delete Response Error :$e");
+      return false;
+    }finally{
+      isLoadingSpecialist.value= false;
+    }
+
   }
 
 

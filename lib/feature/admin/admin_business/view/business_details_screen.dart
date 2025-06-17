@@ -111,33 +111,41 @@ class BusinessDetailsScreen extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               SizedBox(
-                                width: MediaQuery.sizeOf(context).width*0.6,
+                                width: MediaQuery.sizeOf(context).width*0.62,
                                 child: Text(
                                   "${data.address}",
                                   style: GoogleFonts.poppins(
                                       fontWeight: FontWeight.w400,
-                                      fontSize: 15.sp,
+                                      fontSize: 14.sp,
                                       color: AppColors.whiteColor),
                                 ),
                               ),
-                              Row(
-                                children: [
-                                  Icon(
-                                    Icons.av_timer_sharp,
-                                    color: Colors.white.withValues(alpha: .40),
-                                    size: 18,
-                                  ),
-                                  SizedBox(
-                                    width: 5,
-                                  ),
-                                  Text(
-                                    'Next Appointment 12:00 PM',
-                                    style: GoogleFonts.poppins(
-                                        fontSize: 11.sp,
-                                        fontWeight: FontWeight.w400,
-                                        color: Colors.white.withValues(alpha: .40)),
-                                  ),
-                                ],
+                              Container(
+                                padding: EdgeInsets.all(2),
+                                decoration: BoxDecoration(
+                                  color: Colors.black26,
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.av_timer_sharp,
+                                      color: Colors.white.withValues(alpha: .50),
+                                      size: 18,
+                                    ),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    Text(
+                                      'Next Appointment 12:00 PM',
+                                      style: GoogleFonts.poppins(
+                                          fontSize: 11.sp,
+                                          fontWeight: FontWeight.w400,
+                                          color: Colors.white.withValues(alpha:2),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ],
                           ),
@@ -166,25 +174,28 @@ class BusinessDetailsScreen extends StatelessWidget {
                 ),
                 serviceTile((){
                   Get.toNamed(
-                      arguments:{
-                        "id":data.id.toString(),
-                        //"id":"68382b3843d158737954cdd6",
-                      },
+                      arguments:{"businessId":data.id.toString(),},
                       AppRoute.adminServiceScreen);
-                  log("id-----------${data.id}");
-                }, 'Services', ImagePath.service),
+                },
+                    'Services',
+                    ImagePath.service,
+                ),
                 serviceTile((){
                   Get.toNamed(
                     arguments: {
-                      "businessId":data.id.toString(),
+                      "id":data.id.toString(),
                     },
                       AppRoute.businessSpecialistScreen);
-                }, 'Specialist', ImagePath.specialist),
+                },
+                    'Specialist',
+                    ImagePath.specialist,
+                ),
                 serviceTile(()=> Get.toNamed(
                     arguments: {
-                      "businessId":data.id.toString(),
+                      "id":data.id.toString(),
                     },
-                    AppRoute.businessPortfolioScreen), "Portfolio", ImagePath.portfolio),
+                    AppRoute.businessPortfolioScreen), "Portfolio", ImagePath.portfolio,
+                ),
                 serviceTile(()=>Get.toNamed(
                   arguments: {
                     "businessId":data.id.toString(),

@@ -206,6 +206,7 @@ class PortfolioController extends GetxController{
         'Content-Type': 'multipart/form-data',
         'Authorization': "${sh.getString("token")}",
       });
+      log("token-----${sh.getString("token")}");
       // Create the JSON data for the data field
 
       Map<String, dynamic> data = {
@@ -236,14 +237,14 @@ class PortfolioController extends GetxController{
       log("Image upload response: $responseJson");
       log("Status code: ${response.statusCode}");
       if(response.statusCode == 201 || response.statusCode == 200 && responseJson['success'] == true){
-         await getPortfolio();
+          getPortfolio();
+          update();
          allClear();
         Get.back();
         AppSnackbar.show(
           message: "Image uploaded successfully!",
           isSuccess: true,
         );
-        Get.back();
         return true;
 
       }else{
@@ -308,13 +309,13 @@ class PortfolioController extends GetxController{
       log("Status code: ${response.statusCode}");
       if(response.statusCode == 201 || response.statusCode == 200 && responseJson['success'] == true){
         allClear();
+        getPortfolio();
         Get.back();
 
         AppSnackbar.show(
           message: "Image uploaded successfully!",
           isSuccess: true,
         );
-        Get.back();
         return true;
 
       }else{
@@ -347,6 +348,36 @@ class PortfolioController extends GetxController{
       serviceImageUrl.value = portfolio.image!;
       serviceImage.value = null;
     }
+  }
+
+  //Delete
+  Future<bool> deletePortfolio(String id)async{
+    try{
+      isLoadingPortfolio.value = true;
+      final response = await _networkConfig.ApiRequestHandler(RequestMethod.DELETE, "${Urls.deletePortfolio}/$id", {},is_auth: true);
+      log("response $response");
+      log("response Id--- $id");
+
+      if(response != null && response['success']== true){
+        getPortfolio();
+        Get.back();
+        update();
+        AppSnackbar.show(
+          message: "Delete successfully!",
+          isSuccess: true,
+        );
+        return true;
+      }else{
+        log("Delete Response Failed${response["message"]}");
+        return false;
+      }
+    }catch(e){
+      log("Delete Response Error :$e");
+      return false;
+    }finally{
+      isLoadingPortfolio.value= false;
+    }
+
   }
 
   void allClear() {

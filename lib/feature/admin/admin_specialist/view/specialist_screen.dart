@@ -11,6 +11,8 @@ import 'package:prettyrini/feature/admin/admin_specialist/controller/specialist_
 import '../../../../core/const/app_colors.dart';
 import '../../../../core/const/image_path.dart';
 import '../../../../core/global_widegts/app_network_image.dart';
+import '../../../../core/global_widegts/app_snackbar.dart';
+import '../../../../core/global_widegts/custom_dialog.dart';
 import '../../../../core/global_widegts/custom_text.dart';
 import '../../../auth/widget/custom_booton_widget.dart';
 import '../../../auth/widget/text_field_widget.dart';
@@ -20,23 +22,18 @@ import '../../admin_service/model/all_service_model.dart';
 import '../../admin_service/widget/service_tile.dart';
 
 class SpecialistScreen extends StatelessWidget {
-   SpecialistScreen({super.key}){
-     scrollController.addListener(() {
-       if (scrollController.position.pixels ==
-           scrollController.position.maxScrollExtent) {
-         controller.getAllSpecialist();
-       }
-     });
-   }
+   SpecialistScreen({super.key});
    final AdminSpecialistController controller = Get.put(AdminSpecialistController());
    final ServiceController serviceController = Get.put(ServiceController());
-   final scrollController = ScrollController();
-   final String? businessId = Get.arguments?["businessId"];
+   final String? businessId = Get.arguments?["id"];
+
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      serviceController.getAllService(businessId);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+        print("business id $businessId");
+        serviceController.getAllService(businessId);
+
     });
 
     return Scaffold(
@@ -73,7 +70,7 @@ class SpecialistScreen extends StatelessWidget {
             return Center(child: Text("No Data Found"),);
           }else{
             return ListView.builder(
-              controller: scrollController,
+              controller: controller.scrollController,
                 itemCount: controller.hasMore.value
                     ? controller.specialistModel.length + 1
                     : controller.specialistModel.length,
@@ -98,19 +95,40 @@ class SpecialistScreen extends StatelessWidget {
                         ),
                         title:Text("${data.fullName}",style: GoogleFonts.poppins(fontSize: 16.sp,fontWeight: FontWeight.w600,color: AppColors.textBlackColor),) ,
                         subtitle:Text("${data.specialization}",style: GoogleFonts.poppins(fontSize: 10.sp,fontWeight: FontWeight.w500,color: AppColors.textBlackColor),),
-                        trailing:CustomCircularButton(
-                            height: 32,
-                            width: 32,
-                            icon: Image.asset(
-                              ImagePath.editIcon,
-                              color: Colors.black,
-                              height: 16,
-                              width: 16,
+                        trailing:Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            CustomCircularButton(
+                              height: 30,
+                              width: 30,
+                              icon: Icon(Icons.delete,color: Colors.red,),
+                              onTap: () {
+                                deleteDialog(
+                                    title: "Are you sure ?",
+                                    content: "Are you sure you want to delete this specialist?",
+                                    onOk: (){
+                                      controller.deleteSpecialist(data.id.toString());
+
+                                    });
+
+                              },
                             ),
-                            onTap:(){
-                              controller.setEditSpecialistData(data);
-                              addSpecialistBuild(context);
-                            }) ,
+                            SizedBox(width: 8.w,),
+                            CustomCircularButton(
+                                height: 32,
+                                width: 32,
+                                icon: Image.asset(
+                                  ImagePath.editIcon,
+                                  color: Colors.black,
+                                  height: 16,
+                                  width: 16,
+                                ),
+                                onTap:(){
+                                  controller.setEditSpecialistData(data);
+                                  addSpecialistBuild(context);
+                                }),
+                          ],
+                        ) ,
                       ),
                     );
                   }
@@ -215,7 +233,6 @@ class SpecialistScreen extends StatelessWidget {
                 label: "Specialist",
                 onChanged: (value) {
                   serviceController.selectedService.value = value!;
-
                 },
                 itemAsString: (item) => item.name ?? "Unknown",
               );
@@ -307,7 +324,7 @@ class SpecialistScreen extends StatelessWidget {
             ),
 
             SizedBox(
-              height: 30.h,
+              height: 20.h,
             ),
             Obx(() {
                 return controller.isLoadingSpecialist.value?btnLoading(): CustomButton(
@@ -317,7 +334,7 @@ class SpecialistScreen extends StatelessWidget {
                         } else {
                           controller.createSpecialist(businessId: businessId.toString());
                         }
-                        log("id---------edit${controller.editingSpecialistId.value.toString()}");
+
 
                     },
                     title: Text(
@@ -328,7 +345,8 @@ class SpecialistScreen extends StatelessWidget {
                           color: AppColors.whiteColor),
                     ));
               }
-            )
+            ),
+            SizedBox(height: 10.h,),
           ],
         ),
       ),
