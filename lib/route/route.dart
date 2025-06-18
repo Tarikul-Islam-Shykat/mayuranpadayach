@@ -9,6 +9,7 @@ import 'package:prettyrini/feature/admin/admin_business/view/business_details_sc
 import 'package:prettyrini/feature/admin/admin_service/view/service_screen.dart';
 import 'package:prettyrini/feature/auth/screen/otp_very_screen.dart';
 import 'package:prettyrini/feature/auth/screen/sign_up_screen.dart';
+import 'package:prettyrini/feature/customer_flow/user_dashboard/ui/user_dashboard.dart';
 import 'package:prettyrini/feature/profile_screen/view/change_pasword.dart';
 import 'package:prettyrini/feature/profile_screen/view/edit_profile.dart';
 import 'package:prettyrini/feature/profile_screen/view/profile_screen.dart';
@@ -34,6 +35,7 @@ class AppRoute {
   static String changePasswordScreen = "/changePasswordScreen";
 
   //user route name
+  static String userDashboardScreen = "/userDashboardScreen";
 
   //admin route name
   static const String adminHomeScreen = "/admin_home_screen";
@@ -47,7 +49,8 @@ class AppRoute {
   static const String businessAboutDetailsScreen =
       "/service_about_details_screen";
   static const String bookingAdminScreen = "/booking_admin_screen";
-  static const String bookingAdminDetailsScreen = "/booking_admin_details_screen";
+  static const String bookingAdminDetailsScreen =
+      "/booking_admin_details_screen";
   static const String reviewAdminScreen = "/review_admin_screen";
 
   //common getter
@@ -61,6 +64,7 @@ class AppRoute {
   static String getEditProfileScreen() => editProfileScreen;
   static String getChangeScreen() => changePasswordScreen;
   //user getter
+  static String getUserDashboard() => userDashboardScreen;
 
   //admin getter
   static String getAdminHomeScreen() => adminHomeScreen;
@@ -88,38 +92,39 @@ class AppRoute {
           final bool isForgot = Get.arguments?['isForgot'] ?? false;
           return OtpVeryScreen(email: email, isForgot: isForgot,);
         }),
-    // GetPage(
-    //     name: otpVerificationScreen,
-    //     page: () => OtpVeryScreen(
-    //           email: "",
-    //         )),
     GetPage(name: resetPassScreen, page: () => ResetPasswordScreen()),
     GetPage(name: profileScreen, page: () => ProfileScreen()),
     GetPage(name: editProfileScreen, page: () => EditProfile()),
     GetPage(name: changePasswordScreen, page: () => ChangePasword()),
 
     //user route page
+    GetPage(
+        name: userDashboardScreen,
+        page: () => UserDashboard(),
+        transition: Transition.rightToLeft),
 
     //admin route page
     GetPage(name: adminHomeScreen, page: () => AdminHomeScreen()),
     GetPage(name: adminBusinessScreen, page: () => BusinessScreen()),
     GetPage(
-        name: adminServiceScreen,
-        page: () => ServiceScreen(),
-        binding: BindingsBuilder(() {
-          Get.put(ServiceController());
-          }),
+      name: adminServiceScreen,
+      page: () => ServiceScreen(),
+      binding: BindingsBuilder(() {
+        Get.put(ServiceController());
+      }),
     ),
     GetPage(
-        name: adminBusinessDetailsScreen,
-        page: () => BusinessDetailsScreen(),
+      name: adminBusinessDetailsScreen,
+      page: () => BusinessDetailsScreen(),
     ),
     GetPage(name: businessPortfolioScreen, page: () => PortfolioScreen()),
     GetPage(name: businessSpecialistScreen, page: () => SpecialistScreen()),
     GetPage(name: businessAboutScreen, page: () => AboutScreen()),
     GetPage(name: businessAboutDetailsScreen, page: () => AboutDetailsScreen()),
     GetPage(name: bookingAdminScreen, page: () => BookingAdminScreen()),
-    GetPage(name: bookingAdminDetailsScreen, page: () => BookingAdminDetailsScreen()),
+    GetPage(
+        name: bookingAdminDetailsScreen,
+        page: () => BookingAdminDetailsScreen()),
     GetPage(name: reviewAdminScreen, page: () => AdminReviewScreen()),
   ];
 }

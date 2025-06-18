@@ -1,15 +1,22 @@
 // lib/widgets/services_tab.dart
 
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-
+import 'package:prettyrini/core/global_widegts/app_network_image_v2.dart';
+import 'package:prettyrini/core/global_widegts/custom_text.dart';
+import 'package:prettyrini/core/global_widegts/loading_screen.dart';
 import '../controller/service_details_cnt.dart';
-import 'package:prettyrini/feature/customer_flow/serivce_details/controller/service_details_cnt.dart';
 
-class ServicesTab extends StatelessWidget {
+class ServicesTab extends StatefulWidget {
   const ServicesTab({Key? key}) : super(key: key);
 
+  @override
+  State<ServicesTab> createState() => _ServicesTabState();
+}
+
+class _ServicesTabState extends State<ServicesTab> {
   @override
   Widget build(BuildContext context) {
     final StudioController controller = Get.find<StudioController>();
@@ -22,119 +29,117 @@ class ServicesTab extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
-                    'Popular Services',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Icon(
-                    Icons.keyboard_arrow_up,
-                    color: Colors.grey.shade600,
+                  headingText(
+                    text: 'Popular Services',
                   ),
                 ],
               ),
               const SizedBox(height: 16),
-
-              // Services list
               ListView.separated(
+                padding: EdgeInsets.zero,
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
-                itemCount: controller.currentServices.length,
+                itemCount: controller.services.length,
                 separatorBuilder: (context, index) =>
                     const SizedBox(height: 12),
                 itemBuilder: (context, index) {
-                  final service = controller.currentServices[index];
-                  final isFirst = index == 0;
+                  final service = controller.services[index];
+                  // Check if this item is selected
+                  bool isSelected =
+                      controller.selectedServiceIndex.value == index;
 
-                  return Container(
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: isFirst ? const Color(0xFF6B46C1) : Colors.white,
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(
-                        color: isFirst
-                            ? const Color(0xFF6B46C1)
-                            : Colors.grey.shade300,
-                        width: 1,
-                      ),
-                    ),
-                    child: Row(
-                      children: [
-                        // Service image
-                        Container(
-                          width: 50,
-                          height: 50,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
-                            image: DecorationImage(
-                              image: AssetImage(service.serviceImage),
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 12),
-
-                        // Service details
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                service.name,
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                                  color: isFirst ? Colors.white : Colors.black,
-                                ),
-                              ),
-                              const SizedBox(height: 4),
-                              Row(
-                                children: [
-                                  Text(
-                                    '\$${service.amount.toStringAsFixed(0)}',
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w500,
-                                      color:
-                                          isFirst ? Colors.white : Colors.black,
-                                    ),
-                                  ),
-                                  Text(
-                                    ' / ${service.durationHours} hour${service.durationHours > 1 ? 's' : ''}',
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: isFirst
-                                          ? Colors.white70
-                                          : Colors.grey.shade600,
-                                    ),
-                                  ),
+                  return GestureDetector(
+                    onTap: () {
+                      controller.selectService(index);
+                      setState(() {});
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        gradient: isSelected
+                            ? LinearGradient(
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                                colors: [
+                                  Color(0xFF7B4BF5),
+                                  Color(0xFFBD5FF3),
+                                ],
+                              )
+                            : LinearGradient(
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                                colors: [
+                                  Colors.grey.shade300,
+                                  Colors.grey.shade300,
                                 ],
                               ),
-                            ],
-                          ),
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: isSelected
+                              ? const Color(0xFF6B46C1)
+                              : Colors.grey.shade300,
+                          width: 1,
                         ),
-
-                        // Action button
-                        Container(
-                          width: 32,
-                          height: 32,
-                          decoration: BoxDecoration(
-                            color: isFirst
-                                ? Colors.white
-                                : const Color(0xFF6B46C1),
-                            shape: BoxShape.circle,
+                      ),
+                      child: Row(
+                        children: [
+                          ResponsiveNetworkImage(
+                            imageUrl: service.image,
+                            shape: ImageShape.roundedRectangle,
+                            borderRadius: 12,
+                            widthPercent: 0.2,
+                            heightPercent: 0.08,
+                            fit: BoxFit.cover,
+                            placeholderWidget: loading(),
                           ),
-                          child: Icon(
-                            isFirst ? Icons.remove : Icons.add,
-                            color: isFirst
-                                ? const Color(0xFF6B46C1)
-                                : Colors.white,
-                            size: 18,
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                normalText(
+                                    text: service.name,
+                                    color: isSelected
+                                        ? Colors.white
+                                        : Colors.black),
+                                const SizedBox(height: 4),
+                                Row(
+                                  children: [
+                                    smallText(
+                                        text:
+                                            '\$${service.price.toStringAsFixed(0)}',
+                                        color: isSelected
+                                            ? Colors.white
+                                            : Colors.black),
+                                    smallText(
+                                        text: ' / 1 hour',
+                                        color: isSelected
+                                            ? Colors.white
+                                            : Colors.black),
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
+                          Container(
+                            width: 32,
+                            height: 32,
+                            decoration: BoxDecoration(
+                              color: isSelected
+                                  ? Colors.white
+                                  : const Color(0xFF6B46C1),
+                              shape: BoxShape.circle,
+                            ),
+                            child: Icon(
+                              isSelected ? Icons.remove : Icons.add,
+                              color: isSelected
+                                  ? const Color(0xFF6B46C1)
+                                  : Colors.white,
+                              size: 18,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   );
                 },

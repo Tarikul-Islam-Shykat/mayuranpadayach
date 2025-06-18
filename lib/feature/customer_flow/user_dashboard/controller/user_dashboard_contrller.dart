@@ -1,12 +1,22 @@
 // controllers/home_controller.dart
 
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:get/get.dart';
-import 'package:flutter/material.dart';
+import 'package:prettyrini/core/global_widegts/app_snackbar.dart';
+import 'package:prettyrini/core/network_caller/endpoints.dart';
+import 'package:prettyrini/core/network_caller/network_config.dart';
 import 'package:prettyrini/feature/customer_flow/serivce_details/model/dummy_data.dart';
 import 'package:prettyrini/feature/customer_flow/serivce_details/model/studio_model.dart';
+import 'package:prettyrini/feature/customer_flow/user_dashboard/model/user_categories_model.dart';
 import 'dart:async';
 
+import 'package:prettyrini/feature/customer_flow/user_dashboard/model/user_model.dart';
+
 class UserDashboardContrller extends GetxController {
+  final NetworkConfig _networkConfig = NetworkConfig();
+
   // Observable variables
   var currentCarouselIndex = 0.obs;
   var studios = <StudioModel>[].obs;
@@ -35,6 +45,68 @@ class UserDashboardContrller extends GetxController {
     super.onInit();
     loadStudios();
     startCarouselAutoSlide();
+    fetchUserData();
+    fetchCategories();
+  }
+
+  final isFetchCategories = false.obs;
+  final userDashboardCategoryList = <UserCategoriesModel>[].obs;
+  Future<void> fetchCategories() async {
+    try {
+      isFetchCategories.value = true;
+
+      final Map<String, dynamic> requestBody = {};
+      final response = await _networkConfig.ApiRequestHandler(
+        RequestMethod.GET,
+        Urls.addBusinessCategory,
+        json.encode(requestBody),
+        is_auth: true,
+      );
+      if (response['success'] == true && response['data'] != null) {
+        final List<UserCategoriesModel> fetchedCategories =
+            List<Map<String, dynamic>>.from(response['data'])
+                .map((e) => UserCategoriesModel.fromJson(e))
+                .toList();
+        userDashboardCategoryList.assignAll(fetchedCategories);
+      } else {
+        AppSnackbar.show(
+          message: response['message'] ?? "Failed to fetch categories",
+          isSuccess: false,
+        );
+      }
+    } catch (e) {
+      AppSnackbar.show(
+          message: "Failed To Fetch Categories: $e", isSuccess: false);
+    } finally {
+      isFetchCategories.value = false;
+    }
+  }
+
+  final isUserDataFetchLoading = false.obs;
+  final userProfile = Rxn<UserProfile>();
+  final userName = "".obs;
+  final userImagePath = "".obs;
+  Future<void> fetchUserData() async {
+    try {
+      isUserDataFetchLoading.value = true;
+      final Map<String, dynamic> requestBody = {};
+      final response = await _networkConfig.ApiRequestHandler(
+        RequestMethod.GET,
+        Urls.getUserProfile,
+        json.encode(requestBody),
+        is_auth: true,
+      );
+      if (response['success'] == true) {
+        userProfile.value = UserProfile.fromJson(response['data']);
+        userName.value = userProfile.value?.fullName ?? '';
+        userImagePath.value = userProfile.value?.profileImage ?? '';
+      }
+    } catch (e) {
+      isUserDataFetchLoading.value = false;
+      AppSnackbar.show(message: "Failed To Login $e", isSuccess: false);
+    } finally {
+      isUserDataFetchLoading.value = false;
+    }
   }
 
   @override

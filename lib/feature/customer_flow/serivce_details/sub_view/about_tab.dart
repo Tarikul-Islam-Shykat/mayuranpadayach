@@ -16,27 +16,33 @@ class AboutTab extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Basic Info Section
-              _buildSectionHeader('Basic Info'),
-              const SizedBox(height: 12),
-              Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Colors.grey.shade50,
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: Colors.grey.shade200),
-                ),
-                child: Text(
-                  controller.currentStudio?.basicInfo ??
-                      'No information available',
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.grey.shade700,
-                    height: 1.5,
-                  ),
-                ),
+              _buildExpandableSection(
+                'About',
+                Icons.keyboard_arrow_down,
+                _buildSpecialistContent(),
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: 16),
+              // Basic Info Section
+              // _buildSectionHeader('Basic Info'),
+              // const SizedBox(height: 12),
+              // Container(
+              //   padding: const EdgeInsets.all(16),
+              //   decoration: BoxDecoration(
+              //     color: Colors.grey.shade50,
+              //     borderRadius: BorderRadius.circular(12),
+              //     border: Border.all(color: Colors.grey.shade200),
+              //   ),
+              //   child: Text(
+              //     controller.currentStudio?.basicInfo ??
+              //         'No information available',
+              //     style: TextStyle(
+              //       fontSize: 14,
+              //       color: Colors.grey.shade700,
+              //       height: 1.5,
+              //     ),
+              //   ),
+              // ),
+              // const SizedBox(height: 24),
 
               // Specialist Section
               _buildExpandableSection(
@@ -55,7 +61,7 @@ class AboutTab extends StatelessWidget {
               const SizedBox(height: 24),
 
               // Additional Info
-              _buildAdditionalInfo(),
+              //   _buildAdditionalInfo(),
             ],
           ),
         ));
