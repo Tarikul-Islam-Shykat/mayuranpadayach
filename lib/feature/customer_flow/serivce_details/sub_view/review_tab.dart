@@ -2,10 +2,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:prettyrini/core/global_widegts/custom_text.dart';
 import 'package:prettyrini/feature/customer_flow/serivce_details/controller/service_details_cnt.dart';
+import 'package:prettyrini/feature/customer_flow/serivce_details/model/review_model.dart';
 
 class ReviewTab extends StatelessWidget {
-  const ReviewTab({Key? key}) : super(key: key);
+  const ReviewTab({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -20,24 +22,19 @@ class ReviewTab extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    'All Review (${controller.formattedReviewCount})',
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+                  headingText(
+                      text: 'All Review (${controller.reviews.length})',
+                      fontWeight: FontWeight.bold),
                   Row(
                     children: [
-                      const Icon(Icons.star, color: Colors.amber, size: 20),
+                      const Icon(Icons.star,
+                          color: Colors.deepPurple, size: 20),
                       const SizedBox(width: 4),
-                      Text(
-                        controller.formattedRating,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
+                      smallText(
+                          text: _calculateAverageRating(
+                            controller.reviews,
+                          ),
+                          fontWeight: FontWeight.bold)
                     ],
                   ),
                 ],
@@ -45,45 +42,68 @@ class ReviewTab extends StatelessWidget {
               const SizedBox(height: 20),
 
               // Rating breakdown
-              if (controller.currentReviewSummary != null) ...[
+              if (controller.reviews.isNotEmpty) ...[
                 _buildRatingBar(
-                    5, controller.currentReviewSummary!.fiveStarPercentage),
+                    5, _calculateRatingPercentage(controller.reviews, 5)),
                 _buildRatingBar(
-                    4, controller.currentReviewSummary!.fourStarPercentage),
+                    4, _calculateRatingPercentage(controller.reviews, 4)),
                 _buildRatingBar(
-                    3, controller.currentReviewSummary!.threeStarPercentage),
+                    3, _calculateRatingPercentage(controller.reviews, 3)),
                 _buildRatingBar(
-                    2, controller.currentReviewSummary!.twoStarPercentage),
+                    2, _calculateRatingPercentage(controller.reviews, 2)),
                 _buildRatingBar(
-                    1, controller.currentReviewSummary!.oneStarPercentage),
-                const SizedBox(height: 20),
+                    1, _calculateRatingPercentage(controller.reviews, 1)),
               ],
+              const SizedBox(height: 20),
 
-              // What People Say section
-              const Text(
-                'What People Say\'s',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
+              headingText(
+                  text: 'What People Say\'s', fontWeight: FontWeight.bold),
+
+              const SizedBox(height: 10),
+
+              if (controller.reviews.isEmpty)
+                Center(
+                  child: Padding(
+                    padding: EdgeInsets.all(20.0),
+                    child: normalText(
+                        text: 'No reviews available',
+                        fontWeight: FontWeight.bold),
+                  ),
+                )
+              else
+                ListView.separated(
+                  padding: EdgeInsets.zero,
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: controller.reviews.length,
+                  separatorBuilder: (context, index) =>
+                      const SizedBox(height: 16),
+                  itemBuilder: (context, index) {
+                    final review = controller.reviews[index];
+                    return _buildReviewCard(review);
+                  },
                 ),
-              ),
-              const SizedBox(height: 16),
-
-              // Written reviews
-              ListView.separated(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: controller.currentReviews.length,
-                separatorBuilder: (context, index) =>
-                    const SizedBox(height: 16),
-                itemBuilder: (context, index) {
-                  final review = controller.currentReviews[index];
-                  return _buildReviewCard(review);
-                },
-              ),
             ],
           ),
         ));
+  }
+
+  // Calculate average rating from the reviews list
+  String _calculateAverageRating(List<Review> reviews) {
+    if (reviews.isEmpty) return '0.0';
+
+    double totalRating =
+        reviews.fold(0.0, (sum, review) => sum + review.rating);
+    double average = totalRating / reviews.length;
+    return average.toStringAsFixed(1);
+  }
+
+  // Calculate percentage for each rating level
+  double _calculateRatingPercentage(List<Review> reviews, int rating) {
+    if (reviews.isEmpty) return 0.0;
+
+    int count = reviews.where((review) => review.rating == rating).length;
+    return (count / reviews.length) * 100;
   }
 
   Widget _buildRatingBar(int stars, double percentage) {
@@ -91,11 +111,10 @@ class ReviewTab extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 4),
       child: Row(
         children: [
-          Icon(Icons.star, color: Colors.amber, size: 16),
+          Icon(Icons.star, color: Colors.deepPurple, size: 16),
           const SizedBox(width: 4),
-          Text(
-            '$stars.0',
-            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+          smallText(
+            text: '$stars.0',
           ),
           const SizedBox(width: 12),
           Expanded(
@@ -110,7 +129,7 @@ class ReviewTab extends StatelessWidget {
                 widthFactor: percentage / 100,
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Colors.amber,
+                    color: Colors.deepPurple,
                     borderRadius: BorderRadius.circular(3),
                   ),
                 ),
@@ -118,19 +137,15 @@ class ReviewTab extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 12),
-          Text(
-            '${percentage.toStringAsFixed(0)}%',
-            style: TextStyle(
-              fontSize: 12,
-              color: Colors.grey.shade600,
-            ),
+          smallerText(
+            text: '${percentage.toStringAsFixed(0)}%',
           ),
         ],
       ),
     );
   }
 
-  Widget _buildReviewCard(review) {
+  Widget _buildReviewCard(Review review) {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -149,32 +164,35 @@ class ReviewTab extends StatelessWidget {
                 height: 40,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  image: DecorationImage(
-                    image: AssetImage(review.userAvatar),
-                    fit: BoxFit.cover,
-                  ),
+                  color: Colors.grey.shade300,
                 ),
+                child: review.user.profileImage.isNotEmpty
+                    ? ClipOval(
+                        child: Image.network(
+                          review.user.profileImage,
+                          fit: BoxFit.cover,
+                          width: 40,
+                          height: 40,
+                          errorBuilder: (context, error, stackTrace) =>
+                              _buildDefaultAvatar(review.user.fullName),
+                        ),
+                      )
+                    : _buildDefaultAvatar(review.user.fullName),
               ),
               const SizedBox(width: 12),
 
-              // User info
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      review.userName,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    Text(
-                      'Booking on ${review.reviewTime.day} ${_getMonthName(review.reviewTime.month)}',
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.grey.shade600,
-                      ),
+                    normalText(
+                        text: review.user.fullName.isNotEmpty
+                            ? review.user.fullName
+                            : 'Anonymous User',
+                        fontWeight: FontWeight.bold),
+                    smallText(
+                      text:
+                          'Booking on ${review.createdAt.day} ${_getMonthName(review.createdAt.month)}',
                     ),
                   ],
                 ),
@@ -183,31 +201,56 @@ class ReviewTab extends StatelessWidget {
               // Rating
               Row(
                 children: [
-                  const Icon(Icons.star, color: Colors.amber, size: 16),
+                  const Icon(Icons.star, color: Colors.deepPurple, size: 16),
                   const SizedBox(width: 4),
-                  Text(
-                    review.rating.toString(),
-                    style: const TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
-                    ),
+                  smallText(
+                    text: review.rating.toString(),
                   ),
                 ],
               ),
             ],
           ),
           const SizedBox(height: 12),
-
-          // Review comment
-          Text(
-            review.comment,
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.grey.shade700,
-              height: 1.4,
-            ),
-          ),
+          smallText(
+              text: review.comment.isNotEmpty
+                  ? review.comment
+                  : 'No comment provided',
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              color: Colors.grey),
         ],
+      ),
+    );
+  }
+
+  // Build default avatar with user's initials
+  Widget _buildDefaultAvatar(String fullName) {
+    String initials = '';
+    if (fullName.isNotEmpty) {
+      List<String> names = fullName.split(' ');
+      initials = names.length >= 2
+          ? '${names[0][0]}${names[1][0]}'.toUpperCase()
+          : names[0][0].toUpperCase();
+    } else {
+      initials = 'U';
+    }
+
+    return Container(
+      width: 40,
+      height: 40,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: Colors.blue.shade100,
+      ),
+      child: Center(
+        child: Text(
+          initials,
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: Colors.blue.shade700,
+          ),
+        ),
       ),
     );
   }

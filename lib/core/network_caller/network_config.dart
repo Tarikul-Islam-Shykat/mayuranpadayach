@@ -19,8 +19,11 @@ class NetworkConfig {
       var header = <String, String>{"Content-type": "application/json"};
       if (is_auth == true) {
         //   header["Authorization"] = "${sh.getString("token")}";
+        //      header["Authorization"] =
+        //         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NTEzZmY3ZjI1NmFhNzQwZTllMzY2NyIsImVtYWlsIjoiaGlrYWYxMTAzOUBjYWxvcnBnLmNvbSIsInJvbGUiOiJVU0VSIiwiaXNBbGxvd2VkIjpmYWxzZSwiaWF0IjoxNzUwMTU1MzA5LCJleHAiOjE3NTI3NDczMDl9.gqT5CxQMpJccN1oix66nrhmZY5QA6UHMcL4hJzlc4E0";
+
         header["Authorization"] =
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NTEzZmY3ZjI1NmFhNzQwZTllMzY2NyIsImVtYWlsIjoiaGlrYWYxMTAzOUBjYWxvcnBnLmNvbSIsInJvbGUiOiJVU0VSIiwiaXNBbGxvd2VkIjpmYWxzZSwiaWF0IjoxNzUwMTU1MzA5LCJleHAiOjE3NTI3NDczMDl9.gqT5CxQMpJccN1oix66nrhmZY5QA6UHMcL4hJzlc4E0";
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MzZiMTBjNmRmMTc1ZWYzMTVkMDZhOSIsImVtYWlsIjoibWlsb25AZ21haWwuY29tIiwicm9sZSI6IlBST0ZFU1NJT05BTCIsImlhdCI6MTc0ODUxMzMzMywiZXhwIjoxNzUxMTA1MzMzfQ._ufYteqd1GccvbF8-BfdDIokXJdr0aiVEUywtQ-VpT4";
       }
 
       if (method.name == RequestMethod.GET.name) {

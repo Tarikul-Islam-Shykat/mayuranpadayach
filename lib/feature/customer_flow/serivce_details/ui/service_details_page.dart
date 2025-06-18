@@ -1,10 +1,11 @@
 // lib/pages/studio_detail_page.dart
 
-import 'package:cached_network_image/cached_network_image.dart';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:prettyrini/core/const/image_path.dart';
 import 'package:prettyrini/core/global_widegts/app_network_image_v2.dart';
+import 'package:prettyrini/core/global_widegts/custom_text.dart';
 import 'package:prettyrini/core/global_widegts/loading_screen.dart';
 import 'package:prettyrini/feature/customer_flow/serivce_details/controller/service_details_cnt.dart';
 import 'package:prettyrini/feature/customer_flow/serivce_details/sub_view/about_tab.dart'
@@ -22,13 +23,15 @@ class ServiceDetailsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Obx(() {
-        if (controller.isLoading.value) {
-          return const Center(child: CircularProgressIndicator());
+        if (controller.isFetchingBuisnessisLoading.value) {
+          return Center(child: loading(value: 50));
         }
 
         if (controller.currentStudio == null) {
           return const Center(child: Text('No studio data available'));
         }
+
+        // log("CustomScrollView ${controller.businessDetails.value!.image}");
 
         return CustomScrollView(
           slivers: [
@@ -41,15 +44,26 @@ class ServiceDetailsPage extends StatelessWidget {
                   fit: StackFit.expand,
                   children: [
                     // Main studio image
-                    ResponsiveNetworkImage(
-                      imageUrl: controller.businessDetails.value!.image,
-                      shape: ImageShape.roundedRectangle,
-                      borderRadius: 12,
-                      widthPercent: 1,
-                      heightPercent: 0.2,
-                      fit: BoxFit.cover,
-                      placeholderWidget: loading(),
-                    ),
+                    controller.businessDetails.value != null
+                        ? ResponsiveNetworkImage(
+                            imageUrl: controller
+                                .businessDetails.value!.category.image,
+                            shape: ImageShape.roundedRectangle,
+                            borderRadius: 12,
+                            widthPercent: 1,
+                            heightPercent: 0.2,
+                            fit: BoxFit.cover,
+                            placeholderWidget: loading(),
+                          )
+                        : ResponsiveNetworkImage(
+                            imageUrl: "",
+                            shape: ImageShape.roundedRectangle,
+                            borderRadius: 12,
+                            widthPercent: 1,
+                            heightPercent: 0.2,
+                            fit: BoxFit.cover,
+                            placeholderWidget: loading(),
+                          ),
 
                     Container(
                       decoration: BoxDecoration(
@@ -64,6 +78,21 @@ class ServiceDetailsPage extends StatelessWidget {
                       ),
                     ),
                     // Location and heart buttons
+                    /*
+                    
+                    GestureDetector(
+                      onTap: () {
+                        final lat = controller.businessDetails.value!.latitude;
+                        final long =
+                            controller.businessDetails.value!.longitude;
+
+                        final googleMapsUrl = Uri.parse(
+                            'https://www.google.com/maps/search/?api=1&query=$lat,$long');
+
+                        launchUrl(googleMapsUrl,
+                            mode: LaunchMode.externalApplication);
+                      },
+                    */
                     Positioned(
                       top: 50,
                       left: 16,
@@ -80,7 +109,7 @@ class ServiceDetailsPage extends StatelessWidget {
                                 color: Colors.red, size: 16),
                             const SizedBox(width: 4),
                             Text(
-                              controller.formattedAddress,
+                              controller.businessDetails.value!.address,
                               style: const TextStyle(fontSize: 12),
                             ),
                           ],
@@ -116,39 +145,31 @@ class ServiceDetailsPage extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            controller.currentStudio!.name,
-                            style: const TextStyle(
+                          normalText(
+                              text: controller.businessDetails.value!.name,
                               color: Colors.white,
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
+                              fontWeight: FontWeight.bold),
                           const SizedBox(height: 4),
                           Row(
                             children: [
                               const Icon(Icons.access_time,
                                   color: Colors.white, size: 16),
                               const SizedBox(width: 4),
-                              const Text(
-                                'Appointment is available 24 July in 12:00',
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 12),
-                              ),
+                              smallerText(
+                                  text:
+                                      controller.businessDetails.value!.status,
+                                  color: Colors.white),
                               const Spacer(),
                               Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 12, vertical: 6),
-                                decoration: BoxDecoration(
-                                  color: Colors.green,
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                child: const Text(
-                                  'Open',
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 12),
-                                ),
-                              ),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 12, vertical: 6),
+                                  decoration: BoxDecoration(
+                                    color: Colors.green,
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  child: smallText(
+                                      text: controller
+                                          .businessDetails.value!.openStatus)),
                             ],
                           ),
                         ],
@@ -182,31 +203,28 @@ class ServiceDetailsPage extends StatelessWidget {
                       child: GestureDetector(
                         onTap: () => controller.changeTab(index),
                         child: Container(
-                          padding: const EdgeInsets.symmetric(vertical: 12),
-                          margin: const EdgeInsets.symmetric(horizontal: 4),
-                          decoration: BoxDecoration(
-                            color: controller.selectedTabIndex.value == index
-                                ? const Color(0xFF6B46C1)
-                                : Colors.transparent,
-                            borderRadius: BorderRadius.circular(25),
-                            border: Border.all(
+                            padding: const EdgeInsets.symmetric(vertical: 12),
+                            margin: const EdgeInsets.symmetric(horizontal: 4),
+                            decoration: BoxDecoration(
                               color: controller.selectedTabIndex.value == index
                                   ? const Color(0xFF6B46C1)
-                                  : Colors.grey.shade300,
-                              width: 1,
+                                  : Colors.transparent,
+                              borderRadius: BorderRadius.circular(25),
+                              border: Border.all(
+                                color:
+                                    controller.selectedTabIndex.value == index
+                                        ? const Color(0xFF6B46C1)
+                                        : Colors.grey.shade300,
+                                width: 1,
+                              ),
                             ),
-                          ),
-                          child: Text(
-                            controller.tabNames[index],
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: controller.selectedTabIndex.value == index
-                                  ? Colors.white
-                                  : Colors.grey.shade600,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
+                            child: smallText(
+                                text: controller.tabNames[index],
+                                textAlign: TextAlign.center,
+                                color:
+                                    controller.selectedTabIndex.value == index
+                                        ? Colors.white
+                                        : Colors.grey)),
                       ),
                     ),
                   ),

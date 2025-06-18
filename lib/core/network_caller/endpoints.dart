@@ -19,6 +19,9 @@ class Urls {
   //---------------------------User---------------------------------------
   static const String getFavBuisness = "$baseUrl/favBusiness"; //id PUT
   static const String getBuiessnessDetailsById = "$baseUrl/businesses"; //id PUT
+  static const String getServiceByBuisnesID = "$baseUrl/services/all";
+  static const String getReviewsByID = "$baseUrl/reviews/business/";
+  static const String getBuisnessView = "$baseUrl/portfolios/all?businessId";
 
   //---------------------------Admin---------------------------------------
   static const String addBusiness = "$baseUrl/businesses/create";
