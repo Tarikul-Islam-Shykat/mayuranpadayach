@@ -1,9 +1,12 @@
-// pages/favorites_page.dart
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:prettyrini/feature/customer_flow/serivce_details/model/studio_model.dart';
+import 'package:intl/intl.dart';
+import 'package:prettyrini/core/const/app_colors.dart';
+import 'package:prettyrini/core/global_widegts/app_network_image_v2.dart';
+import 'package:prettyrini/core/global_widegts/custom_text.dart';
+import 'package:prettyrini/core/global_widegts/loading_screen.dart';
 import 'package:prettyrini/feature/customer_flow/user_fav/controller/user_fav_controller.dart';
+import 'package:prettyrini/feature/customer_flow/user_fav/model/user_fav_model.dart';
 
 class FavoritesPage extends StatelessWidget {
   const FavoritesPage({Key? key}) : super(key: key);
@@ -13,31 +16,20 @@ class FavoritesPage extends StatelessWidget {
     final FavoritesController controller = Get.put(FavoritesController());
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.bgColor,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.bgColor,
         elevation: 0,
-        title: const Text(
-          'Favorite',
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: 20,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
+        title: headingText(text: 'Favorite', fontWeight: FontWeight.bold),
         centerTitle: true,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
-          onPressed: () => Get.back(),
-        ),
+        // leading: IconButton(
+        //   icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
+        //   onPressed: () => Get.back(),
+        // ),
       ),
       body: Obx(() {
-        if (controller.isLoading.value) {
-          return const Center(
-            child: CircularProgressIndicator(
-              color: Colors.purple,
-            ),
-          );
+        if (controller.isFavLoading.value) {
+          return loading();
         }
 
         if (controller.errorMessage.value.isNotEmpty) {
@@ -84,22 +76,14 @@ class FavoritesPage extends StatelessWidget {
                   color: Colors.grey[400],
                 ),
                 const SizedBox(height: 16),
-                Text(
-                  'No favorites yet',
-                  style: TextStyle(
-                    color: Colors.grey[600],
-                    fontSize: 18,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
+                headingText(
+                    text: 'No favorites yet',
+                    color: Colors.grey,
+                    fontWeight: FontWeight.bold),
                 const SizedBox(height: 8),
-                Text(
-                  'Add some studios to your favorites',
-                  style: TextStyle(
-                    color: Colors.grey[500],
-                    fontSize: 14,
-                  ),
-                ),
+                smallText(
+                    text: 'Add some studios to your favorites',
+                    color: Colors.grey)
               ],
             ),
           );
@@ -112,12 +96,11 @@ class FavoritesPage extends StatelessWidget {
             padding: const EdgeInsets.all(16),
             itemCount: controller.favoriteStudios.length,
             itemBuilder: (context, index) {
-              final studio = controller.favoriteStudios[index];
+              final favData = controller.favoriteStudios[index];
               return FavoriteStudioCard(
-                studio: studio,
-                onToggleFavorite: () => controller.toggleFavorite(studio.id),
+                fav: favData,
+                onToggleFavorite: () => controller.toggleFavorite(favData.id),
                 onTap: () {
-                  // TODO: Navigate to studio details page
                   // Get.to(() => StudioDetailsPage(studioId: studio.id));
                 },
               );
@@ -130,13 +113,13 @@ class FavoritesPage extends StatelessWidget {
 }
 
 class FavoriteStudioCard extends StatelessWidget {
-  final StudioModel studio;
+  final FavoriteItem fav;
   final VoidCallback onToggleFavorite;
   final VoidCallback onTap;
 
   const FavoriteStudioCard({
     Key? key,
-    required this.studio,
+    required this.fav,
     required this.onToggleFavorite,
     required this.onTap,
   }) : super(key: key);
@@ -164,78 +147,36 @@ class FavoriteStudioCard extends StatelessWidget {
           child: Row(
             children: [
               // Studio Image
-              Container(
-                width: 60,
-                height: 60,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  color: Colors.grey[200],
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: studio.portfolioImages.isNotEmpty
-                      ? Image.asset(
-                          studio.portfolioImages.first,
-                          fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) {
-                            return Container(
-                              color: Colors.grey[200],
-                              child: Icon(
-                                Icons.image,
-                                color: Colors.grey[400],
-                                size: 24,
-                              ),
-                            );
-                          },
-                        )
-                      : Icon(
-                          Icons.store,
-                          color: Colors.grey[400],
-                          size: 24,
-                        ),
-                ),
+              ResponsiveNetworkImage(
+                imageUrl: fav.business.image,
+                shape: ImageShape.roundedRectangle,
+                borderRadius: 12,
+                widthPercent: 0.25,
+                heightPercent: 0.1,
+                fit: BoxFit.cover,
+                placeholderWidget: loading(),
               ),
               const SizedBox(width: 16),
-
-              // Studio Info
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      studio.name,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.black,
-                      ),
+                    normalText(
+                        text: fav.business.name, fontWeight: FontWeight.bold),
+                    smallText(
+                        text: fav.business.category.name, color: Colors.grey),
+                    SizedBox(
+                      height: 15,
                     ),
-                    const SizedBox(height: 4),
-                    Text(
-                      studio.category,
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.grey[600],
-                      ),
-                    ),
-                    const SizedBox(height: 8),
                     Row(
                       children: [
-                        Text(
-                          'Booking Date: ',
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: Colors.grey[500],
-                          ),
-                        ),
-                        Text(
-                          '12-03-2024', // You can make this dynamic
-                          style: const TextStyle(
-                            fontSize: 12,
-                            color: Colors.black,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
+                        smallerText(text: 'Booking Date: ', color: Colors.grey),
+                        smallerText(
+                            text: DateFormat('dd MMM, yyyy')
+                                .format(fav.createdAt),
+                            color: Colors.grey)
+
+                        // smallerText(text: fav.createdAt.toIso8601String()),
                       ],
                     ),
                   ],
@@ -251,31 +192,37 @@ class FavoriteStudioCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(20),
                     child: Container(
                       padding: const EdgeInsets.all(4),
-                      child: const Icon(
-                        Icons.favorite,
-                        color: Colors.purple,
-                        size: 20,
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle, color: Colors.purple.shade50),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: const Icon(
+                          Icons.favorite,
+                          color: Colors.purple,
+                          size: 20,
+                        ),
                       ),
                     ),
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 20),
                   Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       const Icon(
                         Icons.star,
-                        color: Colors.amber,
+                        color: Colors.purple,
                         size: 16,
                       ),
                       const SizedBox(width: 4),
-                      Text(
-                        studio.rating.toStringAsFixed(1),
-                        style: const TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.black,
-                        ),
-                      ),
+                      smallText(text: fav.business.overallRating.toString())
+                      // Text(
+                      //   studio.rating.toStringAsFixed(1),
+                      //   style: const TextStyle(
+                      //     fontSize: 14,
+                      //     fontWeight: FontWeight.w600,
+                      //     color: Colors.black,
+                      //   ),
+                      // ),
                     ],
                   ),
                 ],

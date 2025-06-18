@@ -1,17 +1,13 @@
 // controllers/favorites_controller.dart
 
 import 'package:get/get.dart';
-import 'package:prettyrini/feature/customer_flow/serivce_details/model/dummy_data.dart';
-import 'package:prettyrini/feature/customer_flow/serivce_details/model/studio_model.dart';
+import 'package:prettyrini/core/global_widegts/app_snackbar.dart';
+import 'package:prettyrini/core/network_caller/endpoints.dart';
+import 'package:prettyrini/core/network_caller/network_config.dart';
+import 'package:prettyrini/feature/customer_flow/user_fav/model/user_fav_model.dart';
 
 class FavoritesController extends GetxController {
-  // Observable list of favorite studios
-  final RxList<StudioModel> favoriteStudios = <StudioModel>[].obs;
-
-  // Loading state
-  final RxBool isLoading = false.obs;
-
-  // Error message
+  final NetworkConfig _networkConfig = NetworkConfig();
   final RxString errorMessage = ''.obs;
 
   @override
@@ -20,36 +16,67 @@ class FavoritesController extends GetxController {
     loadFavorites();
   }
 
-  // Load favorite studios (currently using dummy data)
-  void loadFavorites() async {
+  final RxList<FavoriteItem> favoriteStudios = <FavoriteItem>[].obs;
+  final RxBool isFavLoading = false.obs;
+  Future<void> loadFavorites() async {
     try {
-      isLoading.value = true;
-      errorMessage.value = '';
+      isFavLoading.value = true;
 
-      // Simulate API call delay
-      await Future.delayed(const Duration(milliseconds: 500));
-
-      // TODO: Replace with actual API call
-      // final response = await apiService.getFavoriteStudios();
-      // favoriteStudios.value = response.data;
-
-      // For now, using dummy data
-      favoriteStudios.value = DummyData.getStudioList();
+      final response = await _networkConfig.ApiRequestHandler(
+        RequestMethod.GET,
+        Urls.getFavBuisness,
+        null,
+        is_auth: true,
+      );
+      if (response['success'] == true && response['data'] != null) {
+        final List<dynamic> dataList = response['data'];
+        favoriteStudios.value =
+            dataList.map((e) => FavoriteItem.fromJson(e)).toList();
+      } else {
+        AppSnackbar.show(
+          message: response['message'] ?? "Failed to fetch search histories",
+          isSuccess: false,
+        );
+      }
     } catch (e) {
-      errorMessage.value = 'Failed to load favorites: ${e.toString()}';
+      AppSnackbar.show(
+        message: "Failed to fetch search histories: $e",
+        isSuccess: false,
+      );
     } finally {
-      isLoading.value = false;
+      isFavLoading.value = false;
     }
   }
 
-  // Toggle favorite status
-  void toggleFavorite(String studioId) {
-    final index = favoriteStudios.indexWhere((studio) => studio.id == studioId);
+  void toggleFavorite(String favId) async {
+    final index = favoriteStudios.indexWhere((favItem) => favItem.id == favId);
     if (index != -1) {
       favoriteStudios.removeAt(index);
-      // TODO: Call API to remove from favorites
-      // await apiService.removeFromFavorites(studioId);
     }
+    try {
+      final response = await _networkConfig.ApiRequestHandler(
+        RequestMethod.POST,
+        "${Urls.getFavBuisness}/$favId",
+        null,
+        is_auth: true,
+      );
+      if (response['success'] == true && response['data'] != null) {
+        AppSnackbar.show(
+          message: "Removed From Favourite",
+          isSuccess: false,
+        );
+      } else {
+        AppSnackbar.show(
+          message: "Failed Removed From Favourite",
+          isSuccess: false,
+        );
+      }
+    } catch (e) {
+      AppSnackbar.show(
+        message: "Failed Removed From Favourite",
+        isSuccess: false,
+      );
+    } finally {}
   }
 
   // Refresh favorites
@@ -57,13 +84,12 @@ class FavoritesController extends GetxController {
     loadFavorites();
   }
 
-  // Update favorites list from API response
-  void updateFavoritesFromApi(List<StudioModel> apiData) {
+  void updateFavoritesFromApi(List<FavoriteItem> apiData) {
     favoriteStudios.value = apiData;
   }
 
   // Get studio by ID
-  StudioModel? getStudioById(String id) {
+  FavoriteItem? getStudioById(String id) {
     try {
       return favoriteStudios.firstWhere((studio) => studio.id == id);
     } catch (e) {

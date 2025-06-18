@@ -33,7 +33,7 @@ class SearchHistoryScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Container(
-                height: 80,
+                height: 50,
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(10),
@@ -52,7 +52,7 @@ class SearchHistoryScreen extends StatelessWidget {
                   decoration: InputDecoration(
                     hintText: 'I am looking for',
                     hintStyle: TextStyle(
-                      color: Colors.black,
+                      color: Colors.grey,
                       fontSize: 18.sp,
                     ),
                     prefixIcon: Icon(

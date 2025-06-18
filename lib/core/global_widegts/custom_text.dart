@@ -20,7 +20,7 @@ Widget headingText({
         overflow: overflow,
         style: GoogleFonts.manrope(
           color: color,
-          fontSize: 20.sp,
+          fontSize: 18.sp,
           fontWeight: fontWeight,
         ),
       ),
@@ -46,7 +46,7 @@ Widget normalText({
         overflow: overflow,
         style: GoogleFonts.poppins(
           color: color,
-          fontSize: 18.sp,
+          fontSize: 16.sp,
           fontWeight: fontWeight,
         ),
       ),
@@ -72,7 +72,7 @@ Widget smallText({
         overflow: overflow,
         style: GoogleFonts.poppins(
           color: color,
-          fontSize: 14.sp,
+          fontSize: 12.sp,
           fontWeight: fontWeight,
         ),
       ),

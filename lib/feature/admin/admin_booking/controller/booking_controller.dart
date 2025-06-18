@@ -1,19 +1,19 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:prettyrini/core/global_widegts/app_snackbar.dart';
 import 'package:prettyrini/core/network_caller/endpoints.dart';
 import 'package:prettyrini/core/network_caller/network_config.dart';
 import '../model/admin_booking_model.dart';
 
-class BookingAdminController extends GetxController{
-
+class BookingAdminController extends GetxController {
   RxList<BookingAdminModel> adminBookingModel = <BookingAdminModel>[].obs;
-  Rx<TextEditingController>  dateTimeController = TextEditingController().obs;
+  Rx<TextEditingController> dateTimeController = TextEditingController().obs;
   RxBool isLoadingBooking = false.obs;
   var hasMore = true.obs;
   RxInt page = 1.obs;
   final NetworkConfig _networkConfig = NetworkConfig();
-  
+
   var isPending = true.obs;
   var selectedTime = (-1).obs;
 
@@ -24,37 +24,41 @@ class BookingAdminController extends GetxController{
   void showComplete() {
     isPending.value = false;
   }
+
   @override
-  onInit(){
+  onInit() {
     super.onInit();
     getBookingStatus();
   }
-  
-  Future<bool> getBookingStatus()async{
-    if(isLoadingBooking.value && !hasMore.value){
+
+  Future<bool> getBookingStatus() async {
+    if (isLoadingBooking.value && !hasMore.value) {
       return false;
     }
     isLoadingBooking.value = true;
-    try{
-      final response = await _networkConfig.ApiRequestHandler(RequestMethod.GET, "${Urls.adminBookingStatus}&page=${page.value}", {},is_auth: true);
-      if(response != null && response['success'] == true){
+    try {
+      final response = await _networkConfig.ApiRequestHandler(RequestMethod.GET,
+          "${Urls.adminBookingStatus}&page=${page.value}", {},
+          is_auth: true);
+      if (response != null && response['success'] == true) {
         List dataList = response["data"]["result"];
-        if(dataList.isEmpty){
+        if (dataList.isEmpty) {
           hasMore.value = false;
-        }else{
-          List<BookingAdminModel> bookingData = dataList.map((e)=>BookingAdminModel.fromJson(e)).toList();
+        } else {
+          List<BookingAdminModel> bookingData =
+              dataList.map((e) => BookingAdminModel.fromJson(e)).toList();
           adminBookingModel.addAll(bookingData);
-          page.value ++;
+          page.value++;
         }
         return true;
-      }else{
+      } else {
         log("get Booking failed message: ${response["message"]}");
         return false;
       }
-    }catch(e){
+    } catch (e) {
       log("Get Booking failed Error $e");
       return false;
-    }finally{
+    } finally {
       isLoadingBooking.value = false;
     }
   }

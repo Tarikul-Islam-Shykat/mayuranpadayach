@@ -1,7 +1,11 @@
 // lib/pages/studio_detail_page.dart
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:prettyrini/core/const/image_path.dart';
+import 'package:prettyrini/core/global_widegts/app_network_image_v2.dart';
+import 'package:prettyrini/core/global_widegts/loading_screen.dart';
 import 'package:prettyrini/feature/customer_flow/serivce_details/controller/service_details_cnt.dart';
 import 'package:prettyrini/feature/customer_flow/serivce_details/sub_view/about_tab.dart'
     show AboutTab;
@@ -9,10 +13,10 @@ import 'package:prettyrini/feature/customer_flow/serivce_details/sub_view/portfo
 import 'package:prettyrini/feature/customer_flow/serivce_details/sub_view/review_tab.dart';
 import 'package:prettyrini/feature/customer_flow/serivce_details/sub_view/service_tab.dart';
 
-class StudioDetailPage extends StatelessWidget {
+class ServiceDetailsPage extends StatelessWidget {
   final StudioController controller = Get.put(StudioController());
 
-  StudioDetailPage({super.key});
+  ServiceDetailsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -37,15 +41,16 @@ class StudioDetailPage extends StatelessWidget {
                   fit: StackFit.expand,
                   children: [
                     // Main studio image
-                    Container(
-                      decoration: const BoxDecoration(
-                        image: DecorationImage(
-                          image: AssetImage('assets/images/studio_main.jpg'),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
+                    ResponsiveNetworkImage(
+                      imageUrl: controller.businessDetails.value!.image,
+                      shape: ImageShape.roundedRectangle,
+                      borderRadius: 12,
+                      widthPercent: 1,
+                      heightPercent: 0.2,
+                      fit: BoxFit.cover,
+                      placeholderWidget: loading(),
                     ),
-                    // Gradient overlay
+
                     Container(
                       decoration: BoxDecoration(
                         gradient: LinearGradient(

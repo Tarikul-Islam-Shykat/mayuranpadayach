@@ -15,8 +15,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../core/global_widegts/app_snackbar.dart';
 import '../../../../route/route.dart';
 
-
-class ServiceController extends GetxController{
+class ServiceController extends GetxController {
   Rx<TextEditingController> serviceNameTEC = TextEditingController().obs;
   Rx<TextEditingController> servicePriceTEC = TextEditingController().obs;
   Rx<TextEditingController> offerPercentTEC = TextEditingController().obs;
@@ -43,53 +42,55 @@ class ServiceController extends GetxController{
   Rx<File?> serviceImage = Rx<File?>(null);
 
   @override
-  onInit(){
+  onInit() {
     super.onInit();
-    businessId.value = Get.arguments?["id"]??"";
+    businessId.value = Get.arguments?["id"] ?? "";
     scrollController.addListener(() {
       if (scrollController.position.pixels ==
-          scrollController.position.maxScrollExtent && hasMore.value && serviceModel.length >= 10) {
+              scrollController.position.maxScrollExtent &&
+          hasMore.value &&
+          serviceModel.length >= 10) {
         getAllService(businessId.value);
       }
     });
     getAllService(businessId.value.toString());
   }
 
-
   //service create
-  Future<void> pickImageProfile()async{
-    try{
+  Future<void> pickImageProfile() async {
+    try {
       final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
-      if(pickedFile != null){
+      if (pickedFile != null) {
         File imageFile = File(pickedFile.path);
         // Compress the image
         File? compressedImage = await _compressImage(imageFile);
-        if(compressedImage != null){
+        if (compressedImage != null) {
           serviceImage.value = compressedImage;
           await _imageSizeText(compressedImage);
-          errorMessage.value ='';
+          errorMessage.value = '';
           AppSnackbar.show(
             message: "image selected successfully",
             isSuccess: true,
           );
-        }else{
+        } else {
           errorMessage.value = 'Failed to compress image';
         }
       }
-    }catch(e){
+    } catch (e) {
       log("Error picking image: $e");
       errorMessage.value = 'Failed to select image: ${e.toString()}';
     }
   }
-  Future<void> pickImageFormCamera()async{
-    try{
+
+  Future<void> pickImageFormCamera() async {
+    try {
       final pickedFile = await _picker.pickImage(source: ImageSource.camera);
-      if(pickedFile != null){
+      if (pickedFile != null) {
         File imageFile = File(pickedFile.path);
 
         // Compress the image
         File? compressedImage = await _compressImage(imageFile);
-        if(compressedImage != null){
+        if (compressedImage != null) {
           serviceImage.value = compressedImage;
           await _imageSizeText(compressedImage);
           errorMessage.value = '';
@@ -97,27 +98,31 @@ class ServiceController extends GetxController{
             message: "Image captured successfully",
             isSuccess: true,
           );
-        }else{
+        } else {
           errorMessage.value = 'Failed to compress image';
         }
       }
-    }catch(e){
+    } catch (e) {
       log("Error capturing profile image: $e");
       errorMessage.value = 'Failed to capture image: ${e.toString()}';
     }
   }
-  Future<File?> _compressImage(File imageFile)async{
-    try{
+
+  Future<File?> _compressImage(File imageFile) async {
+    try {
       int originalSize = await imageFile.length();
       log("Original image size: ${(originalSize / 1024).toStringAsFixed(2)} KB");
 
       //if image already under 250KB
-      if(originalSize <= 250 * 1024){
+      if (originalSize <= 250 * 1024) {
         return imageFile;
       }
 
       //compress image
-      String targetPath = imageFile.path.replaceAll('.jpg', '_compressed.jpg').replaceAll(".jpeg", "_compressed.jpeg").replaceAll("PNG", "_compressed.jpg");
+      String targetPath = imageFile.path
+          .replaceAll('.jpg', '_compressed.jpg')
+          .replaceAll(".jpeg", "_compressed.jpeg")
+          .replaceAll("PNG", "_compressed.jpg");
       Uint8List? compressedBytes = await FlutterImageCompress.compressWithFile(
         imageFile.absolute.path,
         minWidth: 800, // Maximum width
@@ -125,14 +130,14 @@ class ServiceController extends GetxController{
         quality: 85, // Start with 85% quality
         format: CompressFormat.jpeg,
       );
-      if(compressedBytes == null){
+      if (compressedBytes == null) {
         log("Failed to compress image");
         return null;
       }
       // If still too large, try with lower quality
       int currentSize = compressedBytes.length;
       int quality = 85;
-      while(currentSize > 250 * 1024 && quality >50){
+      while (currentSize > 250 * 1024 && quality > 50) {
         quality -= 10;
         log("Trying with quality: $quality");
         compressedBytes = await FlutterImageCompress.compressWithFile(
@@ -142,9 +147,9 @@ class ServiceController extends GetxController{
           quality: quality,
           format: CompressFormat.jpeg,
         );
-        if(compressedBytes != null){
+        if (compressedBytes != null) {
           currentSize = compressedBytes.length;
-        }else{
+        } else {
           break;
         }
       }
@@ -159,40 +164,40 @@ class ServiceController extends GetxController{
       final finalSize = compressedBytes.length;
       log("Compressed image size: ${(finalSize / 1024).toStringAsFixed(2)} KB");
       return compressFile;
-
-
-    }catch(e){
+    } catch (e) {
       log("Error compressing image: $e");
       return null;
     }
-
   }
-  Future<void> _imageSizeText(File imageFile)async{
-    try{
+
+  Future<void> _imageSizeText(File imageFile) async {
+    try {
       int sizeInBytes = await imageFile.length();
       double sizeInKB = sizeInBytes / 1024;
-      if(sizeInKB <1024){
+      if (sizeInKB < 1024) {
         imageSizeText.value = "${sizeInKB.toStringAsFixed(1)} KB";
-      }else{
-        double sizeInMB = sizeInKB/1024;
+      } else {
+        double sizeInMB = sizeInKB / 1024;
         imageSizeText.value = "${sizeInMB.toStringAsFixed(1)} MB";
       }
-    }catch(e){
+    } catch (e) {
       imageSizeText.value = "Size unknown";
     }
-
   }
 
-  Future<bool> createService(id)async{
+  Future<bool> createService(id) async {
     if (serviceImage.value == null) {
       errorMessage.value = 'Please select a Image';
       return false;
     }
-    try{
+    try {
       isLoadingCreate.value = true;
       errorMessage.value = '';
       uploadProgress.value = 0.0;
-      final request = http.MultipartRequest("POST", Uri.parse(Urls.serviceCreate),);
+      final request = http.MultipartRequest(
+        "POST",
+        Uri.parse(Urls.serviceCreate),
+      );
       SharedPreferences sh = await SharedPreferences.getInstance();
       request.headers.addAll({
         'Content-Type': 'multipart/form-data',
@@ -200,14 +205,14 @@ class ServiceController extends GetxController{
       });
 
       Map<String, dynamic> data = {
-        "name":serviceNameTEC.value.text,
-        "price":double.parse(servicePriceTEC.value.text),
-        "businessId":id.toString(),
+        "name": serviceNameTEC.value.text,
+        "price": double.parse(servicePriceTEC.value.text),
+        "businessId": id.toString(),
       };
       request.fields['data'] = json.encode(data);
       debugPrint("response body------- $data");
 
-      var imageBytes  = await serviceImage.value!.readAsBytes();
+      var imageBytes = await serviceImage.value!.readAsBytes();
       var multipartFile = http.MultipartFile.fromBytes(
         'image', // Field name for image as shown in Postman
         imageBytes,
@@ -218,7 +223,7 @@ class ServiceController extends GetxController{
       // Send request with progress tracking
       var streamedResponse = await request.send();
 
-      for(int i = 0 ; i<=100; i += 10){
+      for (int i = 0; i <= 100; i += 10) {
         uploadProgress.value = i.toDouble();
         await Future.delayed(Duration(milliseconds: 50));
       }
@@ -227,8 +232,7 @@ class ServiceController extends GetxController{
 
       log("Image upload response: $responseJson");
       log("Status code: ${response.statusCode}");
-      if(response.statusCode == 201 && responseJson['success'] == true){
-
+      if (response.statusCode == 201 && responseJson['success'] == true) {
         page.value = 1;
         hasMore.value = true;
         getAllService(businessId.value.toString());
@@ -241,33 +245,33 @@ class ServiceController extends GetxController{
           isSuccess: true,
         );
         return true;
-
-      }else{
+      } else {
         errorMessage.value = responseJson['message'] ?? 'Upload failed';
         log("Upload failed: ${responseJson['message']}");
         return false;
       }
-
-    }catch(e){
+    } catch (e) {
       log("add service error: $e");
       errorMessage.value = 'Upload failed: ${e.toString()}';
       return false;
-    }finally{
+    } finally {
       isLoadingCreate.value = false;
     }
   }
 
-
-  Future<bool> editService(businessId,serviceId)async{
+  Future<bool> editService(businessId, serviceId) async {
     if (serviceImage.value == null) {
       errorMessage.value = 'Please select a Image';
       return false;
     }
-    try{
+    try {
       isLoadingCreate.value = true;
       errorMessage.value = '';
       uploadProgress.value = 0.0;
-      final request = http.MultipartRequest("PUT", Uri.parse("${Urls.serviceEdit}/$serviceId"),);
+      final request = http.MultipartRequest(
+        "PUT",
+        Uri.parse("${Urls.serviceEdit}/$serviceId"),
+      );
       SharedPreferences sh = await SharedPreferences.getInstance();
       request.headers.addAll({
         'Content-Type': 'multipart/form-data',
@@ -275,18 +279,17 @@ class ServiceController extends GetxController{
       });
       // Create the JSON data for the data field
       Map<String, dynamic> data = {
-        "name":serviceNameTEC.value.text,
-        "price":double.parse(servicePriceTEC.value.text),
-        "businessId":businessId.toString(),
-        "isActive":isActive.value,
+        "name": serviceNameTEC.value.text,
+        "price": double.parse(servicePriceTEC.value.text),
+        "businessId": businessId.toString(),
+        "isActive": isActive.value,
         "isOffered": isOffered.value,
-        "offeredPercent": isOffered.value
-            ? int.tryParse(offerPercentTEC.value.text) ?? 0
-            : 0,
+        "offeredPercent":
+            isOffered.value ? int.tryParse(offerPercentTEC.value.text) ?? 0 : 0,
       };
       request.fields['data'] = json.encode(data);
       debugPrint("response body------- $data");
-      var imageBytes  = await serviceImage.value!.readAsBytes();
+      var imageBytes = await serviceImage.value!.readAsBytes();
       var multipartFile = http.MultipartFile.fromBytes(
         'image', // Field name for image as shown in Postman
         imageBytes,
@@ -297,7 +300,7 @@ class ServiceController extends GetxController{
       // Send request with progress tracking
       var streamedResponse = await request.send();
 
-      for(int i = 0 ; i<=100; i += 10){
+      for (int i = 0; i <= 100; i += 10) {
         uploadProgress.value = i.toDouble();
         await Future.delayed(Duration(milliseconds: 50));
       }
@@ -306,7 +309,8 @@ class ServiceController extends GetxController{
 
       log("Image upload response: $responseJson");
       log("Status code: ${response.statusCode}");
-      if(response.statusCode == 201 || response.statusCode == 200 && responseJson['success'] == true){
+      if (response.statusCode == 201 ||
+          response.statusCode == 200 && responseJson['success'] == true) {
         getAllService(businessId.toString());
         update();
         hasMore.value = true;
@@ -319,25 +323,23 @@ class ServiceController extends GetxController{
           isSuccess: true,
         );
         return true;
-
-      }else{
+      } else {
         errorMessage.value = responseJson['message'] ?? 'Upload failed';
         log("Upload failed: ${responseJson['message']}");
         return false;
       }
-
-    }catch(e){
+    } catch (e) {
       log("Profile picture upload error: $e");
       errorMessage.value = 'Upload failed: ${e.toString()}';
       return false;
-    }finally{
+    } finally {
       isLoadingCreate.value = false;
     }
   }
 
   void setEditServiceData(ServiceModel service) {
     isEditing.value = true;
-    editingServiceId.value = service.id.toString()??"";
+    editingServiceId.value = service.id.toString() ?? "";
     serviceNameTEC.value.text = service.name ?? '';
     servicePriceTEC.value.text = service.price.toString();
     isActive.value = service.isActive ?? true;
@@ -350,54 +352,54 @@ class ServiceController extends GetxController{
     }
   }
 
-
-  Future<bool> getAllService(id)async{
-    if(isLoadingService.value || !hasMore.value){
+  Future<bool> getAllService(id) async {
+    if (isLoadingService.value || !hasMore.value) {
       return false;
     }
     isLoadingService.value = true;
-    try{
-      final response = await _networkConfig.ApiRequestHandler(
-          RequestMethod.GET,
-          "${Urls.allServiceGet}/$id?page=${page.value}&limit=10",{},is_auth: true);
+    try {
+      final response = await _networkConfig.ApiRequestHandler(RequestMethod.GET,
+          "${Urls.allServiceGet}/$id?page=${page.value}&limit=10", {},
+          is_auth: true);
       log("service response  $response");
-      if(response != null && response["success"] == true){
+      if (response != null && response["success"] == true) {
         log("service get success");
         List dataList = response["data"]["data"];
-        if(dataList.isEmpty){
+        if (dataList.isEmpty) {
           hasMore.value = false;
-        }else{
-          List<ServiceModel> serviceData = dataList.map((e)=>ServiceModel.fromJson(e)).toList();
+        } else {
+          List<ServiceModel> serviceData =
+              dataList.map((e) => ServiceModel.fromJson(e)).toList();
           if (serviceData.isEmpty || serviceData.length < 10) {
             hasMore.value = false;
           }
           serviceModel.addAll(serviceData);
-          page.value ++;
+          page.value++;
         }
         return true;
-      }else{
+      } else {
         debugPrint("get service failed message: ${response["message"]}");
         return false;
       }
-
-
-    }catch(e){
+    } catch (e) {
       log("Error in getAllService $e");
-    }finally{
+    } finally {
       isLoadingService.value = false;
     }
     return false;
   }
-  
-  //Delete service 
-  Future<bool> deleteService(String id)async{
-    try{
+
+  //Delete service
+  Future<bool> deleteService(String id) async {
+    try {
       isLoadingDelete.value = true;
-      final response = await _networkConfig.ApiRequestHandler(RequestMethod.DELETE, "${Urls.serviceDelete}/$id", {},is_auth: true);
+      final response = await _networkConfig.ApiRequestHandler(
+          RequestMethod.DELETE, "${Urls.serviceDelete}/$id", {},
+          is_auth: true);
       log("response $response");
       log("response Id--- $id");
 
-      if(response != null && response['success']== true){
+      if (response != null && response['success'] == true) {
         getAllService(businessId.value.toString());
         log("business Id ---${businessId.toString()}");
         update();
@@ -406,19 +408,17 @@ class ServiceController extends GetxController{
           isSuccess: true,
         );
         return true;
-      }else{
+      } else {
         log("Delete Response Failed${response["message"]}");
         return false;
       }
-    }catch(e){
+    } catch (e) {
       log("Delete Response Error :$e");
       return false;
-    }finally{
-      isLoadingDelete.value= false;
+    } finally {
+      isLoadingDelete.value = false;
     }
-
   }
-
 
   void allClear() {
     serviceNameTEC.value.clear();
@@ -431,5 +431,4 @@ class ServiceController extends GetxController{
     isEditing.value = false;
     editingServiceId.value = '';
   }
-
 }

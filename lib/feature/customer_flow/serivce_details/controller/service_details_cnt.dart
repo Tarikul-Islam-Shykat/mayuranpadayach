@@ -1,13 +1,18 @@
 // lib/controllers/studio_controller.dart
 
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:get/get.dart';
+import 'package:prettyrini/core/global_widegts/app_snackbar.dart';
+import 'package:prettyrini/core/network_caller/endpoints.dart';
+import 'package:prettyrini/core/network_caller/network_config.dart';
+import 'package:prettyrini/feature/customer_flow/serivce_details/model/buisiness_details_model.dart';
 import 'package:prettyrini/feature/customer_flow/serivce_details/model/dummy_data.dart';
 import 'package:prettyrini/feature/customer_flow/serivce_details/model/studio_model.dart';
 
-
 import '../model/dummy_data.dart';
 import '../model/studio_model.dart';
-
 
 class StudioController extends GetxController {
   // Observable variables
@@ -17,6 +22,8 @@ class StudioController extends GetxController {
   var isLoading = false.obs;
   var isFavorite = false.obs;
 
+  final NetworkConfig _networkConfig = NetworkConfig();
+
   // Tab names
   final List<String> tabNames = ['Services', 'Review', 'Portfolio', 'About'];
 
@@ -24,6 +31,42 @@ class StudioController extends GetxController {
   void onInit() {
     super.onInit();
     loadStudioData();
+    getBuisnessDetails();
+  }
+
+  var isFetchingBuisnessisLoading = false.obs;
+  final Rxn<BusinessData> businessDetails = Rxn<BusinessData>();
+  Future<bool> getBuisnessDetails(
+      {String id = "68513f4df256aa740e9e3665"}) async {
+    try {
+      isFetchingBuisnessisLoading.value = true;
+      final Map<String, dynamic> requestBody = {};
+      final response = await _networkConfig.ApiRequestHandler(
+        RequestMethod.GET,
+        "${Urls.getBuiessnessDetailsById}/$id",
+        json.encode(requestBody),
+        is_auth: true,
+      );
+      if (response == null || response['success'] != true) {
+        AppSnackbar.show(
+          message: response?['message'] ?? "Something went wrong",
+          isSuccess: false,
+        );
+        return false;
+      }
+
+      // Parse and store the business data
+      businessDetails.value = BusinessData.fromJson(response['data']);
+
+      AppSnackbar.show(message: "Business Details Retrieved", isSuccess: true);
+      return true;
+    } catch (e) {
+      AppSnackbar.show(
+          message: "Failed to fetch business details: $e", isSuccess: false);
+      return false;
+    } finally {
+      isFetchingBuisnessisLoading.value = false;
+    }
   }
 
   // Load studio data from dummy data

@@ -20,7 +20,7 @@ class NetworkConfig {
       if (is_auth == true) {
         //   header["Authorization"] = "${sh.getString("token")}";
         header["Authorization"] =
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MzZiMDUwNjgzMTQ1Y2U3ZTA3MGViNCIsImVtYWlsIjoic2hhaGFkYXQxQGdtYWlsLmNvbSIsInJvbGUiOiJVU0VSIiwiaXNBbGxvd2VkIjpmYWxzZSwiaWF0IjoxNzQ4NDE0NTc2LCJleHAiOjE3NTEwMDY1NzZ9.IEnC4__MZjv43uAmR2zQwADzKP30iS3ySN457hENsOo";
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NTEzZmY3ZjI1NmFhNzQwZTllMzY2NyIsImVtYWlsIjoiaGlrYWYxMTAzOUBjYWxvcnBnLmNvbSIsInJvbGUiOiJVU0VSIiwiaXNBbGxvd2VkIjpmYWxzZSwiaWF0IjoxNzUwMTU1MzA5LCJleHAiOjE3NTI3NDczMDl9.gqT5CxQMpJccN1oix66nrhmZY5QA6UHMcL4hJzlc4E0";
       }
 
       if (method.name == RequestMethod.GET.name) {
