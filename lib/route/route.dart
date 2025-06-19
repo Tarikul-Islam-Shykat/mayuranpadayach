@@ -9,6 +9,8 @@ import 'package:prettyrini/feature/admin/admin_business/view/business_details_sc
 import 'package:prettyrini/feature/admin/admin_service/view/service_screen.dart';
 import 'package:prettyrini/feature/auth/screen/otp_very_screen.dart';
 import 'package:prettyrini/feature/auth/screen/sign_up_screen.dart';
+import 'package:prettyrini/feature/customer_flow/serivce_details/ui/service_details_page.dart';
+import 'package:prettyrini/feature/customer_flow/user_categories/ui/user_categories.dart';
 import 'package:prettyrini/feature/customer_flow/user_dashboard/ui/user_dashboard.dart';
 import 'package:prettyrini/feature/profile_screen/view/change_pasword.dart';
 import 'package:prettyrini/feature/profile_screen/view/edit_profile.dart';
@@ -53,6 +55,9 @@ class AppRoute {
       "/booking_admin_details_screen";
   static const String reviewAdminScreen = "/review_admin_screen";
 
+  static String userCategories = "/userCategories";
+  static String userServiceDetailsPage = "/userServiceDetails";
+
   //common getter
   static String getSplashScreen() => splashScreen;
   static String getLoginScreen() => loginScreen;
@@ -65,6 +70,8 @@ class AppRoute {
   static String getChangeScreen() => changePasswordScreen;
   //user getter
   static String getUserDashboard() => userDashboardScreen;
+  static String getUserCategories() => userCategories;
+  static String getServiceDetailsPage() => userServiceDetailsPage;
 
   //admin getter
   static String getAdminHomeScreen() => adminHomeScreen;
@@ -81,6 +88,15 @@ class AppRoute {
 
   static List<GetPage> routes = [
     //common route page
+
+    GetPage(
+        name: userServiceDetailsPage,
+        page: () => ServiceDetailsPage(),
+        transition: Transition.rightToLeft),
+    GetPage(
+        name: userCategories,
+        page: () => UserCategoryScreen(),
+        transition: Transition.rightToLeft),
     GetPage(
         name: splashScreen,
         page: () => SplashScreen(),

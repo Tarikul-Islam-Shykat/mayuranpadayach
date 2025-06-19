@@ -8,6 +8,7 @@ import 'package:prettyrini/core/global_widegts/loading_screen.dart';
 import 'package:prettyrini/feature/customer_flow/user_dashboard/controller/user_dashboard_contrller.dart';
 import 'package:prettyrini/feature/customer_flow/user_dashboard/widget/buisness_list_widget.dart';
 import 'package:prettyrini/feature/customer_flow/user_dashboard/widget/card_swiper_.dart';
+import 'package:prettyrini/route/route.dart';
 
 class UserHomePage extends StatelessWidget {
   final UserDashboardContrller controller = Get.put(UserDashboardContrller());
@@ -128,7 +129,21 @@ class UserHomePage extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          headingText(text: 'Categories', fontWeight: FontWeight.bold),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              headingText(text: 'Categories', fontWeight: FontWeight.bold),
+              GestureDetector(
+                onTap: () {
+                  Get.toNamed(AppRoute.userCategories);
+                },
+                child: smallText(
+                    text: 'See All',
+                    fontWeight: FontWeight.bold,
+                    color: Colors.deepPurpleAccent),
+              ),
+            ],
+          ),
           const SizedBox(height: 15),
           Obx(() => Row(
                 children: List.generate(
@@ -188,21 +203,11 @@ class UserHomePage extends StatelessWidget {
                       fontWeight: FontWeight.bold)),
             ],
           ),
-
           SizedBox(
             height: 800, // Fixed height for the business list
             child: BusinessListWidget(),
           ),
           const SizedBox(height: 16),
-          // Obx(() => ListView.builder(
-          //       shrinkWrap: true,
-          //       physics: const NeverScrollableScrollPhysics(),
-          //       itemCount: controller.filteredStudios.length,
-          //       itemBuilder: (context, index) {
-          //         final studio = controller.filteredStudios[index];
-          //         return _buildProfessionalCard(studio, controller);
-          //       },
-          //     )),
         ],
       ),
     );

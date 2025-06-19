@@ -9,6 +9,7 @@ import 'package:prettyrini/core/global_widegts/loading_screen.dart';
 import 'package:prettyrini/feature/customer_flow/user_dashboard/controller/card_swiper_controller.dart';
 import 'package:prettyrini/feature/customer_flow/user_dashboard/model/buisness_model.dart';
 import 'package:prettyrini/feature/customer_flow/user_dashboard/widget/discount_badge.dart';
+import 'package:prettyrini/route/route.dart';
 
 class BusinessCardSwiper extends StatelessWidget {
   final CardSwiperVController controller = Get.put(CardSwiperVController());
@@ -103,224 +104,230 @@ class BusinessCardSwiper extends StatelessWidget {
   // }
 
   Widget _buildBusinessCard(CardSwiperBusiness business) {
-    return Container(
-      width: double.infinity,
-      height: double.infinity,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 10,
-            offset: const Offset(0, 5),
-          ),
-        ],
-      ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(20),
-        child: Stack(
-          children: [
-            Positioned.fill(
-              child: business.image.isNotEmpty
-                  ? ResponsiveNetworkImage(
-                      imageUrl: business.image,
-                      shape: ImageShape.roundedRectangle,
-                      borderRadius: 12,
-                      widthPercent: 0.9,
-                      heightPercent: 0.2,
-                      fit: BoxFit.cover,
-                      placeholderWidget: loading(),
-                    )
-                  : Container(
-                      color: Colors.grey[300],
-                      child: const Icon(
-                        Icons.image,
-                        size: 50,
-                        color: Colors.grey,
-                      ),
-                    ),
+    return GestureDetector(
+      onTap: () {
+        Get.toNamed(AppRoute.userServiceDetailsPage);
+      },
+      child: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 10,
+              offset: const Offset(0, 5),
             ),
-            // Business Image
-            // Positioned.fill(
-            //   child: business.image.isNotEmpty
-            //       ? Image.network(
-            //           business.image,
-            //           fit: BoxFit.cover,
-            //           errorBuilder: (context, error, stackTrace) {
-            //             return Container(
-            //               color: Colors.grey[300],
-            //               child: const Icon(
-            //                 Icons.business,
-            //                 size: 50,
-            //                 color: Colors.grey,
-            //               ),
-            //             );
-            //           },
-            //         )
-            //       : Container(
-            //           color: Colors.grey[300],
-            //           child: const Icon(
-            //             Icons.business,
-            //             size: 50,
-            //             color: Colors.grey,
-            //           ),
-            //         ),
-            // ),
+          ],
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(20),
+          child: Stack(
+            children: [
+              Positioned.fill(
+                child: business.image.isNotEmpty
+                    ? ResponsiveNetworkImage(
+                        imageUrl: business.image,
+                        shape: ImageShape.roundedRectangle,
+                        borderRadius: 12,
+                        widthPercent: 0.9,
+                        heightPercent: 0.2,
+                        fit: BoxFit.cover,
+                        placeholderWidget: loading(),
+                      )
+                    : Container(
+                        color: Colors.grey[300],
+                        child: const Icon(
+                          Icons.image,
+                          size: 50,
+                          color: Colors.grey,
+                        ),
+                      ),
+              ),
+              // Business Image
+              // Positioned.fill(
+              //   child: business.image.isNotEmpty
+              //       ? Image.network(
+              //           business.image,
+              //           fit: BoxFit.cover,
+              //           errorBuilder: (context, error, stackTrace) {
+              //             return Container(
+              //               color: Colors.grey[300],
+              //               child: const Icon(
+              //                 Icons.business,
+              //                 size: 50,
+              //                 color: Colors.grey,
+              //               ),
+              //             );
+              //           },
+              //         )
+              //       : Container(
+              //           color: Colors.grey[300],
+              //           child: const Icon(
+              //             Icons.business,
+              //             size: 50,
+              //             color: Colors.grey,
+              //           ),
+              //         ),
+              // ),
 
-            // Gradient Overlay
-            Positioned.fill(
-              child: Container(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      Colors.transparent,
-                      Colors.black.withOpacity(0.7),
+              // Gradient Overlay
+              Positioned.fill(
+                child: Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        Colors.transparent,
+                        Colors.black.withOpacity(0.7),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+
+              // Business Info
+              Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: Container(
+                  padding: const EdgeInsets.all(20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const SizedBox(height: 16),
+                      Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8, vertical: 4),
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.3),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: normalText(
+                              text: business.category.name,
+                              color: Colors.white)),
+                      const SizedBox(height: 16),
+                      headingText(text: business.name, color: Colors.white),
+                      const SizedBox(height: 16),
+                      Row(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 8, vertical: 4),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12),
+                                border: Border.all(color: Colors.grey)),
+                            child: Row(
+                              children: [
+                                const Icon(
+                                  Icons.star_border_outlined,
+                                  color: Colors.white,
+                                  size: 20,
+                                ),
+                                const SizedBox(width: 4),
+                                smallText(
+                                    text: controller.getFormattedRating(
+                                        business.overallRating),
+                                    color: Colors.white),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(width: 16),
+                          smallText(text: '120 reviews', color: Colors.grey)
+                        ],
+                      ),
+
+                      const SizedBox(height: 8),
+
+                      // Address
+                      // Row(
+                      //   children: [
+                      //     const Icon(
+                      //       Icons.location_on,
+                      //       color: Colors.white,
+                      //       size: 16,
+                      //     ),
+                      //     const SizedBox(width: 4),
+                      //     Expanded(
+                      //       child: Text(
+                      //         business.address,
+                      //         style: TextStyle(
+                      //           fontSize: 14,
+                      //           color: Colors.white.withOpacity(0.9),
+                      //         ),
+                      //         maxLines: 1,
+                      //         overflow: TextOverflow.ellipsis,
+                      //       ),
+                      //     ),
+                      //   ],
+                      // ),
+
+                      const SizedBox(height: 8),
+
+                      // Status and Hours
+                      // Row(
+                      //   children: [
+                      //     Container(
+                      //       padding: const EdgeInsets.symmetric(
+                      //           horizontal: 8, vertical: 4),
+                      //       decoration: BoxDecoration(
+                      //         color: controller.isBusinessOpen(business)
+                      //             ? Colors.green
+                      //             : Colors.red,
+                      //         borderRadius: BorderRadius.circular(8),
+                      //       ),
+                      //       child: Text(
+                      //         business.openStatus,
+                      //         style: const TextStyle(
+                      //           fontSize: 12,
+                      //           color: Colors.white,
+                      //           fontWeight: FontWeight.w500,
+                      //         ),
+                      //       ),
+                      //     ),
+                      //     const SizedBox(width: 12),
+                      //     Text(
+                      //       '${business.openingHours} - ${business.closingHours}',
+                      //       style: TextStyle(
+                      //         fontSize: 12,
+                      //         color: Colors.white.withOpacity(0.8),
+                      //       ),
+                      //     ),
+                      //   ],
+                      // ),
                     ],
                   ),
                 ),
               ),
-            ),
 
-            // Business Info
-            Positioned(
-              bottom: 0,
-              left: 0,
-              right: 0,
-              child: Container(
-                padding: const EdgeInsets.all(20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const SizedBox(height: 16),
-                    Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 8, vertical: 4),
-                        decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.3),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: normalText(
-                            text: business.category.name, color: Colors.white)),
-                    const SizedBox(height: 16),
-                    headingText(text: business.name, color: Colors.white),
-                    const SizedBox(height: 16),
-                    Row(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 8, vertical: 4),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(12),
-                              border: Border.all(color: Colors.grey)),
-                          child: Row(
-                            children: [
-                              const Icon(
-                                Icons.star_border_outlined,
-                                color: Colors.white,
-                                size: 20,
-                              ),
-                              const SizedBox(width: 4),
-                              smallText(
-                                  text: controller.getFormattedRating(
-                                      business.overallRating),
-                                  color: Colors.white),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(width: 16),
-                        smallText(text: '120 reviews', color: Colors.grey)
-                      ],
+              Positioned(
+                  top: 20,
+                  right: 20,
+                  child: Container(
+                    decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey),
+                        shape: BoxShape.circle,
+                        color: Colors.transparent),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Icon(
+                        Icons.arrow_forward,
+                        color: Colors.white,
+                      ),
                     ),
+                  )),
 
-                    const SizedBox(height: 8),
-
-                    // Address
-                    // Row(
-                    //   children: [
-                    //     const Icon(
-                    //       Icons.location_on,
-                    //       color: Colors.white,
-                    //       size: 16,
-                    //     ),
-                    //     const SizedBox(width: 4),
-                    //     Expanded(
-                    //       child: Text(
-                    //         business.address,
-                    //         style: TextStyle(
-                    //           fontSize: 14,
-                    //           color: Colors.white.withOpacity(0.9),
-                    //         ),
-                    //         maxLines: 1,
-                    //         overflow: TextOverflow.ellipsis,
-                    //       ),
-                    //     ),
-                    //   ],
-                    // ),
-
-                    const SizedBox(height: 8),
-
-                    // Status and Hours
-                    // Row(
-                    //   children: [
-                    //     Container(
-                    //       padding: const EdgeInsets.symmetric(
-                    //           horizontal: 8, vertical: 4),
-                    //       decoration: BoxDecoration(
-                    //         color: controller.isBusinessOpen(business)
-                    //             ? Colors.green
-                    //             : Colors.red,
-                    //         borderRadius: BorderRadius.circular(8),
-                    //       ),
-                    //       child: Text(
-                    //         business.openStatus,
-                    //         style: const TextStyle(
-                    //           fontSize: 12,
-                    //           color: Colors.white,
-                    //           fontWeight: FontWeight.w500,
-                    //         ),
-                    //       ),
-                    //     ),
-                    //     const SizedBox(width: 12),
-                    //     Text(
-                    //       '${business.openingHours} - ${business.closingHours}',
-                    //       style: TextStyle(
-                    //         fontSize: 12,
-                    //         color: Colors.white.withOpacity(0.8),
-                    //       ),
-                    //     ),
-                    //   ],
-                    // ),
-                  ],
-                ),
-              ),
-            ),
-
-            Positioned(
-                top: 20,
-                right: 20,
-                child: Container(
-                  decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey),
-                      shape: BoxShape.circle,
-                      color: Colors.transparent),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Icon(
-                      Icons.arrow_forward,
-                      color: Colors.white,
-                    ),
-                  ),
-                )),
-
-            Positioned(
-                bottom: 70,
-                right: -10,
-                child: DiscountBadge(
-                    discount: "-20%", color: Colors.purpleAccent)),
-          ],
+              Positioned(
+                  bottom: 70,
+                  right: -10,
+                  child: DiscountBadge(
+                      discount: "-20%", color: Colors.purpleAccent)),
+            ],
+          ),
         ),
       ),
     );
