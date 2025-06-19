@@ -54,7 +54,7 @@ class LoginController extends GetxController {
         } else if (role == RoleType.ADMIN.name) {
           Get.offAllNamed(AppRoute.adminBusinessScreen);
         } else if (role == RoleType.USER.name) {
-          Get.offNamed(AppRoute.profileScreen);
+          Get.offNamed(AppRoute.userDashboardScreen);
         }
         AppSnackbar.show(message: "Login Successful", isSuccess: true);
         return true;

@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:prettyrini/core/const/image_path.dart';
+import 'package:prettyrini/core/services_class/local_service/local_data.dart';
 import 'package:prettyrini/route/route.dart';
 
 import '../../../core/const/app_colors.dart';
@@ -149,6 +150,16 @@ class ProfileScreen extends StatelessWidget {
                     ImagePath.privacyIcon,
                     'Privacy Policy',
                     () {},
+                  ),
+                  Divider(color: Colors.grey.shade300),
+                  profileListTile(
+                    ImagePath.privacyIcon,
+                    'Log Out',
+                    () async {
+                      var userService = LocalService();
+                      await userService.clearUserData();
+                      Get.toNamed(AppRoute.loginScreen);
+                    },
                   ),
                 ],
               ),

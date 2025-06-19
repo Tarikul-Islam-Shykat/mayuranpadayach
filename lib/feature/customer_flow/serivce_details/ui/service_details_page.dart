@@ -108,10 +108,12 @@ class ServiceDetailsPage extends StatelessWidget {
                             const Icon(Icons.location_on,
                                 color: Colors.red, size: 16),
                             const SizedBox(width: 4),
-                            Text(
-                              controller.businessDetails.value!.address,
-                              style: const TextStyle(fontSize: 12),
-                            ),
+                            controller.businessDetails.value != null
+                                ? Text(
+                                    controller.businessDetails.value!.address,
+                                    style: const TextStyle(fontSize: 12),
+                                  )
+                                : SizedBox.shrink(),
                           ],
                         ),
                       ),
