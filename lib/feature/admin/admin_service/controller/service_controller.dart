@@ -9,11 +9,9 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:prettyrini/core/network_caller/endpoints.dart';
 import 'package:prettyrini/core/network_caller/network_config.dart';
-import 'package:prettyrini/core/services_class/local_service/local_data.dart';
 import 'package:prettyrini/feature/admin/admin_service/model/all_service_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../core/global_widegts/app_snackbar.dart';
-import '../../../../route/route.dart';
 
 class ServiceController extends GetxController {
   Rx<TextEditingController> serviceNameTEC = TextEditingController().obs;
@@ -53,7 +51,6 @@ class ServiceController extends GetxController {
         getAllService(businessId.value);
       }
     });
-    getAllService(businessId.value.toString());
   }
 
   //service create
@@ -402,6 +399,7 @@ class ServiceController extends GetxController {
       if (response != null && response['success'] == true) {
         getAllService(businessId.value.toString());
         log("business Id ---${businessId.toString()}");
+        Get.back();
         update();
         AppSnackbar.show(
           message: "Delete successfully!",

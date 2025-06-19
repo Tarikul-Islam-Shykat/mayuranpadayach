@@ -159,12 +159,13 @@ class BusinessCard extends StatelessWidget {
                             )
                           ],
                         ),
-                        const SizedBox(height: 4),
+                        SizedBox(
+                          height: 15,
+                        ),
                         smallerText(
                             text: business.category.name,
                             color: Colors.grey,
                             fontWeight: FontWeight.bold),
-                        const SizedBox(height: 4),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [

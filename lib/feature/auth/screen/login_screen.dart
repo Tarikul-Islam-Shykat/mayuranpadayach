@@ -22,113 +22,130 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.bgColor,
+      resizeToAvoidBottomInset:
+          false, // This prevents the screen from resizing when keyboard appears
       body: SingleChildScrollView(
         padding: EdgeInsets.all(15.w),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(height: 50.h),
-            Center(
-                child: Image.asset(
-              ImagePath.loginLogo,
-              width: 71.w,
-              height: 48.h,
-              fit: BoxFit.fill,
-            )),
-            SizedBox(
-              height: 10,
-            ),
-            Center(
-              child: headingText(text: "Sign In Account"),
-            ),
-            SizedBox(
-              height: 4,
-            ),
-            Center(
-                child: smallText(
-                    text:
-                        "Start your journey in playmate with fun, interactive lessons now",
-                    maxLines: 2,
-                    textAlign: TextAlign.center,
-                    color: AppColors.grayColor)),
-            SizedBox(
-              height: 15.h,
-            ),
-            textFieldTitle(
-              text: 'Email',
-            ),
-            CustomAuthField(
-              radiusValue2: 15,
-              radiusValue: 15,
-              controller: controller.emailTEController,
-              hintText: "Enter Email Here",
-              keyboardType: TextInputType.emailAddress,
-            ),
-            SizedBox(
-              height: 15.h,
-            ),
-            textFieldTitle(
-              text: 'Password',
-            ),
-            CustomAuthField(
-              radiusValue2: 15,
-              radiusValue: 15,
-              controller: controller.passwordTEController,
-              hintText: "Enter Password Here",
-              keyboardType: TextInputType.visiblePassword,
-            ),
-            SizedBox(
-              height: 5.h,
-            ),
-            Align(
-              alignment: Alignment.centerRight,
-              child: InkWell(
-                  onTap: () => Get.toNamed(AppRoute.forgetScreen),
-                  child: Text(
-                    "Forgot Password",
-                    style: GoogleFonts.poppins(
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.deepPurple),
-                  )),
-            ),
-            SizedBox(
-              height: Get.height * 0.15.h,
-            ),
-            Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Obx(()=>controller.isLoginLoading.value?btnLoading():CustomButton(
-                  onTap: () =>controller.loginUser(),
-                  title: Text(
-                    "Log In",
-                    style: GoogleFonts.manrope(
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.w800,
-                        color: Colors.white),
+        child: SizedBox(
+          height: MediaQuery.of(context).size.height -
+              MediaQuery.of(context).padding.top,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: 50.h),
+              Center(
+                  child: Image.asset(
+                ImagePath.loginLogo,
+                width: 71.w,
+                height: 48.h,
+                fit: BoxFit.fill,
+              )),
+              SizedBox(
+                height: 10,
+              ),
+              Center(
+                child: headingText(text: "Sign In Account"),
+              ),
+              SizedBox(
+                height: 4,
+              ),
+              Center(
+                  child: smallText(
+                      text:
+                          "Start your journey in playmate with fun, interactive lessons now",
+                      maxLines: 2,
+                      textAlign: TextAlign.center,
+                      color: AppColors.grayColor)),
+              SizedBox(
+                height: 15.h,
+              ),
+              textFieldTitle(
+                text: 'Email',
+              ),
+              SizedBox(
+                height: 5.h,
+              ),
+              CustomAuthField(
+                radiusValue2: 15,
+                radiusValue: 15,
+                controller: controller.emailTEController,
+                hintText: "Enter Email Here",
+                keyboardType: TextInputType.emailAddress,
+              ),
+              SizedBox(
+                height: 15.h,
+              ),
+              textFieldTitle(
+                text: 'Password',
+              ),
+              SizedBox(
+                height: 5.h,
+              ),
+              CustomAuthField(
+                radiusValue2: 15,
+                radiusValue: 15,
+                obscureText: true,
+                controller: controller.passwordTEController,
+                hintText: "Enter Password Here",
+                keyboardType: TextInputType.visiblePassword,
+              ),
+              SizedBox(
+                height: 5.h,
+              ),
+              Align(
+                alignment: Alignment.centerRight,
+                child: InkWell(
+                    onTap: () => Get.toNamed(AppRoute.forgetScreen),
+                    child: Text(
+                      "Forgot Password",
+                      style: GoogleFonts.poppins(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.deepPurple),
+                    )),
+              ),
+              SizedBox(
+                height: 30,
+              ),
+              Obx(
+                () => controller.isLoginLoading.value
+                    ? btnLoading()
+                    : CustomButton(
+                        onTap: () => controller.loginUser(),
+                        title: Text(
+                          "Log In",
+                          style: GoogleFonts.manrope(
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.w800,
+                              color: Colors.white),
+                        ),
+                        color: Colors.deepPurple,
+                      ),
+              ),
+              const Spacer(), // This pushes the button section to the bottom
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  SizedBox(
+                    height: 15.h,
                   ),
-                  color: Colors.deepPurple,
-                ),
-                ),
-                SizedBox(
-                  height: 15.h,
-                ),
-                loginOrSignupText(
-                  title: 'Don’t have an account? ',
-                  pageName: 'Sign Up',
-                  onTap: () => Get.toNamed(AppRoute.signUpScreen),
-                ),
-                SizedBox(
-                  height: 5.h,
-                ),
-                Center(child: authTerms(context)),
-                SizedBox(
-                  height: 10.h,
-                ),
-              ],
-            ),
-          ],
+                  loginOrSignupText(
+                    title: 'Don\'t have an account? ',
+                    pageName: 'Sign Up',
+                    onTap: () => Get.toNamed(AppRoute.signUpScreen),
+                  ),
+                  SizedBox(
+                    height: 5.h,
+                  ),
+                  Center(child: authTerms(context)),
+                  SizedBox(
+                    height: 10.h,
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

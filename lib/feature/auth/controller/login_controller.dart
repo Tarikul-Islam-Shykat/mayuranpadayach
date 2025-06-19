@@ -29,23 +29,25 @@ class LoginController extends GetxController {
         "email": email,
         "password": password,
       };
-      log(requestBody.toString());
       final response = await _networkConfig.ApiRequestHandler(
         RequestMethod.POST,
         Urls.login,
         json.encode(requestBody),
         is_auth: false,
       );
-      if (response['success'] == false) {
-        AppSnackbar.show(message: response['message'], isSuccess: false);
-        return false;
-      }
+      log("message 1");
+
+      // if (response['success'] == false) {
+      //   AppSnackbar.show(message: response['message'], isSuccess: false);
+      //   return false;
+      // }
+
+      log("message 2 ${response.toString()}");
 
       if (response != null && response['success'] == true) {
-        var localService = await LocalService();
+        var localService = LocalService();
         await localService.setToken(response["data"]["token"]);
         await localService.setRole(response["data"]["role"]);
-        var token = await localService.getToken();
         String role = await localService.getRole();
         if (role == RoleType.PROFESSIONAL.name) {
           Get.offAllNamed(AppRoute.adminBusinessScreen);
@@ -57,7 +59,7 @@ class LoginController extends GetxController {
         AppSnackbar.show(message: "Login Successful", isSuccess: true);
         return true;
       } else {
-        AppSnackbar.show(message: "Failed To Login", isSuccess: false);
+        AppSnackbar.show(message: response['message'], isSuccess: false);
         return false;
       }
     } catch (e) {

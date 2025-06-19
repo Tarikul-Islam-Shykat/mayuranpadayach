@@ -28,7 +28,17 @@ class SearchHistoryScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(
-              height: 60,
+              height: 20,
+            ),
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: normalText(
+                  text: "Search Service",
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
             Padding(
               padding: const EdgeInsets.all(16.0),

@@ -8,7 +8,9 @@ import 'package:prettyrini/feature/customer_flow/serivce_details/ui/service_deta
 import 'package:prettyrini/feature/customer_flow/user_booking_page/ui/user_booking_details.dart';
 import 'package:prettyrini/feature/customer_flow/user_booking_page/ui/user_booking_page.dart';
 import 'package:prettyrini/feature/customer_flow/user_dashboard/ui/user_dashboard.dart';
+import 'package:prettyrini/feature/customer_flow/user_dashboard/widget/card_swiper_.dart';
 import 'package:prettyrini/feature/customer_flow/user_fav/ui/user_fav_ui.dart';
+import 'package:prettyrini/feature/customer_flow/user_home_page/ui/user_home_page.dart';
 import 'package:prettyrini/feature/customer_flow/user_search/ui/user_search_page.dart';
 import 'package:prettyrini/route/route.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -41,8 +43,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeController themeController = Get.find<ThemeController>();
-
     return ScreenUtilInit(
       designSize: const Size(360, 640),
       minTextAdapt: true,
@@ -51,11 +51,11 @@ class MyApp extends StatelessWidget {
         useInheritedMediaQuery: true,
         debugShowCheckedModeBanner: false,
         title: 'Foot Fitness',
-        // getPages: AppRoute.routes,
-        // initialRoute: AppRoute.splashScreen,
-        // builder: EasyLoading.init(),
-        //    home: UserBookingDetailsScreenVerson2(studio: DummyData.getStudioList().first,),
-        home: ServiceDetailsPage(),
+        getPages: AppRoute.routes,
+        initialRoute: AppRoute.splashScreen,
+        builder: EasyLoading.init(),
+        //home: UserDashboard(),
+        //  home: UserHomePage(),
       ),
     );
   }

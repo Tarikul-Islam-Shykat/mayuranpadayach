@@ -81,8 +81,14 @@ class AppRoute {
 
   static List<GetPage> routes = [
     //common route page
-    GetPage(name: splashScreen, page: () => SplashScreen()),
-    GetPage(name: loginScreen, page: () => LoginScreen()),
+    GetPage(
+        name: splashScreen,
+        page: () => SplashScreen(),
+        transition: Transition.rightToLeft),
+    GetPage(
+        name: loginScreen,
+        page: () => LoginScreen(),
+        transition: Transition.rightToLeft),
     GetPage(name: signUpScreen, page: () => SignUpScreen()),
     GetPage(name: forgetScreen, page: () => ForgetPasswordScreen()),
     GetPage(

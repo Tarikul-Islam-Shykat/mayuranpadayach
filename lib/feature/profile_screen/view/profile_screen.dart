@@ -15,16 +15,24 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.bgColor,
       body: SingleChildScrollView(
         padding: EdgeInsets.all(15),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 20.h,),
-            Center(child: Text("Profile",style: GoogleFonts.poppins(fontWeight: FontWeight.w600,fontSize: 20.sp,color: AppColors.textBlackColor),)),
-
-            SizedBox(height: 20.h,),
+            Center(
+                child: Text(
+              "Profile",
+              style: GoogleFonts.poppins(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 20.sp,
+                  color: AppColors.textBlackColor),
+            )),
+            SizedBox(
+              height: 20.h,
+            ),
             Container(
               width: Get.width,
               padding: EdgeInsets.all(10),
@@ -46,10 +54,14 @@ class ProfileScreen extends StatelessWidget {
                       color: Colors.purple.shade50.withValues(alpha: .5),
                     ),
                     child: ClipRRect(
-                      borderRadius: BorderRadius.circular(100.r),
-                        child: Image.asset(ImagePath.profile,)),
+                        borderRadius: BorderRadius.circular(100.r),
+                        child: Image.asset(
+                          ImagePath.profile,
+                        )),
                   ),
-                  SizedBox(width: 10.w,),
+                  SizedBox(
+                    width: 10.w,
+                  ),
 
                   Column(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -57,37 +69,54 @@ class ProfileScreen extends StatelessWidget {
                     children: [
                       //name
                       SizedBox(
-                        width:240.w,
+                        width: 240.w,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Text("Darrell Steward",style: GoogleFonts.poppins(
-                              fontSize: 20.sp,
-                              fontWeight: FontWeight.w500,
-                              color: AppColors.textBlackColor
-                            ),),
+                            Text(
+                              "Darrell Steward",
+                              style: GoogleFonts.poppins(
+                                  fontSize: 20.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color: AppColors.textBlackColor),
+                            ),
                             InkWell(
-                              onTap: ()=>Get.toNamed(AppRoute.editProfileScreen),
+                                onTap: () =>
+                                    Get.toNamed(AppRoute.editProfileScreen),
                                 child: Image.asset(ImagePath.editIcon)),
                           ],
                         ),
                       ),
-                      SizedBox(height: 4.h,),
-                      profileEmailText(ImagePath.messageIcon,  'darrellsteward@example.com',),
-                      profileEmailText(ImagePath.callIcon,  '+1 761 234 5678',),
-
-
-
+                      SizedBox(
+                        height: 4.h,
+                      ),
+                      profileEmailText(
+                        ImagePath.messageIcon,
+                        'darrellsteward@example.com',
+                      ),
+                      profileEmailText(
+                        ImagePath.callIcon,
+                        '+1 761 234 5678',
+                      ),
                     ],
                   )
                 ],
               ),
             ),
-
-            SizedBox(height: 20.h,),
-            Text("Support & Help",style: GoogleFonts.poppins(fontSize: 18.sp,fontWeight: FontWeight.w500,color: AppColors.textBlackColor),),
-            SizedBox(height: 10.h,),
+            SizedBox(
+              height: 20.h,
+            ),
+            Text(
+              "Support & Help",
+              style: GoogleFonts.poppins(
+                  fontSize: 18.sp,
+                  fontWeight: FontWeight.w500,
+                  color: AppColors.textBlackColor),
+            ),
+            SizedBox(
+              height: 10.h,
+            ),
             Container(
               padding: EdgeInsets.all(10),
               decoration: BoxDecoration(
@@ -98,25 +127,35 @@ class ProfileScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  profileListTile(ImagePath.aboutIcon,'About Us',() {  },),
+                  profileListTile(
+                    ImagePath.aboutIcon,
+                    'About Us',
+                    () {},
+                  ),
                   Divider(color: Colors.grey.shade300),
-                  profileListTile(ImagePath.changePassIcon, 'Change Password',  ()=>Get.toNamed(AppRoute.changePasswordScreen),),
+                  profileListTile(
+                    ImagePath.changePassIcon,
+                    'Change Password',
+                    () => Get.toNamed(AppRoute.changePasswordScreen),
+                  ),
                   Divider(color: Colors.grey.shade300),
-                  profileListTile( ImagePath.termsIcon,  'Terms & Conditions',  () {  },),
+                  profileListTile(
+                    ImagePath.termsIcon,
+                    'Terms & Conditions',
+                    () {},
+                  ),
                   Divider(color: Colors.grey.shade300),
-                  profileListTile( ImagePath.privacyIcon,  'Privacy Policy',  () {  },),
-
+                  profileListTile(
+                    ImagePath.privacyIcon,
+                    'Privacy Policy',
+                    () {},
+                  ),
                 ],
               ),
             ),
-
           ],
         ),
       ),
     );
   }
 }
-
-
-
-

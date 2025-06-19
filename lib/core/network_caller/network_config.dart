@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:http/http.dart' as http;
+import 'package:prettyrini/core/global_widegts/app_snackbar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 enum RequestMethod { GET, POST, PUT, DELETE }
@@ -18,12 +19,12 @@ class NetworkConfig {
     if (await InternetConnectionChecker().hasConnection) {
       var header = <String, String>{"Content-type": "application/json"};
       if (is_auth == true) {
-        //   header["Authorization"] = "${sh.getString("token")}";
+        header["Authorization"] = "${sh.getString("token")}";
         //      header["Authorization"] =
         //         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NTEzZmY3ZjI1NmFhNzQwZTllMzY2NyIsImVtYWlsIjoiaGlrYWYxMTAzOUBjYWxvcnBnLmNvbSIsInJvbGUiOiJVU0VSIiwiaXNBbGxvd2VkIjpmYWxzZSwiaWF0IjoxNzUwMTU1MzA5LCJleHAiOjE3NTI3NDczMDl9.gqT5CxQMpJccN1oix66nrhmZY5QA6UHMcL4hJzlc4E0";
 
-        header["Authorization"] =
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MzZiMTBjNmRmMTc1ZWYzMTVkMDZhOSIsImVtYWlsIjoibWlsb25AZ21haWwuY29tIiwicm9sZSI6IlBST0ZFU1NJT05BTCIsImlhdCI6MTc0ODUxMzMzMywiZXhwIjoxNzUxMTA1MzMzfQ._ufYteqd1GccvbF8-BfdDIokXJdr0aiVEUywtQ-VpT4";
+        //  header["Authorization"] =
+        //      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MzZiMTBjNmRmMTc1ZWYzMTVkMDZhOSIsImVtYWlsIjoibWlsb25AZ21haWwuY29tIiwicm9sZSI6IlBST0ZFU1NJT05BTCIsImlhdCI6MTc0ODUxMzMzMywiZXhwIjoxNzUxMTA1MzMzfQ._ufYteqd1GccvbF8-BfdDIokXJdr0aiVEUywtQ-VpT4";
       }
 
       if (method.name == RequestMethod.GET.name) {
@@ -45,13 +46,13 @@ class NetworkConfig {
           var req =
               await http.post(Uri.parse(url), headers: header, body: json_body);
 
-          print(req.body);
+          //  print(req.body);
           if (req.statusCode == 200) {
             return json.decode(req.body);
-          } else if (req.statusCode == 500) {
-            throw Exception("Server Error");
           } else {
-            throw Exception('try aging after some time');
+            return json.decode(req.body);
+
+            // throw Exception('Try aging after some time');
           }
         } catch (e) {
           ShowError(e);

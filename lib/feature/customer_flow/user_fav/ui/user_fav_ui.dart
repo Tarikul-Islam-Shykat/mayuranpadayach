@@ -22,10 +22,6 @@ class FavoritesPage extends StatelessWidget {
         elevation: 0,
         title: headingText(text: 'Favorite', fontWeight: FontWeight.bold),
         centerTitle: true,
-        // leading: IconButton(
-        //   icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
-        //   onPressed: () => Get.back(),
-        // ),
       ),
       body: Obx(() {
         if (controller.isFavLoading.value) {

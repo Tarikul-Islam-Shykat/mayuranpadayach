@@ -16,24 +16,20 @@ class UserBookingScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: Colors.grey[50],
-      appBar: AppBar(
-        backgroundColor: Colors.grey[50],
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () => Get.back(),
-        ),
-      ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Booking heading inside the screen
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            child: normalText(
-              text: "Booking",
-              color: Colors.black,
-              fontWeight: FontWeight.bold,
+          SizedBox(
+            height: 20,
+          ),
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: normalText(
+                text: "Booking",
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
           const SizedBox(height: 24),
